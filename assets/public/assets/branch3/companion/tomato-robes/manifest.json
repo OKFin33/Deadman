@@ -1,0 +1,189 @@
+{
+  "asset_id": "branch3_tomato_robes_companion",
+  "display_name": "半像素番茄睡袍女孩",
+  "branch": "OSeria Branch 3 / 要是我来",
+  "source_reference": "Generated from the user-provided current-version reference image via built-in image_gen, then chroma-keyed and locally post-processed.",
+  "states": {
+    "idle": {
+      "png": "png/idle.png",
+      "webp": "webp/idle.webp",
+      "width": 185,
+      "height": 388,
+      "anchor": {
+        "type": "bottom-center",
+        "x": 92,
+        "y": 388
+      }
+    },
+    "notice_question": {
+      "png": "png/notice_question.png",
+      "webp": "webp/notice_question.webp",
+      "width": 215,
+      "height": 396,
+      "anchor": {
+        "type": "bottom-center",
+        "x": 108,
+        "y": 396
+      }
+    },
+    "notice_exclaim": {
+      "png": "png/notice_exclaim.png",
+      "webp": "webp/notice_exclaim.webp",
+      "width": 206,
+      "height": 394,
+      "anchor": {
+        "type": "bottom-center",
+        "x": 103,
+        "y": 394
+      }
+    },
+    "runout": {
+      "png": "png/runout.png",
+      "webp": "webp/runout.webp",
+      "width": 390,
+      "height": 345,
+      "anchor": {
+        "type": "bottom-center",
+        "x": 195,
+        "y": 345
+      }
+    },
+    "stand_bubble": {
+      "png": "png/stand_bubble.png",
+      "webp": "webp/stand_bubble.webp",
+      "width": 477,
+      "height": 366,
+      "anchor": {
+        "type": "bottom-center",
+        "x": 238,
+        "y": 366
+      }
+    },
+    "thinking": {
+      "png": "png/thinking.png",
+      "webp": "webp/thinking.webp",
+      "width": 240,
+      "height": 372,
+      "anchor": {
+        "type": "bottom-center",
+        "x": 120,
+        "y": 372
+      }
+    },
+    "verdict": {
+      "png": "png/verdict.png",
+      "webp": "webp/verdict.webp",
+      "width": 295,
+      "height": 358,
+      "anchor": {
+        "type": "bottom-center",
+        "x": 148,
+        "y": 358
+      }
+    }
+  },
+  "spritesheet": {
+    "png": "spritesheet/tomato_companion_spritesheet.png",
+    "webp": "spritesheet/tomato_companion_spritesheet.webp",
+    "frame_width": 640,
+    "frame_height": 512,
+    "baseline_y": 468,
+    "frames": {
+      "idle": {
+        "x": 0,
+        "y": 0,
+        "w": 640,
+        "h": 512,
+        "index": 0,
+        "image_w": 185,
+        "image_h": 388
+      },
+      "notice_question": {
+        "x": 640,
+        "y": 0,
+        "w": 640,
+        "h": 512,
+        "index": 1,
+        "image_w": 215,
+        "image_h": 396
+      },
+      "notice_exclaim": {
+        "x": 1280,
+        "y": 0,
+        "w": 640,
+        "h": 512,
+        "index": 2,
+        "image_w": 206,
+        "image_h": 394
+      },
+      "runout": {
+        "x": 1920,
+        "y": 0,
+        "w": 640,
+        "h": 512,
+        "index": 3,
+        "image_w": 390,
+        "image_h": 345
+      },
+      "stand_bubble": {
+        "x": 2560,
+        "y": 0,
+        "w": 640,
+        "h": 512,
+        "index": 4,
+        "image_w": 477,
+        "image_h": 366
+      },
+      "thinking": {
+        "x": 3200,
+        "y": 0,
+        "w": 640,
+        "h": 512,
+        "index": 5,
+        "image_w": 240,
+        "image_h": 372
+      },
+      "verdict": {
+        "x": 3840,
+        "y": 0,
+        "w": 640,
+        "h": 512,
+        "index": 6,
+        "image_w": 295,
+        "image_h": 358
+      }
+    }
+  },
+  "motion": {
+    "runtime": "event_driven_fsm",
+    "implementation": "React reducer + CSS transform/opacity motion",
+    "stable_loop": {
+      "states": ["idle", "notice_question", "notice_exclaim", "stand_bubble", "thinking", "verdict"],
+      "type": "2-3 step breathing loop",
+      "note": "No extra frame assets required; stable states keep a tiny CSS breathing loop until the next event."
+    },
+    "one_shot_transitions": {
+      "runout": {
+        "duration_ms": 620,
+        "next_state": "stand_bubble"
+      },
+      "dismissed": {
+        "duration_ms": 260,
+        "next_state": "idle"
+      }
+    },
+    "event_rules": [
+      "Timeline notices are accepted only from idle/notice states.",
+      "Runout and dismissed are transition-only states.",
+      "New timeline notices must not interrupt stand_bubble, thinking, or verdict.",
+      "Respect prefers-reduced-motion by disabling loops and compressing transition duration."
+    ]
+  },
+  "ui_notes": {
+    "idle_position": "left edge, lower-middle safe area; crop or translate so the vertical border kisses the player edge",
+    "notice": "? / ! are already baked into notice_question and notice_exclaim",
+    "stand_bubble": "contains the 要是我来 bubble as bitmap for P0; frontend can replace with live text later if needed",
+    "verdict": "blank placard; render verdict copy in UI when needed",
+    "format": "transparent PNG and lossless-alpha WebP; no full avatar runtime required"
+  }
+}

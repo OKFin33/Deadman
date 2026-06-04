@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://oseria.local/deadman/field_minimum_red_team_case.v0.1.json",
+  "title": "Deadman Field Minimum Red Team Case v0.1",
+  "type": "object",
+  "required": [
+    "case_id",
+    "node_id",
+    "drama_id",
+    "demand_cluster",
+    "attack_type",
+    "user_action",
+    "expected_required_fields",
+    "expected_failure_if_missing",
+    "should_pass",
+    "red_team_rationale",
+    "severity_if_failed"
+  ],
+  "properties": {
+    "case_id": {
+      "type": "string",
+      "pattern": "^rt_v01_[0-9]{4}$"
+    },
+    "node_id": {
+      "type": "string"
+    },
+    "drama_id": {
+      "type": "string"
+    },
+    "drama_title": {
+      "type": "string"
+    },
+    "source_tier": {
+      "type": "string"
+    },
+    "review_status": {
+      "type": "string"
+    },
+    "demand_cluster": {
+      "type": "string"
+    },
+    "attack_type": {
+      "type": "string",
+      "enum": [
+        "reasonable_smart",
+        "rash_wrong",
+        "overpowered_cheat",
+        "cross_episode_meta",
+        "unsupported_proof",
+        "visual_truth_trap"
+      ]
+    },
+    "scene_hook": {
+      "type": "string"
+    },
+    "user_action": {
+      "type": "string"
+    },
+    "expected_required_fields": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "expected_failure_if_missing": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "should_pass": {
+      "type": "boolean"
+    },
+    "red_team_rationale": {
+      "type": "string"
+    },
+    "severity_if_failed": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ]
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,332 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://oseria.local/deadman/moment_causality_pack.v0.2.schema.json",
+  "title": "Deadman Moment Causality Pack v0.2",
+  "type": "object",
+  "required": [
+    "pack_id",
+    "schema_version",
+    "source_drama",
+    "source_window",
+    "review_state",
+    "companion_surface",
+    "viewer_impulse",
+    "actor_context",
+    "local_constraints",
+    "canon_baseline",
+    "action_space",
+    "judgment_policy",
+    "outcome_response_contract",
+    "visual_result_policy",
+    "score_axes",
+    "producer_review_fields"
+  ],
+  "properties": {
+    "pack_id": {
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "moment_causality_pack.v0.2"
+    },
+    "source_drama": {
+      "type": "object"
+    },
+    "source_window": {
+      "type": "object"
+    },
+    "review_state": {
+      "type": "object"
+    },
+    "companion_surface": {
+      "type": "object"
+    },
+    "viewer_impulse": {
+      "type": "string"
+    },
+    "actor_context": {
+      "type": "object"
+    },
+    "local_constraints": {
+      "type": "object"
+    },
+    "canon_baseline": {
+      "type": "object"
+    },
+    "action_space": {
+      "type": "object"
+    },
+    "optional_modules": {
+      "type": "object",
+      "properties": {
+        "resource_scarcity": {
+          "type": "object"
+        },
+        "exposure_and_secrecy": {
+          "type": "object"
+        },
+        "relationship_pressure": {
+          "type": "object"
+        },
+        "village_or_public_reputation": {
+          "type": "object"
+        },
+        "evidence_or_trap_logic": {
+          "type": "object"
+        },
+        "system_or_hidden_power_rule": {
+          "type": "object"
+        },
+        "humiliation_reversal": {
+          "type": "object"
+        },
+        "survival_tradeoff": {
+          "type": "object"
+        },
+        "hidden_power_rule": {
+          "type": "object"
+        },
+        "identity_reveal": {
+          "type": "object"
+        },
+        "betrayal_divorce_safety": {
+          "type": "object"
+        },
+        "status_reversal_bottom_card": {
+          "type": "object"
+        },
+        "medical_or_pregnancy_risk": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    "judgment_policy": {
+      "type": "object"
+    },
+    "outcome_response_contract": {
+      "type": "object"
+    },
+    "visual_result_policy": {
+      "type": "object"
+    },
+    "score_axes": {
+      "type": "object"
+    },
+    "producer_review_fields": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true,
+  "x-deadman-field-decisions": [
+    {
+      "field": "source_window",
+      "category": "CoreEnvelope",
+      "decision": "core",
+      "reason": "Every moment needs episode/time/provenance before backend judgment or frontend marker rendering.",
+      "consumer": "producer+backend+frontend"
+    },
+    {
+      "field": "review_state",
+      "category": "CoreEnvelope",
+      "decision": "core",
+      "reason": "ARS outputs are bridge evidence; every promoted node needs review status and evidence/inference separation.",
+      "consumer": "producer+backend"
+    },
+    {
+      "field": "companion_surface",
+      "category": "CoreEnvelope",
+      "decision": "core",
+      "reason": "The frontstage companion needs marker, hook, and friend-tone entry copy.",
+      "consumer": "frontend"
+    },
+    {
+      "field": "viewer_impulse",
+      "category": "CoreEnvelope",
+      "decision": "core",
+      "reason": "All genres use the same product emotion: validating '要是我来' instinct before judging cost.",
+      "consumer": "backend+LLM"
+    },
+    {
+      "field": "actor_context",
+      "category": "CoreEnvelope",
+      "decision": "core",
+      "reason": "Without local actors and roles, outputs become generic analysis rather than scene consequence.",
+      "consumer": "backend+LLM"
+    },
+    {
+      "field": "local_constraints",
+      "category": "CoreEnvelope",
+      "decision": "core",
+      "reason": "The core product promise is credible consequence, which requires hard local constraints.",
+      "consumer": "backend+LLM"
+    },
+    {
+      "field": "canon_baseline",
+      "category": "CoreEnvelope",
+      "decision": "core",
+      "reason": "Needed to preserve watch flow and explain why original writing remains acceptable.",
+      "consumer": "backend+LLM+frontend"
+    },
+    {
+      "field": "action_space",
+      "category": "CoreEnvelope",
+      "decision": "core",
+      "reason": "Preset and custom action routing both need typed, bounded action space.",
+      "consumer": "backend+frontend"
+    },
+    {
+      "field": "judgment_policy",
+      "category": "CoreEnvelope",
+      "decision": "core",
+      "reason": "Prevents continuous timeline promises, unsupported facts, and unbounded power escalation.",
+      "consumer": "backend+LLM"
+    },
+    {
+      "field": "outcome_response_contract",
+      "category": "CoreEnvelope",
+      "decision": "core",
+      "reason": "Keeps output to short local consequence plus optional original-plot note.",
+      "consumer": "backend+LLM+frontend"
+    },
+    {
+      "field": "score_axes",
+      "category": "CoreEnvelope",
+      "decision": "core",
+      "reason": "Ranking, review, and fallback judgment need stable axes; keep `watch_flow_fit`, not `return_to_plot_fit`.",
+      "consumer": "producer+backend"
+    },
+    {
+      "field": "visual_result_policy",
+      "category": "CoreEnvelope",
+      "decision": "core",
+      "reason": "The product wants图文结合, but keyframes are refs, not visual truth.",
+      "consumer": "producer+backend+frontend"
+    },
+    {
+      "field": "resource_scarcity",
+      "category": "OptionalCausalityModules",
+      "decision": "optional",
+      "reason": "Strong in 荒年, not universal across cultivation/divorce genres.",
+      "consumer": "backend+LLM"
+    },
+    {
+      "field": "exposure_and_secrecy",
+      "category": "OptionalCausalityModules",
+      "decision": "optional",
+      "reason": "Appears in system, hidden-power, and status scenes, but not every moment.",
+      "consumer": "backend+LLM"
+    },
+    {
+      "field": "relationship_pressure",
+      "category": "OptionalCausalityModules",
+      "decision": "optional",
+      "reason": "Common in family/divorce scenes; still absent from pure evidence or power-rule moments.",
+      "consumer": "backend+LLM"
+    },
+    {
+      "field": "village_or_public_reputation",
+      "category": "OptionalCausalityModules",
+      "decision": "optional",
+      "reason": "Covers public witnesses in famine/village and social humiliation scenes.",
+      "consumer": "backend+LLM"
+    },
+    {
+      "field": "evidence_or_trap_logic",
+      "category": "OptionalCausalityModules",
+      "decision": "optional",
+      "reason": "Needed whenever反打 depends on proof, accounts, witnesses, or legal/business evidence.",
+      "consumer": "backend+LLM"
+    },
+    {
+      "field": "system_or_hidden_power_rule",
+      "category": "OptionalCausalityModules",
+      "decision": "optional",
+      "reason": "Shared by system and cultivation-like scenes; not needed for ordinary relationship beats.",
+      "consumer": "backend+LLM"
+    },
+    {
+      "field": "humiliation_reversal",
+      "category": "OptionalCausalityModules",
+      "decision": "optional",
+      "reason": "Short-drama爽感 staple, but its cost differs by scene mechanism.",
+      "consumer": "backend+LLM"
+    },
+    {
+      "field": "survival_tradeoff",
+      "category": "OptionalCausalityModules",
+      "decision": "optional",
+      "reason": "Core to famine/survival moments; too specific for universal core.",
+      "consumer": "backend+LLM"
+    },
+    {
+      "field": "hidden_power_rule",
+      "category": "GenreExtensions",
+      "decision": "genre_extension",
+      "reason": "Needed for 云渺-style hidden power/cultivation constraints.",
+      "consumer": "LLM"
+    },
+    {
+      "field": "identity_reveal",
+      "category": "GenreExtensions",
+      "decision": "genre_extension",
+      "reason": "Needed where identity truth timing drives leverage.",
+      "consumer": "LLM"
+    },
+    {
+      "field": "betrayal_divorce_safety",
+      "category": "GenreExtensions",
+      "decision": "genre_extension",
+      "reason": "Needed for 幸得相遇离婚时-style rupture, safety, and evidence timing.",
+      "consumer": "LLM"
+    },
+    {
+      "field": "status_reversal_bottom_card",
+      "category": "GenreExtensions",
+      "decision": "genre_extension",
+      "reason": "Needed for CEO/offer/legal/business reversal timing.",
+      "consumer": "LLM"
+    },
+    {
+      "field": "medical_or_pregnancy_risk",
+      "category": "GenreExtensions",
+      "decision": "genre_extension",
+      "reason": "Needed when bodily risk changes the priority between rescue and revenge.",
+      "consumer": "LLM"
+    },
+    {
+      "field": "producer_review_fields",
+      "category": "ProducerReviewFields",
+      "decision": "producer_required",
+      "reason": "Keeps ASR/keyframe/inference hygiene explicit.",
+      "consumer": "producer"
+    },
+    {
+      "field": "branch_timeline",
+      "category": "NonP0Fields",
+      "decision": "exclude",
+      "reason": "Implies continuous alternate plot, which P0 explicitly does not promise.",
+      "consumer": "none"
+    },
+    {
+      "field": "global_inventory",
+      "category": "NonP0Fields",
+      "decision": "exclude",
+      "reason": "Only local resource state is needed; global mutation would recreate ArcForge-like continuity.",
+      "consumer": "none"
+    },
+    {
+      "field": "full_social_graph",
+      "category": "NonP0Fields",
+      "decision": "exclude",
+      "reason": "Local actors/witnesses are enough for moment-level consequence.",
+      "consumer": "none"
+    },
+    {
+      "field": "auto_visual_truth",
+      "category": "NonP0Fields",
+      "decision": "exclude",
+      "reason": "Keyframe refs do not prove object/person claims without human or visual-model review.",
+      "consumer": "none"
+    }
+  ]
+}

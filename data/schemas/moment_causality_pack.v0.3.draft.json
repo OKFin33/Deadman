@@ -1,0 +1,662 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://oseria.local/schemas/deadman/moment_causality_pack.v0.3.draft.json",
+  "title": "Deadman Moment Causality Pack v0.3 Draft",
+  "description": "Moment-level field contract for Deadman local consequence judgment. This is schema readiness only; it does not imply provider or runtime behavior.",
+  "type": "object",
+  "required": [
+    "pack_id",
+    "schema_version",
+    "source_window",
+    "review_and_provenance",
+    "companion_entry",
+    "action_space",
+    "response_contract",
+    "visual_result_policy",
+    "actor_local_state",
+    "critical_stakes_state",
+    "local_constraint_state",
+    "escalation_risk",
+    "canon_baseline",
+    "watch_flow_rationale"
+  ],
+  "properties": {
+    "pack_id": {
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "moment_causality_pack.v0.3.draft"
+    },
+    "source_window": {
+      "type": "object",
+      "required": [
+        "drama_id",
+        "episode_id",
+        "start_ms",
+        "end_ms"
+      ],
+      "properties": {
+        "drama_id": {
+          "type": "string"
+        },
+        "episode_id": {
+          "type": "string"
+        },
+        "start_ms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "end_ms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "interaction_window": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "source_refs": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "review_and_provenance": {
+      "type": "object",
+      "description": "Producer review and evidence boundary. This metadata is not viewer-facing proof.",
+      "additionalProperties": true
+    },
+    "companion_entry": {
+      "type": "object",
+      "description": "Companion hook and entry copy. It is surface UX, not causal evidence.",
+      "additionalProperties": true
+    },
+    "action_space": {
+      "type": "object",
+      "description": "Preset actions and custom action policy bounded to local consequence.",
+      "additionalProperties": true
+    },
+    "response_contract": {
+      "type": "object",
+      "required": [
+        "time_horizon",
+        "allow_future_branch_claims",
+        "allow_canon_wrong_claims"
+      ],
+      "properties": {
+        "time_horizon": {
+          "enum": [
+            "current_scene",
+            "current_scene_or_immediate_aftermath"
+          ]
+        },
+        "allow_future_branch_claims": {
+          "const": false
+        },
+        "allow_canon_wrong_claims": {
+          "const": false
+        },
+        "max_result_sentences": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "tone": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "visual_result_policy": {
+      "$ref": "#/$defs/visual_result_policy"
+    },
+    "actor_local_state": {
+      "type": "object",
+      "description": "POV actor, affected actors, roles, local intent, and immediate condition.",
+      "additionalProperties": true
+    },
+    "critical_stakes_state": {
+      "$ref": "#/$defs/critical_stakes_state"
+    },
+    "local_constraint_state": {
+      "type": "object",
+      "description": "Hard scene facts: timing, available tools, known facts, hidden facts, and non-negotiable limits.",
+      "additionalProperties": true
+    },
+    "escalation_risk": {
+      "$ref": "#/$defs/escalation_risk"
+    },
+    "canon_baseline": {
+      "type": "object",
+      "description": "Original action, original rationale, and immediate plot baseline.",
+      "additionalProperties": true
+    },
+    "watch_flow_rationale": {
+      "$ref": "#/$defs/watch_flow_rationale"
+    },
+    "optional_modules": {
+      "type": "object",
+      "properties": {
+        "relationship_state": {
+          "$ref": "#/$defs/relationship_state"
+        },
+        "capability_rules": {
+          "$ref": "#/$defs/capability_rules"
+        },
+        "information_asymmetry": {
+          "$ref": "#/$defs/information_asymmetry"
+        },
+        "proof_state": {
+          "$ref": "#/$defs/proof_state"
+        },
+        "audience_reputation_state": {
+          "$ref": "#/$defs/audience_reputation_state"
+        }
+      },
+      "additionalProperties": false
+    },
+    "producer_only": {
+      "type": "object",
+      "description": "Producer ranking, QA, and field demand evidence. Frontend and viewer-facing judgment prompts should ignore this by default.",
+      "properties": {
+        "score_axes": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "field_demand_trace": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "string_array": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "critical_stakes_state": {
+      "type": "object",
+      "required": [
+        "stake_type",
+        "stake_owner",
+        "time_pressure",
+        "scarcity_or_risk_level",
+        "irreversibility",
+        "risk_if_action",
+        "risk_if_no_action"
+      ],
+      "properties": {
+        "stake_type": {
+          "enum": [
+            "resource",
+            "bodily_safety",
+            "pregnancy",
+            "reputation",
+            "relationship",
+            "legal",
+            "status",
+            "power",
+            "other"
+          ]
+        },
+        "stake_owner": {
+          "type": "string"
+        },
+        "time_pressure": {
+          "enum": [
+            "immediate",
+            "short_term",
+            "deferred",
+            "none",
+            "unknown"
+          ]
+        },
+        "scarcity_or_risk_level": {
+          "enum": [
+            "low",
+            "medium",
+            "high",
+            "unknown"
+          ]
+        },
+        "irreversibility": {
+          "enum": [
+            "reversible",
+            "costly",
+            "irreversible",
+            "unknown"
+          ]
+        },
+        "risk_if_action": {
+          "type": "string"
+        },
+        "risk_if_no_action": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "escalation_risk": {
+      "type": "object",
+      "required": [
+        "risk_type",
+        "risk_source",
+        "immediacy",
+        "severity",
+        "mitigation",
+        "who_can_escalate"
+      ],
+      "properties": {
+        "risk_type": {
+          "enum": [
+            "social",
+            "physical",
+            "legal",
+            "resource",
+            "relationship",
+            "capability_exposure",
+            "watch_flow",
+            "other"
+          ]
+        },
+        "risk_source": {
+          "type": "string"
+        },
+        "immediacy": {
+          "enum": [
+            "immediate",
+            "short_term",
+            "deferred",
+            "unknown"
+          ]
+        },
+        "severity": {
+          "enum": [
+            "low",
+            "medium",
+            "high",
+            "critical",
+            "unknown"
+          ]
+        },
+        "mitigation": {
+          "type": "string"
+        },
+        "who_can_escalate": {
+          "$ref": "#/$defs/string_array"
+        }
+      },
+      "additionalProperties": true
+    },
+    "watch_flow_rationale": {
+      "type": "object",
+      "required": [
+        "why_original_still_works",
+        "viewer_return_line",
+        "must_not_claim"
+      ],
+      "properties": {
+        "why_original_still_works": {
+          "type": "string"
+        },
+        "viewer_return_line": {
+          "type": "string"
+        },
+        "must_not_claim": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "future episodes follow this branch",
+              "canon was wrong",
+              "the branch continues automatically"
+            ]
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "capability_rules": {
+      "type": "object",
+      "required": [
+        "capability_type",
+        "hard_limit",
+        "activation_cost",
+        "visibility_cost",
+        "known_to_actor",
+        "known_to_others",
+        "failure_mode_if_overused"
+      ],
+      "properties": {
+        "capability_type": {
+          "enum": [
+            "system",
+            "hidden_power",
+            "status_power",
+            "knowledge",
+            "physical",
+            "social",
+            "none",
+            "other"
+          ]
+        },
+        "hard_limit": {
+          "type": "string"
+        },
+        "activation_cost": {
+          "type": "string"
+        },
+        "visibility_cost": {
+          "type": "string"
+        },
+        "known_to_actor": {
+          "type": "boolean"
+        },
+        "known_to_others": {
+          "type": "boolean"
+        },
+        "failure_mode_if_overused": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "information_asymmetry": {
+      "type": "object",
+      "required": [
+        "hidden_fact",
+        "who_knows",
+        "who_does_not_know",
+        "who_would_learn",
+        "reveal_timing",
+        "leverage_change",
+        "cost_of_reveal"
+      ],
+      "properties": {
+        "hidden_fact": {
+          "type": "string"
+        },
+        "who_knows": {
+          "$ref": "#/$defs/string_array"
+        },
+        "who_does_not_know": {
+          "$ref": "#/$defs/string_array"
+        },
+        "who_would_learn": {
+          "$ref": "#/$defs/string_array"
+        },
+        "reveal_timing": {
+          "enum": [
+            "now",
+            "later",
+            "avoid",
+            "unknown"
+          ]
+        },
+        "leverage_change": {
+          "enum": [
+            "gain",
+            "loss",
+            "mixed",
+            "none",
+            "unknown"
+          ]
+        },
+        "cost_of_reveal": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "proof_state": {
+      "type": "object",
+      "required": [
+        "proof_type",
+        "available_now",
+        "threshold",
+        "holder",
+        "risk_if_claimed_without_proof",
+        "evidence_refs"
+      ],
+      "properties": {
+        "proof_type": {
+          "enum": [
+            "witness",
+            "record",
+            "object",
+            "medical",
+            "legal",
+            "business",
+            "visual_reference",
+            "none",
+            "other"
+          ]
+        },
+        "available_now": {
+          "type": "boolean"
+        },
+        "threshold": {
+          "enum": [
+            "low",
+            "medium",
+            "high",
+            "unknown"
+          ]
+        },
+        "holder": {
+          "type": "string"
+        },
+        "risk_if_claimed_without_proof": {
+          "type": "string"
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "audience_reputation_state": {
+      "type": "object",
+      "required": [
+        "audience_scope",
+        "audience_alignment",
+        "status_at_stake",
+        "humiliation_vector",
+        "likely_reaction"
+      ],
+      "properties": {
+        "audience_scope": {
+          "enum": [
+            "private",
+            "family",
+            "village",
+            "public",
+            "institutional",
+            "online",
+            "unknown"
+          ]
+        },
+        "audience_alignment": {
+          "enum": [
+            "supportive",
+            "hostile",
+            "mixed",
+            "neutral",
+            "unknown"
+          ]
+        },
+        "status_at_stake": {
+          "type": "string"
+        },
+        "humiliation_vector": {
+          "type": "string"
+        },
+        "likely_reaction": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "relationship_state": {
+      "type": "object",
+      "required": [
+        "relationship_type",
+        "trust_level",
+        "dependency",
+        "protection_priority"
+      ],
+      "properties": {
+        "relationship_type": {
+          "enum": [
+            "family",
+            "romantic",
+            "marriage",
+            "village",
+            "enemy",
+            "ally",
+            "institutional",
+            "unknown"
+          ]
+        },
+        "trust_level": {
+          "enum": [
+            "low",
+            "medium",
+            "high",
+            "broken",
+            "unknown"
+          ]
+        },
+        "dependency": {
+          "enum": [
+            "none",
+            "emotional",
+            "resource",
+            "safety",
+            "status",
+            "legal",
+            "unknown"
+          ]
+        },
+        "protection_priority": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "visual_result_policy": {
+      "type": "object",
+      "required": [
+        "result_media_mode",
+        "truth_level",
+        "proof_eligibility",
+        "must_not_be_used_as_proof",
+        "fallback",
+        "latency_budget_ms",
+        "provider_policy",
+        "visual_prompt_plan"
+      ],
+      "properties": {
+        "result_media_mode": {
+          "enum": [
+            "preset_slot",
+            "realtime_generation",
+            "text_only",
+            "none"
+          ]
+        },
+        "truth_level": {
+          "enum": [
+            "illustrative_result",
+            "source_reference",
+            "reviewed_visual_evidence"
+          ]
+        },
+        "proof_eligibility": {
+          "enum": [
+            "never",
+            "producer_review_only"
+          ]
+        },
+        "must_not_be_used_as_proof": {
+          "const": true
+        },
+        "fallback": {
+          "enum": [
+            "text_only",
+            "placeholder_slot",
+            "retry_later"
+          ]
+        },
+        "latency_budget_ms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "provider_policy": {
+          "enum": [
+            "not_connected",
+            "future_spike_required"
+          ]
+        },
+        "visual_prompt_plan": {
+          "$ref": "#/$defs/visual_prompt_plan"
+        }
+      },
+      "additionalProperties": true
+    },
+    "visual_prompt_plan": {
+      "type": "object",
+      "required": [
+        "prompt_source",
+        "prompt_text",
+        "negative_constraints",
+        "style_policy",
+        "provider_policy"
+      ],
+      "properties": {
+        "prompt_source": {
+          "enum": [
+            "preset",
+            "judgment_result",
+            "none"
+          ]
+        },
+        "prompt_text": {
+          "type": "string"
+        },
+        "negative_constraints": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "style_policy": {
+          "enum": [
+            "short_drama_result_card",
+            "neutral_illustration",
+            "none"
+          ]
+        },
+        "provider_policy": {
+          "enum": [
+            "not_connected",
+            "future_spike_required"
+          ]
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}

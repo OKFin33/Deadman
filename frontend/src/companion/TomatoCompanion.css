@@ -1,0 +1,286 @@
+.tomato-companion-layer {
+  --tomato-ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --tomato-ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --tomato-ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  position: fixed;
+  left: 0;
+  bottom: clamp(112px, 17dvh, 176px);
+  z-index: 18;
+  width: min(52vw, 430px);
+  height: min(54dvh, 430px);
+  pointer-events: none;
+  contain: layout style;
+}
+
+.tomato-companion {
+  --tomato-size: clamp(112px, 12vw, 150px);
+  --tomato-x: -74px;
+  --tomato-y: 0px;
+  --tomato-scale: 1;
+
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: var(--tomato-size);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  pointer-events: auto;
+  touch-action: manipulation;
+  transform: translate3d(var(--tomato-x), var(--tomato-y), 0) scale(var(--tomato-scale));
+  transform-origin: left bottom;
+  will-change: transform, opacity;
+}
+
+.tomato-companion:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--accent, #c6a778), transparent 12%);
+  outline-offset: 4px;
+  border-radius: 18px;
+}
+
+.tomato-companion__sprite,
+.tomato-companion__sprite img {
+  display: block;
+  width: 100%;
+}
+
+.tomato-companion__sprite {
+  filter: drop-shadow(0 12px 18px rgba(17, 12, 8, 0.16));
+  transform-origin: center bottom;
+  will-change: transform;
+}
+
+.tomato-companion__sprite img {
+  height: auto;
+  user-select: none;
+}
+
+.tomato-companion--idle {
+  --tomato-size: clamp(82px, 9vw, 112px);
+  --tomato-x: -26px;
+}
+
+.tomato-companion--notice_question,
+.tomato-companion--notice_exclaim {
+  --tomato-size: clamp(90px, 10vw, 124px);
+  --tomato-x: -24px;
+  animation: tomato-notice-pop 260ms var(--tomato-ease-out-quint) both;
+}
+
+.tomato-companion--notice_question::after,
+.tomato-companion--notice_exclaim::after,
+.tomato-companion--error::after {
+  position: absolute;
+  top: 6px;
+  right: 4px;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 2px solid #fff7ee;
+  border-radius: 999px;
+  background: #ff6b35;
+  color: #fffaf2;
+  font-size: 1.24rem;
+  font-weight: 800;
+  line-height: 1;
+  box-shadow: 0 8px 18px rgba(17, 12, 8, 0.24);
+}
+
+.tomato-companion--notice_question::after {
+  content: "?";
+}
+
+.tomato-companion--notice_exclaim::after,
+.tomato-companion--error::after {
+  content: "!";
+}
+
+.tomato-companion--runout {
+  --tomato-size: clamp(156px, 21vw, 230px);
+  animation: tomato-runout 620ms var(--tomato-ease-out-expo) both;
+  cursor: default;
+}
+
+.tomato-companion--stand_bubble {
+  --tomato-size: clamp(118px, 17vw, 180px);
+  --tomato-x: 8px;
+  animation: tomato-arrive 220ms var(--tomato-ease-out-quart) both;
+}
+
+.tomato-companion--thinking {
+  --tomato-size: clamp(104px, 12vw, 146px);
+  --tomato-x: 12px;
+}
+
+.tomato-companion--verdict {
+  --tomato-size: clamp(118px, 15vw, 172px);
+  --tomato-x: 10px;
+  animation: tomato-verdict-pop 240ms var(--tomato-ease-out-quint) both;
+}
+
+.tomato-companion--error {
+  --tomato-size: clamp(112px, 14vw, 164px);
+  --tomato-x: 10px;
+  animation: tomato-verdict-pop 240ms var(--tomato-ease-out-quint) both;
+}
+
+.tomato-companion--dismissed {
+  --tomato-size: clamp(82px, 9vw, 112px);
+  animation: tomato-dismiss 260ms var(--tomato-ease-out-quart) both;
+  cursor: default;
+}
+
+.tomato-companion--idle .tomato-companion__sprite,
+.tomato-companion--notice_question .tomato-companion__sprite,
+.tomato-companion--notice_exclaim .tomato-companion__sprite,
+.tomato-companion--stand_bubble .tomato-companion__sprite,
+.tomato-companion--verdict .tomato-companion__sprite {
+  animation: tomato-breathe 2.8s steps(3, end) infinite;
+}
+
+.tomato-companion--thinking .tomato-companion__sprite {
+  animation: tomato-thinking 900ms steps(3, end) infinite;
+}
+
+@keyframes tomato-breathe {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  33% {
+    transform: translate3d(0, -2px, 0);
+  }
+
+  66% {
+    transform: translate3d(0, 1px, 0);
+  }
+}
+
+@keyframes tomato-thinking {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+
+  33% {
+    transform: translate3d(1px, -2px, 0) rotate(-1deg);
+  }
+
+  66% {
+    transform: translate3d(-1px, 1px, 0) rotate(1deg);
+  }
+}
+
+@keyframes tomato-notice-pop {
+  0% {
+    opacity: 0.82;
+    transform: translate3d(-44px, 3px, 0) scale(0.98);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate3d(var(--tomato-x), 0, 0) scale(1);
+  }
+}
+
+@keyframes tomato-runout {
+  0% {
+    opacity: 0.98;
+    transform: translate3d(-174px, 16px, 0) scale(0.98);
+  }
+
+  54% {
+    transform: translate3d(4px, -4px, 0) scale(1);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate3d(8px, 0, 0) scale(1);
+  }
+}
+
+@keyframes tomato-arrive {
+  0% {
+    opacity: 0.96;
+    transform: translate3d(10px, -3px, 0) scale(0.99);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate3d(var(--tomato-x), 0, 0) scale(1);
+  }
+}
+
+@keyframes tomato-verdict-pop {
+  0% {
+    opacity: 0.88;
+    transform: translate3d(24px, 4px, 0) scale(0.97);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate3d(var(--tomato-x), 0, 0) scale(1);
+  }
+}
+
+@keyframes tomato-dismiss {
+  0% {
+    opacity: 1;
+    transform: translate3d(8px, 0, 0) scale(1);
+  }
+
+  100% {
+    opacity: 0.96;
+    transform: translate3d(-30px, 4px, 0) scale(1);
+  }
+}
+
+@media (max-width: 720px) {
+  .tomato-companion-layer {
+    bottom: clamp(132px, 18dvh, 180px);
+    width: 62vw;
+    height: 310px;
+  }
+
+  .tomato-companion--runout {
+    --tomato-size: clamp(138px, 35vw, 168px);
+  }
+
+  .tomato-companion--stand_bubble {
+    --tomato-size: clamp(108px, 28vw, 136px);
+  }
+
+  .tomato-companion--thinking {
+    --tomato-size: clamp(96px, 25vw, 118px);
+  }
+
+  .tomato-companion--verdict {
+    --tomato-size: clamp(112px, 29vw, 142px);
+  }
+
+  .tomato-companion--error {
+    --tomato-size: clamp(108px, 27vw, 136px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tomato-companion__sprite {
+    animation: none !important;
+  }
+
+  .tomato-companion--notice_question,
+  .tomato-companion--notice_exclaim,
+  .tomato-companion--stand_bubble,
+  .tomato-companion--verdict {
+    animation: none !important;
+  }
+
+  .tomato-companion--runout,
+  .tomato-companion--dismissed {
+    animation-duration: 1ms;
+  }
+}

@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://oseria.local/schemas/deadman/deadman_judgment_adapter_input.v0.1.json",
+  "title": "Deadman Judgment Adapter Input v0.1",
+  "description": "Input contract for a future Deadman judgment adapter. This schema prepares the adapter boundary but does not connect an LLM or provider.",
+  "type": "object",
+  "required": [
+    "request_id",
+    "drama_id",
+    "moment_pack",
+    "user_action",
+    "runtime_policy",
+    "requested_output"
+  ],
+  "properties": {
+    "request_id": {
+      "type": "string"
+    },
+    "drama_id": {
+      "type": "string"
+    },
+    "moment_pack": {
+      "$ref": "moment_causality_pack.v0.3.draft.json"
+    },
+    "user_action": {
+      "type": "object",
+      "required": [
+        "origin",
+        "action_type",
+        "text"
+      ],
+      "properties": {
+        "origin": {
+          "enum": [
+            "preset",
+            "custom"
+          ]
+        },
+        "action_type": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        },
+        "preset_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "runtime_policy": {
+      "type": "object",
+      "required": [
+        "time_horizon",
+        "allow_future_branch_claims",
+        "allow_visual_as_proof",
+        "output_language"
+      ],
+      "properties": {
+        "time_horizon": {
+          "const": "current_scene_or_immediate_aftermath"
+        },
+        "allow_future_branch_claims": {
+          "const": false
+        },
+        "allow_visual_as_proof": {
+          "const": false
+        },
+        "output_language": {
+          "const": "zh-CN"
+        },
+        "hide_producer_only_fields_from_prompt": {
+          "type": "boolean",
+          "default": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "requested_output": {
+      "type": "object",
+      "required": [
+        "text_result",
+        "visual_result"
+      ],
+      "properties": {
+        "text_result": {
+          "const": true
+        },
+        "visual_result": {
+          "enum": [
+            "preset_slot",
+            "plan_only",
+            "none"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "debug": {
+      "type": "object",
+      "description": "Optional producer/debug metadata. Do not expose directly to the viewer-facing prompt.",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

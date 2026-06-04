@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://oseria.local/schemas/deadman/visual_result_plan.v0.1.json",
+  "title": "Deadman Visual Result Plan v0.1",
+  "description": "A provider-neutral visual plan emitted by judgment. It may describe a preset slot or prompt plan, but it is not a provider request.",
+  "type": "object",
+  "required": [
+    "mode",
+    "truth_level",
+    "proof_eligibility",
+    "must_not_be_used_as_proof",
+    "fallback",
+    "latency_budget_ms",
+    "provider_policy",
+    "visual_prompt_plan"
+  ],
+  "properties": {
+    "mode": {
+      "enum": [
+        "preset_slot",
+        "plan_only",
+        "text_only",
+        "none"
+      ]
+    },
+    "truth_level": {
+      "enum": [
+        "illustrative_result",
+        "source_reference",
+        "reviewed_visual_evidence"
+      ]
+    },
+    "proof_eligibility": {
+      "enum": [
+        "never",
+        "producer_review_only"
+      ]
+    },
+    "must_not_be_used_as_proof": {
+      "const": true
+    },
+    "fallback": {
+      "enum": [
+        "text_only",
+        "placeholder_slot",
+        "retry_later"
+      ]
+    },
+    "latency_budget_ms": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "provider_policy": {
+      "enum": [
+        "not_connected",
+        "future_spike_required"
+      ]
+    },
+    "preset_slot_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "visual_prompt_plan": {
+      "type": "object",
+      "required": [
+        "prompt_source",
+        "prompt_text",
+        "negative_constraints",
+        "style_policy",
+        "provider_policy"
+      ],
+      "properties": {
+        "prompt_source": {
+          "enum": [
+            "preset",
+            "judgment_result",
+            "none"
+          ]
+        },
+        "prompt_text": {
+          "type": "string"
+        },
+        "negative_constraints": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "style_policy": {
+          "enum": [
+            "short_drama_result_card",
+            "neutral_illustration",
+            "none"
+          ]
+        },
+        "provider_policy": {
+          "enum": [
+            "not_connected",
+            "future_spike_required"
+          ]
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

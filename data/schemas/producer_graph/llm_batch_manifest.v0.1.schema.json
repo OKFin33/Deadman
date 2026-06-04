@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://oseria.local/deadman/producer_graph/llm_batch_manifest.v0.1.schema.json",
+  "title": "Deadman Studio LLM Batch Manifest v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "run_id",
+    "nodes"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "deadman_llm_batch_manifest.v0.1"
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "nodes": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": [
+          "mode",
+          "chunk_count",
+          "chunk_strategy",
+          "chunk_artifacts",
+          "merge_artifact",
+          "merge_policy"
+        ],
+        "properties": {
+          "mode": {
+            "enum": [
+              "single",
+              "batched"
+            ]
+          },
+          "chunk_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "chunk_strategy": {
+            "type": "string",
+            "minLength": 1
+          },
+          "chunk_artifacts": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "merge_artifact": {
+            "type": "string",
+            "minLength": 1
+          },
+          "merge_policy": {
+            "type": "object"
+          }
+        }
+      }
+    }
+  }
+}

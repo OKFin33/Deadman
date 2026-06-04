@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://oseria.local/schemas/deadman/visual_result_response.v0.1.json",
+  "title": "Deadman Visual Result Response v0.1",
+  "description": "Future visual service response schema. Generated media must remain illustrative and non-proof by default.",
+  "type": "object",
+  "required": [
+    "request_id",
+    "status",
+    "media_slot",
+    "truth_level",
+    "proof_eligibility",
+    "fallback_reason"
+  ],
+  "properties": {
+    "request_id": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "ready",
+        "fallback",
+        "failed",
+        "not_connected"
+      ]
+    },
+    "media_slot": {
+      "type": "object",
+      "required": [
+        "slot_id",
+        "media_url",
+        "placeholder"
+      ],
+      "properties": {
+        "slot_id": {
+          "type": "string"
+        },
+        "media_url": {
+          "type": "string"
+        },
+        "placeholder": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "truth_level": {
+      "enum": [
+        "illustrative_result",
+        "source_reference",
+        "reviewed_visual_evidence"
+      ]
+    },
+    "proof_eligibility": {
+      "enum": [
+        "never",
+        "producer_review_only"
+      ]
+    },
+    "fallback_reason": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

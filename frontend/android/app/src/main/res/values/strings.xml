@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">要是我来</string>
+    <string name="title_activity_main">要是我来</string>
+    <string name="package_name">com.okfin.deadman</string>
+    <string name="custom_url_scheme">com.okfin.deadman</string>
+</resources>

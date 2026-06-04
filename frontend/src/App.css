@@ -1,0 +1,259 @@
+.deadman-catalog-app,
+.deadman-catalog-app *,
+.deadman-catalog-app *::before,
+.deadman-catalog-app *::after {
+  box-sizing: border-box;
+}
+
+.deadman-catalog-app {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(118, 40, 31, 0.34), transparent 34%),
+    linear-gradient(180deg, #171312 0%, #090807 100%);
+  color: #fff2df;
+  font-family: "Noto Serif SC", "Source Han Serif SC", serif;
+}
+
+.deadman-catalog__device {
+  width: 100vw;
+  min-height: 100dvh;
+  padding: max(18px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom));
+  display: grid;
+  grid-template-rows: auto minmax(318px, 43dvh) auto 1fr;
+  gap: 14px;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(16, 14, 13, 0.18), rgba(10, 8, 7, 0.94) 70%),
+    #100d0c;
+}
+
+.deadman-catalog__topbar {
+  min-height: 62px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.deadman-catalog__topbar h1 {
+  margin: 3px 0 0;
+  color: #fff8ec;
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.deadman-catalog__topbar span {
+  color: #f07b46;
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.deadman-catalog__topbar strong {
+  min-height: 34px;
+  display: inline-grid;
+  place-items: center;
+  padding: 0 10px;
+  border: 1px solid rgba(255, 229, 194, 0.2);
+  border-radius: 8px;
+  background: rgba(12, 10, 9, 0.62);
+  color: rgba(255, 242, 223, 0.86);
+  font-size: 0.78rem;
+}
+
+.deadman-catalog__hero {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+  display: grid;
+  align-content: end;
+  border: 1px solid rgba(255, 229, 194, 0.16);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(15, 12, 11, 0.02), rgba(13, 9, 7, 0.86)),
+    #211713;
+}
+
+.deadman-catalog__hero-still {
+  position: absolute;
+  inset: 0;
+  padding: 18px;
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  background:
+    linear-gradient(145deg, rgba(48, 89, 68, 0.22), transparent 38%),
+    radial-gradient(ellipse at 50% 72%, rgba(255, 167, 93, 0.34), transparent 32%),
+    linear-gradient(115deg, #2a1812 0%, #7b2e20 52%, #1b1812 100%);
+}
+
+.deadman-catalog__hero-still::before {
+  content: "";
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  bottom: 18%;
+  height: 42%;
+  border-radius: 8px;
+  background:
+    radial-gradient(ellipse at 50% 100%, rgba(255, 229, 194, 0.42), transparent 42%),
+    linear-gradient(180deg, rgba(72, 40, 24, 0.92), rgba(29, 20, 15, 0.98));
+  box-shadow:
+    0 -16px 60px rgba(255, 105, 52, 0.18),
+    inset 0 0 0 1px rgba(255, 233, 205, 0.1);
+}
+
+.deadman-catalog__hero-still::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 23%;
+  width: 122px;
+  height: 58px;
+  transform: translateX(-50%);
+  border-radius: 999px 999px 12px 12px;
+  background:
+    radial-gradient(circle at 38% 42%, #f6ddbd 0 10px, transparent 11px),
+    radial-gradient(circle at 60% 48%, #d34b2c 0 8px, transparent 9px),
+    #6d3325;
+  box-shadow: 0 20px 36px rgba(5, 4, 3, 0.36);
+}
+
+.deadman-catalog__hero-still span,
+.deadman-catalog__hero-still strong {
+  position: relative;
+  z-index: 1;
+}
+
+.deadman-catalog__hero-still span {
+  width: fit-content;
+  padding: 6px 8px;
+  border-radius: 8px;
+  background: rgba(9, 8, 7, 0.52);
+  color: #ffe9c9;
+  font-size: 0.8rem;
+}
+
+.deadman-catalog__hero-still strong {
+  max-width: 210px;
+  color: #fff8ec;
+  font-size: 1.42rem;
+  line-height: 1.18;
+}
+
+.deadman-catalog__hero p {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  padding: 0 16px 16px;
+  color: rgba(255, 244, 229, 0.88);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.deadman-catalog__drama {
+  align-self: start;
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  gap: 12px;
+  padding: 10px;
+  border: 1px solid rgba(255, 229, 194, 0.18);
+  border-radius: 8px;
+  background: rgba(255, 244, 228, 0.08);
+  backdrop-filter: blur(14px);
+}
+
+.deadman-catalog__thumbnail-wrap {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  background:
+    radial-gradient(ellipse at 58% 64%, rgba(240, 93, 50, 0.24), transparent 42%),
+    linear-gradient(180deg, #211713, #100d0c);
+}
+
+.deadman-catalog__thumbnail {
+  width: 100%;
+  height: 100%;
+  min-height: 132px;
+  padding: 8px 2px 18px;
+  object-fit: contain;
+  object-position: 50% 58%;
+}
+
+.deadman-catalog__thumbnail-wrap span {
+  position: absolute;
+  left: 7px;
+  right: 7px;
+  bottom: 7px;
+  min-height: 24px;
+  display: grid;
+  place-items: center;
+  border-radius: 7px;
+  background: rgba(9, 8, 7, 0.68);
+  color: #fff2df;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.deadman-catalog__drama-copy {
+  min-width: 0;
+  display: grid;
+  align-content: start;
+  gap: 5px;
+}
+
+.deadman-catalog__drama-copy p,
+.deadman-catalog__drama-copy strong {
+  margin: 0;
+}
+
+.deadman-catalog__drama-copy p {
+  color: rgba(255, 242, 223, 0.78);
+  font-size: 0.86rem;
+  line-height: 1.36;
+}
+
+.deadman-catalog__drama-copy strong {
+  color: #fff8ec;
+  font-size: 1.05rem;
+  line-height: 1.34;
+}
+
+.deadman-catalog__drama-copy span {
+  color: #f5a766;
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.deadman-catalog__drama button {
+  grid-column: 2;
+  min-height: 44px;
+  border: 0;
+  border-radius: 8px;
+  background: #f05d32;
+  color: #fff8ec;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  touch-action: manipulation;
+  box-shadow: 0 12px 28px rgba(240, 93, 50, 0.26);
+}
+
+@media (min-width: 760px) {
+  .deadman-catalog-app {
+    padding: 24px;
+  }
+
+  .deadman-catalog__device {
+    width: min(430px, calc(100vw - 48px));
+    min-height: 0;
+    height: min(932px, calc(100dvh - 48px));
+    border: 1px solid rgba(255, 231, 197, 0.2);
+    border-radius: 32px;
+    box-shadow:
+      0 34px 90px rgba(0, 0, 0, 0.48),
+      inset 0 0 0 8px rgba(255, 247, 238, 0.035);
+  }
+}

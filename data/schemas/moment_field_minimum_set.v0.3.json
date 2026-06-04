@@ -1,0 +1,754 @@
+{
+  "schema_version": "moment_field_minimum_set.v0.3",
+  "generated": "2026-05-24",
+  "product_boundary": "Deadman judges one local `要是我来` consequence and preserves watch flow; it does not simulate a continuing alternate timeline.",
+  "source_corpus": {
+    "total_matrix_nodes": 69,
+    "valid_for_minimum_set": 59,
+    "source_tier_counts": {
+      "reviewed": 25,
+      "candidate_only": 6,
+      "schema_evidence": 38
+    },
+    "by_drama": {
+      "huangnian": {
+        "title": "荒年全村啃树皮，我有系统满仓肉",
+        "source_candidates": 80,
+        "review_input_count": 25,
+        "candidate_only_added": 2,
+        "matrix_node_count": 27,
+        "valid_for_minimum_set": 21,
+        "source_tier_counts": {
+          "reviewed": 25,
+          "candidate_only": 2
+        },
+        "trigger_counts": {
+          "resource_crisis": 8,
+          "exposure_risk": 2,
+          "humiliation_reversal": 2,
+          "system_rule": 2,
+          "evidence_or_trap": 3,
+          "survival_tradeoff": 1,
+          "family_pressure": 4,
+          "village_pressure": 1,
+          "nonsense_or_overpowered_break": 2,
+          "identity_reveal": 1,
+          "medical_or_pregnancy_risk": 1
+        }
+      },
+      "yunmiao": {
+        "title": "云渺",
+        "source_candidates": 67,
+        "review_input_count": 20,
+        "candidate_only_added": 2,
+        "matrix_node_count": 22,
+        "valid_for_minimum_set": 20,
+        "source_tier_counts": {
+          "schema_evidence": 20,
+          "candidate_only": 2
+        },
+        "trigger_counts": {
+          "identity_reveal": 13,
+          "hidden_power_rule": 3,
+          "medical_or_pregnancy_risk": 1,
+          "humiliation_reversal": 1,
+          "family_pressure": 1,
+          "exposure_risk": 1,
+          "status_reversal": 1,
+          "village_pressure": 1
+        }
+      },
+      "lihun": {
+        "title": "幸得相遇离婚时",
+        "source_candidates": 80,
+        "review_input_count": 18,
+        "candidate_only_added": 2,
+        "matrix_node_count": 20,
+        "valid_for_minimum_set": 18,
+        "source_tier_counts": {
+          "schema_evidence": 18,
+          "candidate_only": 2
+        },
+        "trigger_counts": {
+          "medical_or_pregnancy_risk": 4,
+          "evidence_or_trap": 3,
+          "status_reversal": 3,
+          "relationship_betrayal": 2,
+          "identity_reveal": 1,
+          "resource_crisis": 1,
+          "family_pressure": 3,
+          "exposure_risk": 1,
+          "hidden_power_rule": 1,
+          "humiliation_reversal": 1
+        }
+      }
+    }
+  },
+  "taxonomy": {
+    "CoreOperational": [
+      "source_window",
+      "review_and_provenance",
+      "companion_entry",
+      "action_space",
+      "response_contract",
+      "visual_result_policy"
+    ],
+    "CoreCausal": [
+      "actor_local_state",
+      "critical_stakes_state",
+      "local_constraint_state",
+      "escalation_risk",
+      "canon_baseline",
+      "watch_flow_rationale"
+    ],
+    "ReusableCausalityModules": [
+      "relationship_state",
+      "capability_rules",
+      "information_asymmetry",
+      "proof_state",
+      "audience_reputation_state"
+    ],
+    "GenreOrStyleExtensions": [],
+    "ProducerOnlyFields": [
+      "score_axes"
+    ],
+    "ExcludedFields": [
+      "branch_timeline",
+      "global_inventory",
+      "full_social_graph",
+      "auto_visual_truth",
+      "return_to_plot_fit"
+    ]
+  },
+  "fields": {
+    "source_window": {
+      "category": "CoreOperational",
+      "description": "Episode, timestamp, interaction window, and source refs required to locate the moment.",
+      "demand_evidence": {
+        "score_counts": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 59
+        },
+        "important_or_required_count": 59,
+        "required_count": 59,
+        "required_drama_distribution": {
+          "huangnian": 21,
+          "yunmiao": 20,
+          "lihun": 18
+        },
+        "sample_required_nodes": [
+          "huangnian_ep16_c001",
+          "huangnian_ep12_c001",
+          "huangnian_ep07_c001",
+          "huangnian_ep17_c001",
+          "huangnian_ep16_c003",
+          "huangnian_ep03_c001",
+          "huangnian_ep04_c003",
+          "huangnian_ep17_c003"
+        ]
+      }
+    },
+    "review_and_provenance": {
+      "category": "CoreOperational",
+      "description": "Review status and evidence/inference boundary so producer evidence does not become runtime truth.",
+      "demand_evidence": {
+        "score_counts": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 59
+        },
+        "important_or_required_count": 59,
+        "required_count": 59,
+        "required_drama_distribution": {
+          "huangnian": 21,
+          "yunmiao": 20,
+          "lihun": 18
+        },
+        "sample_required_nodes": [
+          "huangnian_ep16_c001",
+          "huangnian_ep12_c001",
+          "huangnian_ep07_c001",
+          "huangnian_ep17_c001",
+          "huangnian_ep16_c003",
+          "huangnian_ep03_c001",
+          "huangnian_ep04_c003",
+          "huangnian_ep17_c003"
+        ]
+      }
+    },
+    "companion_entry": {
+      "category": "CoreOperational",
+      "description": "Notice marker, hook, and friend-tone entry copy for the on-screen companion.",
+      "demand_evidence": {
+        "score_counts": {
+          "0": 0,
+          "1": 0,
+          "2": 59,
+          "3": 0
+        },
+        "important_or_required_count": 59,
+        "required_count": 0,
+        "required_drama_distribution": {},
+        "sample_required_nodes": []
+      }
+    },
+    "action_space": {
+      "category": "CoreOperational",
+      "description": "Preset options plus custom-action policy, bounded to local credible consequence.",
+      "demand_evidence": {
+        "score_counts": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 59
+        },
+        "important_or_required_count": 59,
+        "required_count": 59,
+        "required_drama_distribution": {
+          "huangnian": 21,
+          "yunmiao": 20,
+          "lihun": 18
+        },
+        "sample_required_nodes": [
+          "huangnian_ep16_c001",
+          "huangnian_ep12_c001",
+          "huangnian_ep07_c001",
+          "huangnian_ep17_c001",
+          "huangnian_ep16_c003",
+          "huangnian_ep03_c001",
+          "huangnian_ep04_c003",
+          "huangnian_ep17_c003"
+        ]
+      }
+    },
+    "response_contract": {
+      "category": "CoreOperational",
+      "description": "Short local consequence format and time horizon; no continuous branch promise.",
+      "demand_evidence": {
+        "score_counts": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 59
+        },
+        "important_or_required_count": 59,
+        "required_count": 59,
+        "required_drama_distribution": {
+          "huangnian": 21,
+          "yunmiao": 20,
+          "lihun": 18
+        },
+        "sample_required_nodes": [
+          "huangnian_ep16_c001",
+          "huangnian_ep12_c001",
+          "huangnian_ep07_c001",
+          "huangnian_ep17_c001",
+          "huangnian_ep16_c003",
+          "huangnian_ep03_c001",
+          "huangnian_ep04_c003",
+          "huangnian_ep17_c003"
+        ]
+      }
+    },
+    "visual_result_policy": {
+      "category": "CoreOperational",
+      "description": "Preset/custom result-media policy and visual truth level.",
+      "demand_evidence": {
+        "score_counts": {
+          "0": 0,
+          "1": 1,
+          "2": 58,
+          "3": 0
+        },
+        "important_or_required_count": 58,
+        "required_count": 0,
+        "required_drama_distribution": {},
+        "sample_required_nodes": []
+      }
+    },
+    "actor_local_state": {
+      "category": "CoreCausal",
+      "description": "POV actor, affected actors, roles, local intent, and immediate condition.",
+      "demand_evidence": {
+        "score_counts": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 59
+        },
+        "important_or_required_count": 59,
+        "required_count": 59,
+        "required_drama_distribution": {
+          "huangnian": 21,
+          "yunmiao": 20,
+          "lihun": 18
+        },
+        "sample_required_nodes": [
+          "huangnian_ep16_c001",
+          "huangnian_ep12_c001",
+          "huangnian_ep07_c001",
+          "huangnian_ep17_c001",
+          "huangnian_ep16_c003",
+          "huangnian_ep03_c001",
+          "huangnian_ep04_c003",
+          "huangnian_ep17_c003"
+        ]
+      }
+    },
+    "critical_stakes_state": {
+      "category": "CoreCausal",
+      "description": "What can be lost, saved, spent, exposed, injured, or worsened by the action.",
+      "demand_evidence": {
+        "score_counts": {
+          "0": 0,
+          "1": 0,
+          "2": 45,
+          "3": 14
+        },
+        "important_or_required_count": 59,
+        "required_count": 14,
+        "required_drama_distribution": {
+          "huangnian": 8,
+          "yunmiao": 1,
+          "lihun": 5
+        },
+        "sample_required_nodes": [
+          "huangnian_ep16_c001",
+          "huangnian_ep17_c001",
+          "huangnian_ep16_c003",
+          "huangnian_ep17_c003",
+          "huangnian_ep02_c006",
+          "huangnian_ep03_c003",
+          "huangnian_ep15_c002",
+          "huangnian_ep15_c001"
+        ]
+      }
+    },
+    "local_constraint_state": {
+      "category": "CoreCausal",
+      "description": "Hard scene facts: timing, available tools, known/hidden facts, and non-negotiable limits.",
+      "demand_evidence": {
+        "score_counts": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 59
+        },
+        "important_or_required_count": 59,
+        "required_count": 59,
+        "required_drama_distribution": {
+          "huangnian": 21,
+          "yunmiao": 20,
+          "lihun": 18
+        },
+        "sample_required_nodes": [
+          "huangnian_ep16_c001",
+          "huangnian_ep12_c001",
+          "huangnian_ep07_c001",
+          "huangnian_ep17_c001",
+          "huangnian_ep16_c003",
+          "huangnian_ep03_c001",
+          "huangnian_ep04_c003",
+          "huangnian_ep17_c003"
+        ]
+      }
+    },
+    "escalation_risk": {
+      "category": "CoreCausal",
+      "description": "Backlash, retaliation, social/legal cost, or watch-flow break risk created by the action.",
+      "demand_evidence": {
+        "score_counts": {
+          "0": 0,
+          "1": 0,
+          "2": 49,
+          "3": 10
+        },
+        "important_or_required_count": 59,
+        "required_count": 10,
+        "required_drama_distribution": {
+          "huangnian": 4,
+          "yunmiao": 1,
+          "lihun": 5
+        },
+        "sample_required_nodes": [
+          "huangnian_ep07_c001",
+          "huangnian_ep15_c001",
+          "huangnian_ep04_c002",
+          "huangnian_ep10_c001",
+          "yunmiao_ep03_c002",
+          "lihun_ep19_c001",
+          "lihun_ep01_c001",
+          "lihun_ep13_c001"
+        ]
+      }
+    },
+    "canon_baseline": {
+      "category": "CoreCausal",
+      "description": "Original action, original rationale, and immediate plot baseline.",
+      "demand_evidence": {
+        "score_counts": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 59
+        },
+        "important_or_required_count": 59,
+        "required_count": 59,
+        "required_drama_distribution": {
+          "huangnian": 21,
+          "yunmiao": 20,
+          "lihun": 18
+        },
+        "sample_required_nodes": [
+          "huangnian_ep16_c001",
+          "huangnian_ep12_c001",
+          "huangnian_ep07_c001",
+          "huangnian_ep17_c001",
+          "huangnian_ep16_c003",
+          "huangnian_ep03_c001",
+          "huangnian_ep04_c003",
+          "huangnian_ep17_c003"
+        ]
+      }
+    },
+    "watch_flow_rationale": {
+      "category": "CoreCausal",
+      "description": "Why the original drama remains acceptable and the viewer can continue watching.",
+      "demand_evidence": {
+        "score_counts": {
+          "0": 0,
+          "1": 0,
+          "2": 39,
+          "3": 20
+        },
+        "important_or_required_count": 59,
+        "required_count": 20,
+        "required_drama_distribution": {
+          "yunmiao": 16,
+          "lihun": 4
+        },
+        "sample_required_nodes": [
+          "yunmiao_ep17_c001",
+          "yunmiao_ep03_c001",
+          "yunmiao_ep18_c001",
+          "yunmiao_ep18_c002",
+          "yunmiao_ep11_c001",
+          "yunmiao_ep02_c002",
+          "yunmiao_ep16_c001",
+          "yunmiao_ep15_c001"
+        ]
+      }
+    },
+    "relationship_state": {
+      "category": "ReusableCausalityModules",
+      "description": "Trust, dependency, betrayal, family/romantic pressure, and protection priority.",
+      "demand_evidence": {
+        "score_counts": {
+          "0": 18,
+          "1": 0,
+          "2": 32,
+          "3": 9
+        },
+        "important_or_required_count": 41,
+        "required_count": 9,
+        "required_drama_distribution": {
+          "huangnian": 3,
+          "yunmiao": 1,
+          "lihun": 5
+        },
+        "sample_required_nodes": [
+          "huangnian_ep14_c001",
+          "huangnian_ep01_c001",
+          "huangnian_ep09_c001",
+          "yunmiao_ep04_c001",
+          "lihun_ep01_c001",
+          "lihun_ep06_c002",
+          "lihun_ep06_c004",
+          "lihun_ep13_c001"
+        ]
+      }
+    },
+    "capability_rules": {
+      "category": "ReusableCausalityModules",
+      "description": "System/hidden-power ability limits, costs, cooldowns, visibility, and overpowered guardrails.",
+      "demand_evidence": {
+        "score_counts": {
+          "0": 50,
+          "1": 0,
+          "2": 4,
+          "3": 5
+        },
+        "important_or_required_count": 9,
+        "required_count": 5,
+        "required_drama_distribution": {
+          "huangnian": 2,
+          "yunmiao": 3
+        },
+        "sample_required_nodes": [
+          "huangnian_ep03_c001",
+          "huangnian_ep04_c003",
+          "yunmiao_ep18_c001",
+          "yunmiao_ep16_c001",
+          "yunmiao_ep15_c002"
+        ]
+      }
+    },
+    "information_asymmetry": {
+      "category": "ReusableCausalityModules",
+      "description": "Identity, secrecy, hidden facts, reveal timing, and leverage loss/gain.",
+      "demand_evidence": {
+        "score_counts": {
+          "0": 19,
+          "1": 0,
+          "2": 22,
+          "3": 18
+        },
+        "important_or_required_count": 40,
+        "required_count": 18,
+        "required_drama_distribution": {
+          "huangnian": 2,
+          "yunmiao": 14,
+          "lihun": 2
+        },
+        "sample_required_nodes": [
+          "huangnian_ep12_c001",
+          "huangnian_ep06_c001",
+          "yunmiao_ep17_c001",
+          "yunmiao_ep03_c001",
+          "yunmiao_ep18_c002",
+          "yunmiao_ep11_c001",
+          "yunmiao_ep02_c002",
+          "yunmiao_ep15_c001"
+        ]
+      }
+    },
+    "proof_state": {
+      "category": "ReusableCausalityModules",
+      "description": "Evidence, witnesses, records, legal/business proof, and proof threshold.",
+      "demand_evidence": {
+        "score_counts": {
+          "0": 40,
+          "1": 0,
+          "2": 13,
+          "3": 6
+        },
+        "important_or_required_count": 19,
+        "required_count": 6,
+        "required_drama_distribution": {
+          "huangnian": 3,
+          "lihun": 3
+        },
+        "sample_required_nodes": [
+          "huangnian_ep04_c001",
+          "huangnian_ep20_c003",
+          "huangnian_ep04_c005",
+          "lihun_ep19_c002",
+          "lihun_ep04_c002",
+          "lihun_ep10_c004"
+        ]
+      }
+    },
+    "audience_reputation_state": {
+      "category": "ReusableCausalityModules",
+      "description": "Public witnesses, village/social reputation, humiliation, and crowd effect.",
+      "demand_evidence": {
+        "score_counts": {
+          "0": 32,
+          "1": 0,
+          "2": 20,
+          "3": 7
+        },
+        "important_or_required_count": 27,
+        "required_count": 7,
+        "required_drama_distribution": {
+          "huangnian": 3,
+          "yunmiao": 1,
+          "lihun": 3
+        },
+        "sample_required_nodes": [
+          "huangnian_ep07_c001",
+          "huangnian_ep04_c002",
+          "huangnian_ep10_c001",
+          "yunmiao_ep03_c002",
+          "lihun_ep19_c001",
+          "lihun_ep12_c003",
+          "lihun_ep14_c001"
+        ]
+      }
+    },
+    "score_axes": {
+      "category": "ProducerOnlyFields",
+      "description": "Producer ranking/evaluation axes; useful for ARS and QA, not viewer runtime state.",
+      "demand_evidence": {
+        "score_counts": {
+          "0": 0,
+          "1": 0,
+          "2": 59,
+          "3": 0
+        },
+        "important_or_required_count": 59,
+        "required_count": 0,
+        "required_drama_distribution": {},
+        "sample_required_nodes": []
+      }
+    }
+  },
+  "excluded_fields": {
+    "branch_timeline": {
+      "reason": "Would imply the story truly follows the alternate branch."
+    },
+    "global_inventory": {
+      "reason": "Moment-level consequence only needs local resource/stake state."
+    },
+    "full_social_graph": {
+      "reason": "Local actors and witnesses are enough for P0."
+    },
+    "auto_visual_truth": {
+      "reason": "Generated/keyframe visuals are not evidence by themselves."
+    },
+    "return_to_plot_fit": {
+      "reason": "Use `watch_flow_rationale`; the product is not forcing return-to-plot simulation."
+    }
+  },
+  "old_to_new_mapping": {
+    "actor_context": "actor_local_state",
+    "affected_actors": "actor_local_state",
+    "relationship_pressure": "relationship_state",
+    "betrayal_divorce_safety": "relationship_state + critical_stakes_state + proof_state",
+    "resource_scarcity": "critical_stakes_state",
+    "survival_tradeoff": "critical_stakes_state + escalation_risk",
+    "medical_or_pregnancy_risk": "critical_stakes_state",
+    "local_constraints": "local_constraint_state",
+    "system_or_hidden_power_rule": "capability_rules",
+    "hidden_power_rule": "capability_rules",
+    "identity_reveal": "information_asymmetry",
+    "exposure_and_secrecy": "information_asymmetry",
+    "evidence_or_trap_logic": "proof_state",
+    "village_or_public_reputation": "audience_reputation_state",
+    "humiliation_reversal": "escalation_risk + audience_reputation_state",
+    "status_reversal_bottom_card": "information_asymmetry + proof_state + audience_reputation_state",
+    "canon_baseline": "canon_baseline",
+    "original_plot_note": "watch_flow_rationale",
+    "producer_review_fields": "review_and_provenance",
+    "score_axes": "score_axes",
+    "visual_result_policy": "visual_result_policy"
+  },
+  "accepted_fusions": [
+    {
+      "target": "critical_stakes_state",
+      "sources": [
+        "resource_scarcity",
+        "survival_tradeoff",
+        "medical_or_pregnancy_risk",
+        "bodily_safety",
+        "rescue_priority"
+      ],
+      "reason": "All answer the same judgment question: what material or bodily stake changes if the viewer acts now?"
+    },
+    {
+      "target": "information_asymmetry",
+      "sources": [
+        "identity_reveal",
+        "exposure_and_secrecy",
+        "hidden_facts",
+        "reveal_scope"
+      ],
+      "reason": "Identity, secrecy, and exposure all price the timing of revealing information."
+    },
+    {
+      "target": "capability_rules",
+      "sources": [
+        "system_or_hidden_power_rule",
+        "hidden_power_rule",
+        "power_cap",
+        "cost_or_cooldown"
+      ],
+      "reason": "System and hidden-power beats both need bounded capability rules to avoid cheat outcomes."
+    },
+    {
+      "target": "proof_state",
+      "sources": [
+        "evidence_or_trap_logic",
+        "legal_proof",
+        "business_proof",
+        "witness_proof",
+        "evidence_needed"
+      ],
+      "reason": "These fields all decide whether a counter-move is provable rather than reckless accusation."
+    },
+    {
+      "target": "audience_reputation_state",
+      "sources": [
+        "village_or_public_reputation",
+        "witness_scope",
+        "public_effect",
+        "humiliation_context"
+      ],
+      "reason": "Public witnesses and reputation pressure are the same social-visibility computation at moment scale."
+    },
+    {
+      "target": "escalation_risk",
+      "sources": [
+        "humiliation_reversal",
+        "retaliation_scale",
+        "backlash_risk",
+        "watch_flow_break_risk"
+      ],
+      "reason": "爽点 needs a visible cost/backlash channel; retaliation fields are best treated as risk, not a separate genre module."
+    }
+  ],
+  "rejected_fusions": [
+    {
+      "fields": [
+        "canon_baseline",
+        "watch_flow_rationale"
+      ],
+      "reason": "Baseline states what happened in canon; watch-flow rationale explains why returning to canon remains acceptable. Merging hides a product-critical distinction."
+    },
+    {
+      "fields": [
+        "source_window",
+        "review_and_provenance"
+      ],
+      "reason": "Time location is runtime routing; review provenance is producer trust hygiene. They fail differently."
+    },
+    {
+      "fields": [
+        "companion_entry",
+        "actor_local_state"
+      ],
+      "reason": "Companion copy is surface UX; actor state is causal input. Merging would pollute judgment prompts with UI text."
+    },
+    {
+      "fields": [
+        "visual_result_policy",
+        "proof_state"
+      ],
+      "reason": "A generated/keyframe visual is not proof. This boundary prevents auto-visual truth claims."
+    },
+    {
+      "fields": [
+        "relationship_state",
+        "audience_reputation_state"
+      ],
+      "reason": "Private trust pressure and public reputation can co-occur but drive different consequences."
+    },
+    {
+      "fields": [
+        "capability_rules",
+        "information_asymmetry"
+      ],
+      "reason": "Hidden power often implies secrecy, but ability limits and reveal timing are separate computations."
+    },
+    {
+      "fields": [
+        "score_axes",
+        "field_needs"
+      ],
+      "reason": "Score axes evaluate candidates; field needs are causal/context requirements for judgment."
+    }
+  ]
+}

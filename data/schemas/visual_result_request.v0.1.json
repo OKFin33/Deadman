@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://oseria.local/schemas/deadman/visual_result_request.v0.1.json",
+  "title": "Deadman Visual Result Request v0.1",
+  "description": "Future visual service request schema. No provider is connected by this contract.",
+  "type": "object",
+  "required": [
+    "request_id",
+    "moment_id",
+    "mode",
+    "truth_level",
+    "prompt",
+    "negative_constraints",
+    "latency_budget_ms",
+    "fallback"
+  ],
+  "properties": {
+    "request_id": {
+      "type": "string"
+    },
+    "moment_id": {
+      "type": "string"
+    },
+    "mode": {
+      "enum": [
+        "preset_slot",
+        "realtime_generation",
+        "text_only"
+      ]
+    },
+    "truth_level": {
+      "enum": [
+        "illustrative_result",
+        "source_reference",
+        "reviewed_visual_evidence"
+      ]
+    },
+    "prompt": {
+      "type": "string"
+    },
+    "negative_constraints": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "latency_budget_ms": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "fallback": {
+      "enum": [
+        "text_only",
+        "placeholder_slot",
+        "retry_later"
+      ]
+    },
+    "proof_eligibility": {
+      "enum": [
+        "never",
+        "producer_review_only"
+      ],
+      "default": "never"
+    }
+  },
+  "additionalProperties": false
+}

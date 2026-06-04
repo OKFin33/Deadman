@@ -1,0 +1,32 @@
+{
+  "$schema": "https://modelscope.cn/api/v1/studios/deploy_schema.json",
+  "sdk_type": "docker",
+  "resource_configuration": "platform/2v-cpu-16g-mem",
+  "port": 7860,
+  "environment_variables": [
+    {
+      "name": "PORT",
+      "value": "7860"
+    },
+    {
+      "name": "RUNTIME_LLM_API_KEY",
+      "value": ""
+    },
+    {
+      "name": "RUNTIME_LLM_BASE_URL",
+      "value": "https://api.deepseek.com"
+    },
+    {
+      "name": "RUNTIME_LLM_MODEL",
+      "value": "deepseek-v4-flash"
+    },
+    {
+      "name": "DEADMAN_MEDIA_BASE_URL",
+      "value": ""
+    },
+    {
+      "name": "DEADMAN_JUDGMENT_ENGINE",
+      "value": "cab_runtime"
+    }
+  ]
+}

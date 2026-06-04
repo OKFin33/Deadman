@@ -1,0 +1,234 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://oseria.local/deadman/producer_graph/review_request.v0.1.schema.json",
+  "title": "Deadman Studio Review Request v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "request_hash",
+    "hash_inputs",
+    "run_id",
+    "drama_id",
+    "drama_title",
+    "status",
+    "candidate_table_paths",
+    "expected_reviewed_paths",
+    "human_instructions"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "deadman_studio_review_request.v0.1"
+    },
+    "request_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "hash_inputs": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "run_id",
+        "drama_id",
+        "drama_title",
+        "graph_mode",
+        "node_order_to_gate",
+        "candidate_table",
+        "mechanism_buckets",
+        "field_hypotheses",
+        "deterministic_candidate_count",
+        "review_policy_version",
+        "expected_reviewed_demo_nodes",
+        "expected_reviewed_candidates"
+      ],
+      "properties": {
+        "run_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "drama_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "drama_title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "graph_mode": {
+          "enum": [
+            "base",
+            "llm"
+          ]
+        },
+        "node_order_to_gate": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "candidate_table": {
+          "$ref": "#/$defs/hashed_artifact"
+        },
+        "mechanism_buckets": {
+          "$ref": "#/$defs/hashed_artifact"
+        },
+        "field_hypotheses": {
+          "$ref": "#/$defs/hashed_artifact"
+        },
+        "llm_candidate_judgment": {
+          "$ref": "#/$defs/hashed_artifact"
+        },
+        "deterministic_candidate_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "llm_judgment_summary": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "review_policy_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "expected_reviewed_demo_nodes": {
+          "type": "string",
+          "minLength": 1
+        },
+        "expected_reviewed_candidates": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "drama_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "drama_title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "const": "waiting_for_review"
+    },
+    "candidate_table_paths": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "required": [
+        "candidates_json",
+        "candidates_md",
+        "mechanism_buckets_json",
+        "mechanism_buckets_md",
+        "field_hypotheses_md"
+      ]
+    },
+    "llm_artifact_paths": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "llm_candidate_shortlist": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "input_candidate_count",
+        "judgment_count",
+        "candidate_ids",
+        "recommended_candidate_ids",
+        "keep_for_review_candidate_ids",
+        "shortlist_policy"
+      ],
+      "properties": {
+        "input_candidate_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "judgment_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "candidate_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "recommended_candidate_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "keep_for_review_candidate_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "shortlist_policy": {
+          "type": "object"
+        }
+      }
+    },
+    "expected_reviewed_paths": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reviewed_demo_nodes",
+        "reviewed_candidates"
+      ],
+      "properties": {
+        "reviewed_demo_nodes": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reviewed_candidates": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "human_instructions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    }
+  },
+  "$defs": {
+    "hashed_artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "content_hash"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "content_hash": {
+          "type": "string",
+          "pattern": "^(sha256:[0-9a-f]{64}|missing)$"
+        }
+      }
+    }
+  }
+}

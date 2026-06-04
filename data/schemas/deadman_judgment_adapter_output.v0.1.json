@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://oseria.local/schemas/deadman/deadman_judgment_adapter_output.v0.1.json",
+  "title": "Deadman Judgment Adapter Output v0.1",
+  "description": "Output contract for local consequence judgment. The response must preserve watch flow and must not promise a continuing branch.",
+  "type": "object",
+  "required": [
+    "request_id",
+    "verdict",
+    "result_text",
+    "companion_reaction",
+    "why_this_happens",
+    "time_horizon",
+    "watch_flow_rationale",
+    "used_fields",
+    "blocked_claims",
+    "visual_result_plan",
+    "engine_metadata"
+  ],
+  "properties": {
+    "request_id": {
+      "type": "string"
+    },
+    "verdict": {
+      "enum": [
+        "credible_win",
+        "credible_costly_win",
+        "mixed",
+        "backfires",
+        "invalid_or_overpowered"
+      ]
+    },
+    "result_text": {
+      "type": "string"
+    },
+    "companion_reaction": {
+      "type": "string"
+    },
+    "why_this_happens": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "time_horizon": {
+      "const": "current_scene_or_immediate_aftermath"
+    },
+    "watch_flow_rationale": {
+      "type": "string"
+    },
+    "used_fields": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "blocked_claims": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "future episodes follow this branch",
+          "canon was wrong",
+          "the branch continues automatically",
+          "generated images prove branch facts",
+          "producer-only scores are viewer evidence"
+        ]
+      }
+    },
+    "visual_result_plan": {
+      "$ref": "visual_result_plan.v0.1.json"
+    },
+    "engine_metadata": {
+      "type": "object",
+      "required": [
+        "mode",
+        "schema_version"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "deterministic",
+            "llm",
+            "hybrid"
+          ]
+        },
+        "schema_version": {
+          "type": "string"
+        },
+        "provider": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

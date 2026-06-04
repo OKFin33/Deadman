@@ -1,0 +1,518 @@
+{
+  "schema_version": "deadman_reviewed_demo_nodes_evidence.v0.1",
+  "generated_at": "2026-06-03T09:18:17.837061+00:00",
+  "evidence_policy": "sanitized tracked evidence; no runtime dereference of ignored tmp artifacts",
+  "demo_node_count": 5,
+  "demo_nodes": [
+    {
+      "moment_id": "huangnian_ep03_m001",
+      "candidate_id": "huangnian_ep03_c001",
+      "review_status": "demo_candidate",
+      "corrected_trigger_type": "system_rule",
+      "source_window": {
+        "start_ms": 0,
+        "end_ms": 20000,
+        "transcript_refs": [
+          {
+            "id": "huangnian_ep03_u001",
+            "episode_id": "huangnian_ep03",
+            "start_ms": 230,
+            "end_ms": 6830,
+            "text": "天然无污染野蕨菜一斤价值十文钱，是否售卖？呵，这是系统？",
+            "source": "sanitized_asr_snippet"
+          },
+          {
+            "id": "huangnian_ep03_u002",
+            "episode_id": "huangnian_ep03",
+            "start_ms": 11710,
+            "end_ms": 13750,
+            "text": "娘，您在灶台干什么？",
+            "source": "sanitized_asr_snippet"
+          },
+          {
+            "id": "huangnian_ep03_u003",
+            "episode_id": "huangnian_ep03",
+            "start_ms": 14150,
+            "end_ms": 18830,
+            "text": "这个面板只有我能看见，我得找个地方试验一下系统的功能。",
+            "source": "sanitized_asr_snippet"
+          }
+        ],
+        "keyframe_refs": [
+          {
+            "id": "huangnian_ep03_k001",
+            "episode_id": "huangnian_ep03",
+            "time_seconds": 0,
+            "description": "keyframe reference only; not psychological proof",
+            "source": "sanitized_keyframe_ref"
+          },
+          {
+            "id": "huangnian_ep03_k002",
+            "episode_id": "huangnian_ep03",
+            "time_seconds": 10,
+            "description": "keyframe reference only; not psychological proof",
+            "source": "sanitized_keyframe_ref"
+          }
+        ],
+        "contact_sheet_ref": {
+          "id": "huangnian_ep03_contact_sheet",
+          "episode_id": "huangnian_ep03",
+          "description": "contact sheet reference only; not runtime-dereferenced evidence",
+          "source": "sanitized_contact_sheet_ref"
+        },
+        "provenance_status": "publish_safe_sanitized"
+      },
+      "companion_hook": "野蕨菜能卖钱，系统面板要不要现在试？",
+      "viewer_impulse": "要是我来，想用系统能力快速改局面。",
+      "default_options": [
+        "立刻售卖野蕨菜，先验证系统能不能救命",
+        "只卖一小部分，确认别人看不见面板",
+        "先不卖，离开灶台再单独测试系统"
+      ],
+      "canon_baseline_reviewed": {
+        "original_action": "原剧情先试探系统规则，再逐步使用。",
+        "original_rationale": "系统收益高，但解释成本和暴露风险也高。",
+        "audience_tension": "观众会想马上用系统开挂。",
+        "review_note": "只回答当前局面可信后果，不承诺后续剧集分支。"
+      },
+      "original_plot_note_reviewed": "原剧情先试探系统功能，保住系统只对主角可见的规则。",
+      "evidence": {
+        "grade": "high",
+        "notes": "ASR 明确系统售卖和面板；contact sheet ep03 00:10-00:20 有系统商城/面板视觉。视觉证据支持系统 UI 出现。",
+        "excerpt": "天然无污染野蕨菜一斤价值十文钱，是否售卖？呵，这是系统？娘，您在灶台干什么？这个面板只有我能看见，我得找个地方试验一下系统的功能。"
+      },
+      "required_pack_fields": [
+        "system_rule.first_use",
+        "hidden_power_visibility",
+        "world_explanation_cost",
+        "custom_action_policy.no_public_panel"
+      ],
+      "evidence_vs_inference": "source_window and excerpt are evidence; hook/options/local consequences are reviewed product inference constrained by evidence.",
+      "producer_ref": "tmp review artifact; see runtime moment producer_refs for local-only provenance"
+    },
+    {
+      "moment_id": "huangnian_ep04_m001",
+      "candidate_id": "huangnian_ep04_c001",
+      "review_status": "demo_candidate",
+      "corrected_trigger_type": "evidence_or_trap",
+      "source_window": {
+        "start_ms": 60000,
+        "end_ms": 80000,
+        "transcript_refs": [
+          {
+            "id": "huangnian_ep04_u001",
+            "episode_id": "huangnian_ep04",
+            "start_ms": 59680,
+            "end_ms": 62880,
+            "text": "哎，大家快来看，这赵大嫂子偷我们家稻子！",
+            "source": "sanitized_asr_snippet"
+          },
+          {
+            "id": "huangnian_ep04_u002",
+            "episode_id": "huangnian_ep04",
+            "start_ms": 65399,
+            "end_ms": 68439,
+            "text": "呦，这是偷王家的粮食，补贴自己娘家呢。",
+            "source": "sanitized_asr_snippet"
+          },
+          {
+            "id": "huangnian_ep04_u003",
+            "episode_id": "huangnian_ep04",
+            "start_ms": 68719,
+            "end_ms": 73039,
+            "text": "赵大嫂子越来越浑不吝了，偷鸡摸狗的事都干，还有啥事干不出？",
+            "source": "sanitized_asr_snippet"
+          },
+          {
+            "id": "huangnian_ep04_u004",
+            "episode_id": "huangnian_ep04",
+            "start_ms": 73279,
+            "end_ms": 75479,
+            "text": "接下来说不定还会偷人呢！",
+            "source": "sanitized_asr_snippet"
+          },
+          {
+            "id": "huangnian_ep04_u005",
+            "episode_id": "huangnian_ep04",
+            "start_ms": 75820,
+            "end_ms": 76740,
+            "text": "反正是寡妇。",
+            "source": "sanitized_asr_snippet"
+          },
+          {
+            "id": "huangnian_ep04_u006",
+            "episode_id": "huangnian_ep04",
+            "start_ms": 76900,
+            "end_ms": 77900,
+            "text": "哈哈哈。",
+            "source": "sanitized_asr_snippet"
+          },
+          {
+            "id": "huangnian_ep04_u007",
+            "episode_id": "huangnian_ep04",
+            "start_ms": 77900,
+            "end_ms": 81780,
+            "text": "看来这原主的口碑不仅是在家里，整个村子里都臭了。",
+            "source": "sanitized_asr_snippet"
+          }
+        ],
+        "keyframe_refs": [
+          {
+            "id": "huangnian_ep04_k001",
+            "episode_id": "huangnian_ep04",
+            "time_seconds": 60,
+            "description": "keyframe reference only; not psychological proof",
+            "source": "sanitized_keyframe_ref"
+          },
+          {
+            "id": "huangnian_ep04_k002",
+            "episode_id": "huangnian_ep04",
+            "time_seconds": 70,
+            "description": "keyframe reference only; not psychological proof",
+            "source": "sanitized_keyframe_ref"
+          }
+        ],
+        "contact_sheet_ref": {
+          "id": "huangnian_ep04_contact_sheet",
+          "episode_id": "huangnian_ep04",
+          "description": "contact sheet reference only; not runtime-dereferenced evidence",
+          "source": "sanitized_contact_sheet_ref"
+        },
+        "provenance_status": "publish_safe_sanitized"
+      },
+      "companion_hook": "被当众诬陷偷稻子，要不要立刻摊开证据反打？",
+      "viewer_impulse": "要是我来，会想抓住证据一次反打。",
+      "default_options": [
+        "当场让大家看清楚不是稻子，直接反打",
+        "先问对方凭什么认定，再把小鹅菜拿出来",
+        "不扩大骂战，只保住东西和名声底线"
+      ],
+      "canon_baseline_reviewed": {
+        "original_action": "原剧情会让冲突进入算账或见证阶段。",
+        "original_rationale": "有证据和围观者时，反击更不容易被倒打一耙。",
+        "audience_tension": "观众会想马上抓住对方漏洞。",
+        "review_note": "只回答当前局面可信后果，不承诺后续剧集分支。"
+      },
+      "original_plot_note_reviewed": "原剧情需要把“偷稻子”转成可被围观者理解的证据反转，才方便观众回到原剧。",
+      "evidence": {
+        "grade": "medium",
+        "notes": "ASR 强支持公开诬陷；contact sheet ep04 01:00-01:40 可见多人野外对峙和小鹅菜/稻田语境，但关键帧本身不独立证明“稻子”指控。",
+        "excerpt": "哎，大家快来看，这赵大嫂子偷我们家稻子！呦，这是偷王家的粮食，补贴自己娘家呢。赵大嫂子越来越浑不吝了，偷鸡摸狗的事都干，还有啥事干不出？接下来说不定还会偷人呢！反正是寡妇。哈哈哈。看来这原主的口碑不仅是在家里，整个村子里都臭了。"
+      },
+      "required_pack_fields": [
+        "evidence_ref.object_identification",
+        "village_witnesses",
+        "reputation_delta",
+        "counter_claim_shape"
+      ],
+      "evidence_vs_inference": "source_window and excerpt are evidence; hook/options/local consequences are reviewed product inference constrained by evidence.",
+      "producer_ref": "tmp review artifact; see runtime moment producer_refs for local-only provenance"
+    },
+    {
+      "moment_id": "huangnian_ep06_m001",
+      "candidate_id": "huangnian_ep06_c001",
+      "review_status": "demo_candidate",
+      "corrected_trigger_type": "exposure_risk",
+      "source_window": {
+        "start_ms": 60000,
+        "end_ms": 80000,
+        "transcript_refs": [
+          {
+            "id": "huangnian_ep06_u001",
+            "episode_id": "huangnian_ep06",
+            "start_ms": 57470,
+            "end_ms": 63430,
+            "text": "对呀，从前娘也被大舅打过，我们想替她讨公道，还被娘揍了呢。",
+            "source": "sanitized_asr_snippet"
+          },
+          {
+            "id": "huangnian_ep06_u002",
+            "episode_id": "huangnian_ep06",
+            "start_ms": 65190,
+            "end_ms": 66550,
+            "text": "他不会又打什么主意吧？",
+            "source": "sanitized_asr_snippet"
+          },
+          {
+            "id": "huangnian_ep06_u003",
+            "episode_id": "huangnian_ep06",
+            "start_ms": 67230,
+            "end_ms": 71310,
+            "text": "家里面已经没有什么东西了。慧娘，把这米煮了吧。煮。",
+            "source": "sanitized_asr_snippet"
+          },
+          {
+            "id": "huangnian_ep06_u004",
+            "episode_id": "huangnian_ep06",
+            "start_ms": 72620,
+            "end_ms": 73380,
+            "text": "煮了干啥？",
+            "source": "sanitized_asr_snippet"
+          },
+          {
+            "id": "huangnian_ep06_u005",
+            "episode_id": "huangnian_ep06",
+            "start_ms": 73820,
+            "end_ms": 78500,
+            "text": "现在各村每家每天只吃一顿，咱家今天已经吃过野菜糊糊了。",
+            "source": "sanitized_asr_snippet"
+          }
+        ],
+        "keyframe_refs": [
+          {
+            "id": "huangnian_ep06_k001",
+            "episode_id": "huangnian_ep06",
+            "time_seconds": 60,
+            "description": "keyframe reference only; not psychological proof",
+            "source": "sanitized_keyframe_ref"
+          },
+          {
+            "id": "huangnian_ep06_k002",
+            "episode_id": "huangnian_ep06",
+            "time_seconds": 70,
+            "description": "keyframe reference only; not psychological proof",
+            "source": "sanitized_keyframe_ref"
+          }
+        ],
+        "contact_sheet_ref": {
+          "id": "huangnian_ep06_contact_sheet",
+          "episode_id": "huangnian_ep06",
+          "description": "contact sheet reference only; not runtime-dereferenced evidence",
+          "source": "sanitized_contact_sheet_ref"
+        },
+        "provenance_status": "publish_safe_sanitized"
+      },
+      "companion_hook": "白米已经露出来，来源要不要现在说破？",
+      "viewer_impulse": "要是我来，先把家里弱势的人护下来。",
+      "default_options": [
+        "直接承认有白米，先让全家安心",
+        "只说捡到/换到少量白米，压住追问",
+        "先把米收回去，改成更不显眼的吃法"
+      ],
+      "canon_baseline_reviewed": {
+        "original_action": "原剧情让主角逐步修复家人信任。",
+        "original_rationale": "家人长期被原身伤害，突然转好需要可信过程。",
+        "audience_tension": "观众会想马上把家人保护起来。",
+        "review_note": "只回答当前局面可信后果，不承诺后续剧集分支。"
+      },
+      "original_plot_note_reviewed": "原剧情选择遮掩白米来源，是为了让系统资源不立刻摧毁村庄约束。",
+      "evidence": {
+        "grade": "high",
+        "notes": "ASR 强支持白米来源追问；contact sheet ep06 00:00 显示袋中白米，01:10 后可见一家围桌。视觉证据支持白米已被看到。",
+        "excerpt": "对呀，从前娘也被大舅打过，我们想替她讨公道，还被娘揍了呢。他不会又打什么主意吧？家里面已经没有什么东西了。慧娘，把这米煮了吧。煮。煮了干啥？现在各村每家每天只吃一顿，咱家今天已经吃过野菜糊糊了。"
+      },
+      "required_pack_fields": [
+        "exposure_risk.source_explanation",
+        "resource_visibility.white_rice",
+        "witness_scope.family",
+        "watch_flow_fit.secrecy"
+      ],
+      "evidence_vs_inference": "source_window and excerpt are evidence; hook/options/local consequences are reviewed product inference constrained by evidence.",
+      "producer_ref": "tmp review artifact; see runtime moment producer_refs for local-only provenance"
+    },
+    {
+      "moment_id": "huangnian_ep07_m001",
+      "candidate_id": "huangnian_ep07_c001",
+      "review_status": "demo_candidate",
+      "corrected_trigger_type": "humiliation_reversal",
+      "source_window": {
+        "start_ms": 20000,
+        "end_ms": 40000,
+        "transcript_refs": [
+          {
+            "id": "huangnian_ep07_u001",
+            "episode_id": "huangnian_ep07",
+            "start_ms": 19750,
+            "end_ms": 27030,
+            "text": "你是地位最低，你根本就不配上桌吃饭，只能吃最难吃最脏的东西，不然就给我饿着。",
+            "source": "sanitized_asr_snippet"
+          },
+          {
+            "id": "huangnian_ep07_u002",
+            "episode_id": "huangnian_ep07",
+            "start_ms": 27310,
+            "end_ms": 28110,
+            "text": "儿子知道了。",
+            "source": "sanitized_asr_snippet"
+          },
+          {
+            "id": "huangnian_ep07_u003",
+            "episode_id": "huangnian_ep07",
+            "start_ms": 28780,
+            "end_ms": 32100,
+            "text": "原神真是造孽，同样是女人，何苦为难女人。",
+            "source": "sanitized_asr_snippet"
+          },
+          {
+            "id": "huangnian_ep07_u004",
+            "episode_id": "huangnian_ep07",
+            "start_ms": 33720,
+            "end_ms": 36800,
+            "text": "让你做就做，让你吃就吃，哪那么多废话？",
+            "source": "sanitized_asr_snippet"
+          },
+          {
+            "id": "huangnian_ep07_u005",
+            "episode_id": "huangnian_ep07",
+            "start_ms": 36920,
+            "end_ms": 39040,
+            "text": "怎么着，让我递到你手里啊？儿媳不敢。",
+            "source": "sanitized_asr_snippet"
+          }
+        ],
+        "keyframe_refs": [
+          {
+            "id": "huangnian_ep07_k001",
+            "episode_id": "huangnian_ep07",
+            "time_seconds": 20,
+            "description": "keyframe reference only; not psychological proof",
+            "source": "sanitized_keyframe_ref"
+          },
+          {
+            "id": "huangnian_ep07_k002",
+            "episode_id": "huangnian_ep07",
+            "time_seconds": 30,
+            "description": "keyframe reference only; not psychological proof",
+            "source": "sanitized_keyframe_ref"
+          }
+        ],
+        "contact_sheet_ref": {
+          "id": "huangnian_ep07_contact_sheet",
+          "episode_id": "huangnian_ep07",
+          "description": "contact sheet reference only; not runtime-dereferenced evidence",
+          "source": "sanitized_contact_sheet_ref"
+        },
+        "provenance_status": "publish_safe_sanitized"
+      },
+      "companion_hook": "儿媳被逼吃最脏的东西，要不要当场改桌规？",
+      "viewer_impulse": "要是我来，先让眼前的人吃上东西。",
+      "default_options": [
+        "当场让儿媳上桌，直接推翻旧规矩",
+        "先把饭换掉，再私下处理婆媳权力",
+        "不当众翻脸，只让儿媳先吃一口干净的"
+      ],
+      "canon_baseline_reviewed": {
+        "original_action": "原剧情没有无条件把全部资源摊开。",
+        "original_rationale": "荒年里资源来源解释不清，会带来亲戚、村民和外部窥探风险。",
+        "audience_tension": "观众会想立刻让孩子和家人吃饱。",
+        "review_note": "只回答当前局面可信后果，不承诺后续剧集分支。"
+      },
+      "original_plot_note_reviewed": "原剧情让主角逐步改变家庭秩序，避免一秒洗白显得不可信。",
+      "evidence": {
+        "grade": "high",
+        "notes": "ASR 明确桌上羞辱；contact sheet ep07 00:20-01:10 可见餐桌、碗饭和人物互动。视觉证据支持吃饭场景，不证明“最脏”这一评价。",
+        "excerpt": "你是地位最低，你根本就不配上桌吃饭，只能吃最难吃最脏的东西，不然就给我饿着。儿子知道了。原神真是造孽，同样是女人，何苦为难女人。让你做就做，让你吃就吃，哪那么多废话？怎么着，让我递到你手里啊？儿媳不敢。"
+      },
+      "required_pack_fields": [
+        "relationship_pressure.daughter_in_law",
+        "humiliation_scale",
+        "household_rule_delta",
+        "trust_repair_pace"
+      ],
+      "evidence_vs_inference": "source_window and excerpt are evidence; hook/options/local consequences are reviewed product inference constrained by evidence.",
+      "producer_ref": "tmp review artifact; see runtime moment producer_refs for local-only provenance"
+    },
+    {
+      "moment_id": "huangnian_ep12_m001",
+      "candidate_id": "huangnian_ep12_c001",
+      "review_status": "demo_candidate",
+      "corrected_trigger_type": "resource_visibility",
+      "source_window": {
+        "start_ms": 0,
+        "end_ms": 20000,
+        "transcript_refs": [
+          {
+            "id": "huangnian_ep12_u001",
+            "episode_id": "huangnian_ep12",
+            "start_ms": 1090,
+            "end_ms": 2370,
+            "text": "啊！哦！",
+            "source": "sanitized_asr_snippet"
+          },
+          {
+            "id": "huangnian_ep12_u002",
+            "episode_id": "huangnian_ep12",
+            "start_ms": 4360,
+            "end_ms": 7040,
+            "text": "四蛋抓了只兔子，今天晚上咱吃兔肉。",
+            "source": "sanitized_asr_snippet"
+          },
+          {
+            "id": "huangnian_ep12_u003",
+            "episode_id": "huangnian_ep12",
+            "start_ms": 7920,
+            "end_ms": 8680,
+            "text": "啊，太好了！",
+            "source": "sanitized_asr_snippet"
+          },
+          {
+            "id": "huangnian_ep12_u004",
+            "episode_id": "huangnian_ep12",
+            "start_ms": 8920,
+            "end_ms": 16040,
+            "text": "咱们家一年都没有吃过肉了，虽然肯定没有我的份，不过只要能闻着兔肉香味，吃野菜糊糊那也是好的。",
+            "source": "sanitized_asr_snippet"
+          },
+          {
+            "id": "huangnian_ep12_u005",
+            "episode_id": "huangnian_ep12",
+            "start_ms": 17070,
+            "end_ms": 21310,
+            "text": "娘，我会剥兔子皮，完整的皮毛剥下来，可以给娘做一个围脖。",
+            "source": "sanitized_asr_snippet"
+          }
+        ],
+        "keyframe_refs": [
+          {
+            "id": "huangnian_ep12_k001",
+            "episode_id": "huangnian_ep12",
+            "time_seconds": 0,
+            "description": "keyframe reference only; not psychological proof",
+            "source": "sanitized_keyframe_ref"
+          },
+          {
+            "id": "huangnian_ep12_k002",
+            "episode_id": "huangnian_ep12",
+            "time_seconds": 10,
+            "description": "keyframe reference only; not psychological proof",
+            "source": "sanitized_keyframe_ref"
+          }
+        ],
+        "contact_sheet_ref": {
+          "id": "huangnian_ep12_contact_sheet",
+          "episode_id": "huangnian_ep12",
+          "description": "contact sheet reference only; not runtime-dereferenced evidence",
+          "source": "sanitized_contact_sheet_ref"
+        },
+        "provenance_status": "publish_safe_sanitized"
+      },
+      "companion_hook": "四蛋抓到兔子，兔子肉今晚要不要真的下锅？",
+      "viewer_impulse": "要是我来，先让眼前的人吃上东西。",
+      "default_options": [
+        "今晚分兔肉，先让四蛋确认自己也有份",
+        "先留下兔子和皮毛，改用别的食物补这一顿",
+        "把兔子当成四蛋的功劳，只少量处理给全家尝味"
+      ],
+      "canon_baseline_reviewed": {
+        "original_action": "原剧情没有无条件把全部资源摊开。",
+        "original_rationale": "荒年里资源来源解释不清，会带来亲戚、村民和外部窥探风险。",
+        "audience_tension": "观众会想立刻让孩子和家人吃饱。",
+        "review_note": "只回答当前局面可信后果，不承诺后续剧集分支。"
+      },
+      "original_plot_note_reviewed": "原剧情把兔子处理成家人信任修复的一步，而不是单纯吃肉爽点。",
+      "evidence": {
+        "grade": "high",
+        "notes": "ASR 有兔子、兔肉、四蛋和一年没吃肉；contact sheet 00:00 明确可见兔子，00:20-00:50 可见四蛋/女主对话。视觉证据支持对象和人物，不证明全部心理动机。",
+        "excerpt": "啊！哦！四蛋抓了只兔子，今天晚上咱吃兔肉。啊，太好了！咱们家一年都没有吃过肉了，虽然肯定没有我的份，不过只要能闻着兔肉香味，吃野菜糊糊那也是好的。娘，我会剥兔子皮，完整的皮毛剥下来，可以给娘做一个围脖。"
+      },
+      "required_pack_fields": [
+        "resource_visibility.rabbit",
+        "family_trust.fourdan",
+        "distribution_target.child",
+        "watch_flow_fit.original_meal_scene"
+      ],
+      "evidence_vs_inference": "source_window and excerpt are evidence; hook/options/local consequences are reviewed product inference constrained by evidence.",
+      "producer_ref": "tmp review artifact; see runtime moment producer_refs for local-only provenance"
+    }
+  ]
+}

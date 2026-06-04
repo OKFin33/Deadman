@@ -1,0 +1,104 @@
+{
+  "schema_version": "deadman_media_registry.v0.1",
+  "drama_id": "huangnian",
+  "title": "荒年全村啃树皮，我有系统满仓肉",
+  "generated_at": "2026-06-03T09:18:10.018867+00:00",
+  "media_policy": {
+    "raw_media_storage": "local_ignored_path_only",
+    "runtime_video_url": "deployment_slot_or_dev_operator_supplied_asset; raw MP4 is not committed",
+    "producer_media": "local path, checksum, and size are producer-only metadata"
+  },
+  "episode_count": 5,
+  "episodes": [
+    {
+      "episode_id": "huangnian_ep03",
+      "title": "第3集",
+      "runtime_video_url": "/api/deadman/media/huangnian/huangnian_ep03.mp4",
+      "duration_seconds": 125.525,
+      "width": 1080,
+      "height": 1920,
+      "video_codec": "h264",
+      "audio_codec": "aac",
+      "fps": "25/1",
+      "status": "registered",
+      "producer_media": {
+        "local_media_path": "tmp/视频素材/荒年/第3集.mp4",
+        "checksum": "sha256:a40ca59f7052335629fea8aeb45730ceb8caf35bb15c2bb637995616d2dd2d70",
+        "size_bytes": 38994551,
+        "policy": "producer-only local metadata; runtime should use runtime_video_url"
+      }
+    },
+    {
+      "episode_id": "huangnian_ep04",
+      "title": "第4集",
+      "runtime_video_url": "/api/deadman/media/huangnian/huangnian_ep04.mp4",
+      "duration_seconds": 117.12,
+      "width": 1080,
+      "height": 1920,
+      "video_codec": "h264",
+      "audio_codec": "aac",
+      "fps": "25/1",
+      "status": "registered",
+      "producer_media": {
+        "local_media_path": "tmp/视频素材/荒年/第4集.mp4",
+        "checksum": "sha256:4e0a80b17309af01612e82668228a24e75eae1eb24aaae5074d3b25ab006ba90",
+        "size_bytes": 43313845,
+        "policy": "producer-only local metadata; runtime should use runtime_video_url"
+      }
+    },
+    {
+      "episode_id": "huangnian_ep06",
+      "title": "第6集",
+      "runtime_video_url": "/api/deadman/media/huangnian/huangnian_ep06.mp4",
+      "duration_seconds": 172.416,
+      "width": 1080,
+      "height": 1920,
+      "video_codec": "h264",
+      "audio_codec": "aac",
+      "fps": "25/1",
+      "status": "registered",
+      "producer_media": {
+        "local_media_path": "tmp/视频素材/荒年/第6集.mp4",
+        "checksum": "sha256:cb8015b905a2de7f3597c9889dccdc7fc7c9504d74a62f82f975a1b4543adb51",
+        "size_bytes": 59016920,
+        "policy": "producer-only local metadata; runtime should use runtime_video_url"
+      }
+    },
+    {
+      "episode_id": "huangnian_ep07",
+      "title": "第7集",
+      "runtime_video_url": "/api/deadman/media/huangnian/huangnian_ep07.mp4",
+      "duration_seconds": 138.816,
+      "width": 1080,
+      "height": 1920,
+      "video_codec": "h264",
+      "audio_codec": "aac",
+      "fps": "25/1",
+      "status": "registered",
+      "producer_media": {
+        "local_media_path": "tmp/视频素材/荒年/第7集.mp4",
+        "checksum": "sha256:386ca25231529bd813a72c22cf88f246acd4761cf2ed56a7462499cc71f860c3",
+        "size_bytes": 40660330,
+        "policy": "producer-only local metadata; runtime should use runtime_video_url"
+      }
+    },
+    {
+      "episode_id": "huangnian_ep12",
+      "title": "第12集",
+      "runtime_video_url": "/api/deadman/media/huangnian/huangnian_ep12.mp4",
+      "duration_seconds": 66.923,
+      "width": 1080,
+      "height": 1920,
+      "video_codec": "h264",
+      "audio_codec": "aac",
+      "fps": "25/1",
+      "status": "registered",
+      "producer_media": {
+        "local_media_path": "tmp/视频素材/荒年/第12集.mp4",
+        "checksum": "sha256:07489ffcb46f43e7d5d511b6e4c724b171b097814a02641c6c4d6cdb6e60abeb",
+        "size_bytes": 26913625,
+        "policy": "producer-only local metadata; runtime should use runtime_video_url"
+      }
+    }
+  ]
+}

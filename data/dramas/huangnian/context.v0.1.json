@@ -1,0 +1,452 @@
+{
+  "schema_version": "drama_context_pack.v0.1",
+  "drama_id": "huangnian",
+  "title": "荒年全村啃树皮，我有系统满仓肉",
+  "source_scope": {
+    "episode_scope": "first_20_episodes",
+    "basis": [
+      "allowed_drama_summary",
+      "reviewed_demo_nodes",
+      "asr_snippets",
+      "keyframe_contact_sheet_refs"
+    ],
+    "evidence_status": "reviewed_bridge_artifact"
+  },
+  "premise": "现代企业家程弯弯穿越到古代荒年，成了带四个孩子的寡妇，依靠生存系统走出困境、养家护村、逆天改命。",
+  "genre_contract": [
+    {
+      "claim": "Famine-survival and farming/household recovery are the main pressure system.",
+      "evidence_ids": [
+        "DCP-EV-SUMMARY-001",
+        "DCP-EV-NODE-001",
+        "DCP-EV-NODE-005"
+      ],
+      "confidence": "high"
+    },
+    {
+      "claim": "System/hidden-resource advantage can solve local crises but should stay partially concealed.",
+      "evidence_ids": [
+        "DCP-EV-SUMMARY-001",
+        "DCP-EV-NODE-003",
+        "DCP-EV-NODE-005"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "claim": "Family trust repair and public village reputation are drama engines, not background color.",
+      "evidence_ids": [
+        "DCP-EV-NODE-001",
+        "DCP-EV-NODE-002",
+        "DCP-EV-NODE-004"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "claim": "P0 interaction answers local credible consequences, then lets the viewer keep watching.",
+      "evidence_ids": [
+        "DCP-EV-INFERENCE-001"
+      ],
+      "confidence": "high"
+    }
+  ],
+  "protagonist": {
+    "name": "程弯弯",
+    "role": "modern entrepreneur transmigrated into an ancient-famine widow raising four children",
+    "capabilities": [
+      {
+        "claim": "survival planning, household/resource decision-making, and gradual trust repair",
+        "evidence_ids": [
+          "DCP-EV-SUMMARY-001",
+          "DCP-EV-NODE-001",
+          "DCP-EV-NODE-002"
+        ],
+        "confidence": "medium"
+      },
+      {
+        "claim": "access to a survival system / hidden resource advantage",
+        "evidence_ids": [
+          "DCP-EV-SUMMARY-001",
+          "DCP-EV-NODE-003",
+          "DCP-EV-NODE-005"
+        ],
+        "confidence": "medium"
+      }
+    ],
+    "limits": [
+      {
+        "claim": "cannot publicly over-explain the system or create unlimited resources without suspicion",
+        "evidence_ids": [
+          "DCP-EV-NODE-003",
+          "DCP-EV-NODE-005",
+          "DCP-EV-INFERENCE-001"
+        ],
+        "confidence": "high"
+      },
+      {
+        "claim": "family and village trust changes must be gradual and scene-local in P0",
+        "evidence_ids": [
+          "DCP-EV-NODE-001",
+          "DCP-EV-NODE-004",
+          "DCP-EV-INFERENCE-001"
+        ],
+        "confidence": "medium"
+      }
+    ]
+  },
+  "core_constraints": [
+    {
+      "id": "famine_resource_scarcity",
+      "constraint": "Food and resource scarcity must remain real pressure even when the protagonist has advantages.",
+      "evidence_ids": [
+        "DCP-EV-SUMMARY-001",
+        "DCP-EV-NODE-001",
+        "DCP-EV-ASR-001",
+        "DCP-EV-NODE-005"
+      ],
+      "source_basis": "summary + reviewed nodes + ASR snippets",
+      "confidence": "high"
+    },
+    {
+      "id": "resource_exposure_risk",
+      "constraint": "Visible food, white rice, money, or system benefits create suspicion,争抢, or explanation pressure.",
+      "evidence_ids": [
+        "DCP-EV-NODE-003",
+        "DCP-EV-NODE-005",
+        "DCP-EV-ASR-005"
+      ],
+      "source_basis": "reviewed nodes + ASR snippets",
+      "confidence": "high"
+    },
+    {
+      "id": "hidden_system_rule",
+      "constraint": "System/hidden-resource ability can guide decisions but should not be publicly over-explained.",
+      "evidence_ids": [
+        "DCP-EV-SUMMARY-001",
+        "DCP-EV-NODE-003",
+        "DCP-EV-INFERENCE-001"
+      ],
+      "source_basis": "summary + reviewed node + product inference",
+      "confidence": "medium"
+    },
+    {
+      "id": "gradual_family_trust",
+      "constraint": "Children/family trust repair must be earned through visible care; one choice cannot erase all prior damage.",
+      "evidence_ids": [
+        "DCP-EV-NODE-001",
+        "DCP-EV-NODE-002",
+        "DCP-EV-ASR-001"
+      ],
+      "source_basis": "reviewed nodes + ASR snippets",
+      "confidence": "medium"
+    },
+    {
+      "id": "village_public_pressure",
+      "constraint": "Village/public witnesses can amplify reputation, conflict, and later exchange pressure.",
+      "evidence_ids": [
+        "DCP-EV-NODE-004",
+        "DCP-EV-ASR-004"
+      ],
+      "source_basis": "reviewed node + ASR/keyframe refs",
+      "confidence": "medium"
+    },
+    {
+      "id": "local_watch_flow",
+      "constraint": "P0 outcomes stay within current scene or immediate aftermath and do not rewrite later episodes.",
+      "evidence_ids": [
+        "DCP-EV-INFERENCE-001"
+      ],
+      "source_basis": "inference-only product/runtime constraint",
+      "confidence": "high"
+    }
+  ],
+  "relationship_map": [
+    {
+      "actor": "程弯弯",
+      "relation": "protagonist and decision POV",
+      "evidence_ids": [
+        "DCP-EV-SUMMARY-001"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "actor": "四蛋",
+      "relation": "child/family member; rabbit scene makes trust and distribution visible",
+      "evidence_ids": [
+        "DCP-EV-NODE-001",
+        "DCP-EV-ASR-001"
+      ],
+      "confidence": "high"
+    },
+    {
+      "actor": "儿媳/家人",
+      "relation": "family members whose trust and dignity can be protected or damaged scene-locally",
+      "evidence_ids": [
+        "DCP-EV-NODE-002"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "actor": "村庄围观者/外部亲邻",
+      "relation": "public pressure surface; witnesses can turn resource or accusation choices into reputation changes",
+      "evidence_ids": [
+        "DCP-EV-NODE-004",
+        "DCP-EV-NODE-005"
+      ],
+      "confidence": "medium"
+    }
+  ],
+  "tone_policy": {
+    "companion_stance": "sharp but protective short-drama companion: names the viewer impulse, then checks it against famine, secrecy, family, and watch-flow constraints",
+    "preferred": [
+      "short local consequence",
+      "plain-language reason the original plot remains watchable",
+      "specific references to evidenced object/person/witness/pressure",
+      "controlled爽感 without unlimited power escalation"
+    ],
+    "avoid": [
+      "claiming later episodes truly branch",
+      "explaining hidden system rules to public characters without evidence",
+      "turning every choice into revenge or violence",
+      "treating keyframes as proof of motivation"
+    ]
+  },
+  "judgment_guardrails": {
+    "must_consider": [
+      "local moment pack facts outrank global context",
+      "food/resource scarcity and exposure risk",
+      "whether witnesses are family-only or public village pressure",
+      "whether the action keeps original viewing flow credible",
+      "whether trust/reputation changes are gradual enough for a short-drama scene"
+    ],
+    "must_not_claim": [
+      "later episodes actually follow the branch",
+      "the public knows the system exists unless the moment pack says so",
+      "keyframes prove internal motivation",
+      "the protagonist has unlimited resources or consequence-free power"
+    ],
+    "custom_action_handling": "Accept free-form actions only as local credible consequences; soften or reject actions that require unsupported canon facts, unlimited system use, or continuous alternate-episode simulation."
+  },
+  "runtime_priority": [
+    "moment_pack_local_facts",
+    "drama_context_pack_global_constraints",
+    "llm_common_sense"
+  ],
+  "evidence_map": [
+    {
+      "id": "DCP-EV-SUMMARY-001",
+      "type": "summary_derived_claim",
+      "source": "docs/Byte_AI_Allowed_Drama_Summaries_2026-05-23.md",
+      "claim": "Premise, broad genre hook, and product-fit framing for 荒年.",
+      "evidence": "现代企业家程弯弯穿越到古代荒年，成了带四个孩子的寡妇，依靠生存系统走出困境、养家护村、逆天改命。",
+      "confidence": "medium",
+      "notes": "Public/allowed summary is broad drama-level evidence only; it is not timestamp-level proof.",
+      "supports": [
+        "premise",
+        "genre_contract",
+        "protagonist.role"
+      ]
+    },
+    {
+      "id": "DCP-EV-NODE-001",
+      "type": "reviewed_node_derived_claim",
+      "source": "data/dramas/huangnian/evidence/reviewed_demo_nodes.v0.1.json#huangnian_ep12_m001",
+      "claim": "Reviewed demo moment huangnian_ep12_m001 supports local runtime constraints for resource_visibility.",
+      "evidence": "ASR 有兔子、兔肉、四蛋和一年没吃肉；contact sheet 00:00 明确可见兔子，00:20-00:50 可见四蛋/女主对话。视觉证据支持对象和人物，不证明全部心理动机。",
+      "confidence": "high",
+      "notes": "source_window and excerpt are evidence; hook/options/local consequences are reviewed product inference constrained by evidence.",
+      "supports": [
+        "core_constraints",
+        "relationship_map",
+        "judgment_guardrails"
+      ]
+    },
+    {
+      "id": "DCP-EV-ASR-001",
+      "type": "asr_keyframe_supported_claim",
+      "source": "data/dramas/huangnian/evidence/reviewed_demo_nodes.v0.1.json#huangnian_ep12_m001.source_window",
+      "claim": "ASR/keyframe refs support objects, utterances, and timing for huangnian_ep12_m001.",
+      "evidence": "啊！哦！四蛋抓了只兔子，今天晚上咱吃兔肉。啊，太好了！咱们家一年都没有吃过肉了，虽然肯定没有我的份，不过只要能闻着兔肉香味，吃野菜糊糊那也是好的。娘，我会剥兔子皮，完整的皮毛剥下来，可以给娘做一个围脖。",
+      "confidence": "high",
+      "notes": "ASR supports dialogue; keyframes/contact sheets are time/object references and do not prove psychological motivation.",
+      "supports": [
+        "moments.huangnian_ep12_m001.source_window"
+      ],
+      "source_refs": {
+        "transcript_snippet_count": 5,
+        "keyframe_refs": [
+          "huangnian_ep12_k001",
+          "huangnian_ep12_k002"
+        ],
+        "contact_sheet_ref": "huangnian_ep12_contact_sheet"
+      }
+    },
+    {
+      "id": "DCP-EV-NODE-002",
+      "type": "reviewed_node_derived_claim",
+      "source": "data/dramas/huangnian/evidence/reviewed_demo_nodes.v0.1.json#huangnian_ep07_m001",
+      "claim": "Reviewed demo moment huangnian_ep07_m001 supports local runtime constraints for humiliation_reversal.",
+      "evidence": "ASR 明确桌上羞辱；contact sheet ep07 00:20-01:10 可见餐桌、碗饭和人物互动。视觉证据支持吃饭场景，不证明“最脏”这一评价。",
+      "confidence": "high",
+      "notes": "source_window and excerpt are evidence; hook/options/local consequences are reviewed product inference constrained by evidence.",
+      "supports": [
+        "core_constraints",
+        "relationship_map",
+        "judgment_guardrails"
+      ]
+    },
+    {
+      "id": "DCP-EV-ASR-002",
+      "type": "asr_keyframe_supported_claim",
+      "source": "data/dramas/huangnian/evidence/reviewed_demo_nodes.v0.1.json#huangnian_ep07_m001.source_window",
+      "claim": "ASR/keyframe refs support objects, utterances, and timing for huangnian_ep07_m001.",
+      "evidence": "你是地位最低，你根本就不配上桌吃饭，只能吃最难吃最脏的东西，不然就给我饿着。儿子知道了。原神真是造孽，同样是女人，何苦为难女人。让你做就做，让你吃就吃，哪那么多废话？怎么着，让我递到你手里啊？儿媳不敢。",
+      "confidence": "high",
+      "notes": "ASR supports dialogue; keyframes/contact sheets are time/object references and do not prove psychological motivation.",
+      "supports": [
+        "moments.huangnian_ep07_m001.source_window"
+      ],
+      "source_refs": {
+        "transcript_snippet_count": 5,
+        "keyframe_refs": [
+          "huangnian_ep07_k001",
+          "huangnian_ep07_k002"
+        ],
+        "contact_sheet_ref": "huangnian_ep07_contact_sheet"
+      }
+    },
+    {
+      "id": "DCP-EV-NODE-003",
+      "type": "reviewed_node_derived_claim",
+      "source": "data/dramas/huangnian/evidence/reviewed_demo_nodes.v0.1.json#huangnian_ep03_m001",
+      "claim": "Reviewed demo moment huangnian_ep03_m001 supports local runtime constraints for system_rule.",
+      "evidence": "ASR 明确系统售卖和面板；contact sheet ep03 00:10-00:20 有系统商城/面板视觉。视觉证据支持系统 UI 出现。",
+      "confidence": "high",
+      "notes": "source_window and excerpt are evidence; hook/options/local consequences are reviewed product inference constrained by evidence.",
+      "supports": [
+        "core_constraints",
+        "relationship_map",
+        "judgment_guardrails"
+      ]
+    },
+    {
+      "id": "DCP-EV-ASR-003",
+      "type": "asr_keyframe_supported_claim",
+      "source": "data/dramas/huangnian/evidence/reviewed_demo_nodes.v0.1.json#huangnian_ep03_m001.source_window",
+      "claim": "ASR/keyframe refs support objects, utterances, and timing for huangnian_ep03_m001.",
+      "evidence": "天然无污染野蕨菜一斤价值十文钱，是否售卖？呵，这是系统？娘，您在灶台干什么？这个面板只有我能看见，我得找个地方试验一下系统的功能。",
+      "confidence": "high",
+      "notes": "ASR supports dialogue; keyframes/contact sheets are time/object references and do not prove psychological motivation.",
+      "supports": [
+        "moments.huangnian_ep03_m001.source_window"
+      ],
+      "source_refs": {
+        "transcript_snippet_count": 3,
+        "keyframe_refs": [
+          "huangnian_ep03_k001",
+          "huangnian_ep03_k002"
+        ],
+        "contact_sheet_ref": "huangnian_ep03_contact_sheet"
+      }
+    },
+    {
+      "id": "DCP-EV-NODE-004",
+      "type": "reviewed_node_derived_claim",
+      "source": "data/dramas/huangnian/evidence/reviewed_demo_nodes.v0.1.json#huangnian_ep04_m001",
+      "claim": "Reviewed demo moment huangnian_ep04_m001 supports local runtime constraints for evidence_or_trap.",
+      "evidence": "ASR 强支持公开诬陷；contact sheet ep04 01:00-01:40 可见多人野外对峙和小鹅菜/稻田语境，但关键帧本身不独立证明“稻子”指控。",
+      "confidence": "medium",
+      "notes": "source_window and excerpt are evidence; hook/options/local consequences are reviewed product inference constrained by evidence.",
+      "supports": [
+        "core_constraints",
+        "relationship_map",
+        "judgment_guardrails"
+      ]
+    },
+    {
+      "id": "DCP-EV-ASR-004",
+      "type": "asr_keyframe_supported_claim",
+      "source": "data/dramas/huangnian/evidence/reviewed_demo_nodes.v0.1.json#huangnian_ep04_m001.source_window",
+      "claim": "ASR/keyframe refs support objects, utterances, and timing for huangnian_ep04_m001.",
+      "evidence": "哎，大家快来看，这赵大嫂子偷我们家稻子！呦，这是偷王家的粮食，补贴自己娘家呢。赵大嫂子越来越浑不吝了，偷鸡摸狗的事都干，还有啥事干不出？接下来说不定还会偷人呢！反正是寡妇。哈哈哈。看来这原主的口碑不仅是在家里，整个村子里都臭了。",
+      "confidence": "medium",
+      "notes": "ASR supports dialogue; keyframes/contact sheets are time/object references and do not prove psychological motivation.",
+      "supports": [
+        "moments.huangnian_ep04_m001.source_window"
+      ],
+      "source_refs": {
+        "transcript_snippet_count": 7,
+        "keyframe_refs": [
+          "huangnian_ep04_k001",
+          "huangnian_ep04_k002"
+        ],
+        "contact_sheet_ref": "huangnian_ep04_contact_sheet"
+      }
+    },
+    {
+      "id": "DCP-EV-NODE-005",
+      "type": "reviewed_node_derived_claim",
+      "source": "data/dramas/huangnian/evidence/reviewed_demo_nodes.v0.1.json#huangnian_ep06_m001",
+      "claim": "Reviewed demo moment huangnian_ep06_m001 supports local runtime constraints for exposure_risk.",
+      "evidence": "ASR 强支持白米来源追问；contact sheet ep06 00:00 显示袋中白米，01:10 后可见一家围桌。视觉证据支持白米已被看到。",
+      "confidence": "high",
+      "notes": "source_window and excerpt are evidence; hook/options/local consequences are reviewed product inference constrained by evidence.",
+      "supports": [
+        "core_constraints",
+        "relationship_map",
+        "judgment_guardrails"
+      ]
+    },
+    {
+      "id": "DCP-EV-ASR-005",
+      "type": "asr_keyframe_supported_claim",
+      "source": "data/dramas/huangnian/evidence/reviewed_demo_nodes.v0.1.json#huangnian_ep06_m001.source_window",
+      "claim": "ASR/keyframe refs support objects, utterances, and timing for huangnian_ep06_m001.",
+      "evidence": "对呀，从前娘也被大舅打过，我们想替她讨公道，还被娘揍了呢。他不会又打什么主意吧？家里面已经没有什么东西了。慧娘，把这米煮了吧。煮。煮了干啥？现在各村每家每天只吃一顿，咱家今天已经吃过野菜糊糊了。",
+      "confidence": "high",
+      "notes": "ASR supports dialogue; keyframes/contact sheets are time/object references and do not prove psychological motivation.",
+      "supports": [
+        "moments.huangnian_ep06_m001.source_window"
+      ],
+      "source_refs": {
+        "transcript_snippet_count": 5,
+        "keyframe_refs": [
+          "huangnian_ep06_k001",
+          "huangnian_ep06_k002"
+        ],
+        "contact_sheet_ref": "huangnian_ep06_contact_sheet"
+      }
+    },
+    {
+      "id": "DCP-EV-INFERENCE-001",
+      "type": "inference_only_product_constraint",
+      "source": "Deadman docs + reviewed bridge policy",
+      "claim": "P0 outcomes stay local and must not rewrite later episodes or pretend to simulate the full world.",
+      "evidence": "Moment Causality Pack v0.1 and goal contract define the local consequence boundary.",
+      "confidence": "high",
+      "notes": "This is a product/runtime constraint, not source-canon evidence.",
+      "supports": [
+        "judgment_guardrails",
+        "runtime_priority",
+        "tone_policy"
+      ]
+    }
+  ],
+  "confidence": {
+    "overall": "medium",
+    "notes": "Strong enough for the 5 reviewed P0 demo moments. It is a lightweight Drama Context Pack, not an ArcForge world simulation pack or full source-canon database."
+  },
+  "open_questions": [
+    {
+      "question": "Which source should become canonical for episode-level facts beyond the 5 reviewed demo moments?",
+      "impact": "Needed before expanding beyond P0 reviewed nodes."
+    },
+    {
+      "question": "What are the exact system cost/cooldown/resource limits in later episodes?",
+      "impact": "Needed before stronger hidden-power judgments."
+    },
+    {
+      "question": "Which names/relationships beyond 四蛋 and family roles should be normalized into a reusable cast index?",
+      "impact": "Needed before backend pack ingestion or multi-moment continuity."
+    }
+  ]
+}
