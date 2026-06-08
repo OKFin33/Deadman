@@ -1,0 +1,173 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://oseria.local/schemas/deadman/studio_cab_taste_calibration.v0.1.json",
+  "title": "Deadman Studio CAB Taste Calibration v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "product",
+    "created_at",
+    "status",
+    "claim_boundary",
+    "proof_ref",
+    "judge_ref",
+    "tray_ref",
+    "calibration_entries",
+    "summary"
+  ],
+  "properties": {
+    "schema_version": { "const": "studio_cab_taste_calibration.v0.1" },
+    "product": { "const": "看剧搭子" },
+    "created_at": { "type": "string", "minLength": 1 },
+    "status": {
+      "enum": [
+        "completed",
+        "partial_owner_review",
+        "awaiting_owner_review"
+      ]
+    },
+    "claim_boundary": { "type": "string", "minLength": 1 },
+    "proof_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "schema_version"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "schema_version": { "const": "studio_cab_real_provider_proof.v0.1" }
+      }
+    },
+    "judge_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "schema_version"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "schema_version": { "const": "studio_cab_taste_judge.v0.1" }
+      }
+    },
+    "tray_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      }
+    },
+    "calibration_entries": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/entry" }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "total_cases",
+        "owner_reviewed",
+        "owner_abstained",
+        "owner_verdict_distribution",
+        "judge_verdict_distribution",
+        "agreement_count",
+        "agreement_rate"
+      ],
+      "properties": {
+        "total_cases": { "type": "integer", "minimum": 0 },
+        "owner_reviewed": { "type": "integer", "minimum": 0 },
+        "owner_abstained": { "type": "integer", "minimum": 0 },
+        "owner_verdict_distribution": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["accept", "accept_with_minor_tweak", "reject", "abstain"],
+          "properties": {
+            "accept": { "type": "integer", "minimum": 0 },
+            "accept_with_minor_tweak": { "type": "integer", "minimum": 0 },
+            "reject": { "type": "integer", "minimum": 0 },
+            "abstain": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "judge_verdict_distribution": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["accept", "accept_with_minor_tweak", "reject", "not_available"],
+          "properties": {
+            "accept": { "type": "integer", "minimum": 0 },
+            "accept_with_minor_tweak": { "type": "integer", "minimum": 0 },
+            "reject": { "type": "integer", "minimum": 0 },
+            "not_available": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "agreement_count": { "type": "integer", "minimum": 0 },
+        "agreement_rate": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    }
+  },
+  "$defs": {
+    "entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "case_id",
+        "case_type",
+        "item_id",
+        "episode_id",
+        "owner_verdict",
+        "owner_notes",
+        "judge_overall_verdict",
+        "judge_dimensions",
+        "judge_rationale_summary",
+        "agreement"
+      ],
+      "properties": {
+        "case_id": { "type": "string", "minLength": 1 },
+        "case_type": {
+          "enum": [
+            "owner_gold_exchange_authoring",
+            "phase2_repair_regression"
+          ]
+        },
+        "item_id": { "type": "string", "minLength": 1 },
+        "episode_id": { "type": "string", "pattern": "^huangnian_ep[0-9]{2}$" },
+        "owner_verdict": {
+          "enum": [
+            "accept",
+            "accept_with_minor_tweak",
+            "reject",
+            "abstain"
+          ]
+        },
+        "owner_notes": { "type": "string" },
+        "judge_overall_verdict": {
+          "enum": [
+            "accept",
+            "accept_with_minor_tweak",
+            "reject",
+            "not_available"
+          ]
+        },
+        "judge_dimensions": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "lead_taste",
+            "reply_voice_taste",
+            "reply_axis_diversity",
+            "echo_taste"
+          ],
+          "properties": {
+            "lead_taste": { "enum": ["excellent", "acceptable", "needs_repair", "not_available"] },
+            "reply_voice_taste": { "enum": ["excellent", "acceptable", "needs_repair", "not_available"] },
+            "reply_axis_diversity": { "enum": ["excellent", "acceptable", "needs_repair", "not_available"] },
+            "echo_taste": { "enum": ["excellent", "acceptable", "needs_repair", "not_available"] }
+          }
+        },
+        "judge_rationale_summary": { "type": "string" },
+        "agreement": {
+          "enum": ["agree", "disagree", "abstain", "judge_unavailable"]
+        }
+      }
+    }
+  }
+}

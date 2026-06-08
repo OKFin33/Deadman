@@ -33,6 +33,44 @@ FORBIDDEN_PUBLIC_PATTERNS = [
     )
 ]
 
+CUSTOM_FALLBACK_TEXT = "这句我懂，但这段先别替剧情往后编。"
+
+LOW_SIGNAL_CUSTOM_TEXTS = {
+    "哈",
+    "哈哈",
+    "哈哈哈",
+    "嗯",
+    "啊",
+    "哦",
+    "额",
+    "呃",
+    "随便",
+    "不知道",
+    "没了",
+}
+
+UNSUPPORTED_CUSTOM_PATTERNS = [
+    re.compile(pattern)
+    for pattern in (
+        r"后面",
+        r"后续",
+        r"以后",
+        r"结局",
+        r"全剧",
+        r"全部剧情",
+        r"改写",
+        r"分支",
+        r"复仇",
+        r"杀光|弄死|杀了",
+        r"全村",
+        r"无限",
+        r"一键",
+        r"暴富",
+        r"开挂",
+        r"公开系统|摊牌系统",
+    )
+]
+
 
 @dataclass(frozen=True)
 class FriendVoiceResult:
@@ -67,6 +105,12 @@ class FriendVoiceComposer:
         )
 
     def _compose_text(self, judgment: JudgmentResponse, moment: dict[str, Any], previous_summary: str) -> str:
+        candidate_seed = self._selected_candidate_voice_seed(judgment, moment)
+        if candidate_seed:
+            return _compact_result_text(sanitize_viewer_copy(candidate_seed), "")
+        custom_text = self._custom_bounded_text(judgment, moment)
+        if custom_text:
+            return custom_text
         if judgment.engine.mode == "cab_runtime":
             text = self._compose_cab_runtime_text(judgment)
             if text:
@@ -85,6 +129,41 @@ class FriendVoiceComposer:
             if clean_text:
                 return _compact_result_text(clean_text, "")
         return ""
+
+    def _selected_candidate_voice_seed(self, judgment: JudgmentResponse, moment: dict[str, Any]) -> str:
+        if judgment.action.source != "preset_candidate":
+            return ""
+        candidate_id = (judgment.action.candidate_id or "").strip()
+        if not candidate_id:
+            return ""
+        for candidate in _reply_candidates(moment):
+            if not isinstance(candidate, dict):
+                continue
+            if str(candidate.get("candidate_id") or "") != candidate_id:
+                continue
+            seed = candidate.get("selected_echo") or candidate.get("friend_voice_seed")
+            return str(seed or "").strip()
+        return ""
+
+    def _custom_bounded_text(self, judgment: JudgmentResponse, moment: dict[str, Any]) -> str:
+        if judgment.action.source != "custom":
+            return ""
+        if _custom_reply_policy(moment).get("allowed") is False:
+            return CUSTOM_FALLBACK_TEXT
+        custom_text = _normalize_custom_input(judgment.action.text)
+        if not _groundable_custom_input(custom_text):
+            return CUSTOM_FALLBACK_TEXT
+        if _is_unsupported_custom_input(custom_text):
+            concern = _unsupported_custom_concern(custom_text)
+            return _compact_result_text(
+                sanitize_viewer_copy(f"你这句我懂，{concern}；这段先别替剧情往后编。"),
+                "",
+            )
+        concern = _safe_custom_concern(custom_text)
+        return _compact_result_text(
+            sanitize_viewer_copy(f"你这句我懂，{concern}；先照着眼前这口气说。"),
+            "",
+        )
 
     def _compose_lead(
         self,
@@ -284,6 +363,63 @@ def _contains_forbidden_public_copy(value: str) -> bool:
     return any(pattern.search(value) for pattern in FORBIDDEN_PUBLIC_PATTERNS)
 
 
+def _custom_reply_policy(moment: dict[str, Any]) -> dict[str, Any]:
+    exchange = moment.get("companion_exchange")
+    if isinstance(exchange, dict) and isinstance(exchange.get("custom_reply_policy"), dict):
+        return exchange["custom_reply_policy"]
+    return {}
+
+
+def _normalize_custom_input(value: str) -> str:
+    text = re.sub(r"\s+", "", value.strip())
+    return text.strip("，。！？!?；;：:,.…~ ")
+
+
+def _groundable_custom_input(value: str) -> bool:
+    if not value or value in LOW_SIGNAL_CUSTOM_TEXTS:
+        return False
+    signal = re.sub(r"[，。！？!?；;：:,.…~的了吧嘛呢呀啊哦嗯哈]+", "", value)
+    return len(signal) >= 2
+
+
+def _is_unsupported_custom_input(value: str) -> bool:
+    return any(pattern.search(value) for pattern in UNSUPPORTED_CUSTOM_PATTERNS)
+
+
+def _unsupported_custom_concern(value: str) -> str:
+    if re.search(r"系统|开挂|一键|暴富|无限", value):
+        return "是想把系统那口气用出来"
+    if re.search(r"复仇|杀光|弄死|杀了|全村", value):
+        return "是想马上替她把气出回来"
+    return "是想一下把那股不甘全翻回来"
+
+
+def _safe_custom_concern(value: str) -> str:
+    if re.search(r"孩子|四蛋", value) and re.search(r"最后|野菜|菜|肉|饭|粮|吃", value):
+        actor = "四蛋" if "四蛋" in value else "孩子"
+        return f"是怕{actor}连最后这口都留不住"
+    if "四蛋" in value:
+        return "是在替四蛋急"
+    if "孩子" in value:
+        return "是在替孩子急"
+    if re.search(r"原主|人设|离谱|这妈|当妈|娘", value):
+        return "是嫌原主这一手太离谱"
+    if re.search(r"别|不要|不能|边界|留住|留下|别给|别送", value):
+        return "是想先把边界立住"
+    if re.search(r"委屈|心疼|可怜", value):
+        return "是心疼这口委屈没人接"
+    if re.search(r"害怕|怕|慌", value):
+        return "是怕这口气又被忽略"
+    return f"是想说「{_custom_phrase(value)}」"
+
+
+def _custom_phrase(value: str) -> str:
+    phrase = re.sub(r"[，。！？!?；;：:,.…~]+", "", value)
+    if len(phrase) <= 14:
+        return phrase
+    return f"{phrase[:14]}..."
+
+
 def _compact_action(value: str) -> str:
     text = re.sub(r"\s+", "", value.strip())
     if len(text) <= 18:
@@ -318,3 +454,14 @@ def _strip_leading_action(text: str, action: str) -> str:
     if compact_action and compact_text.startswith(compact_action):
         return compact_text[len(compact_action) :].lstrip("，。；：:;,. ")
     return text
+
+
+def _reply_candidates(moment: dict[str, Any]) -> list[dict[str, Any]]:
+    exchange = moment.get("companion_exchange")
+    if isinstance(exchange, dict) and isinstance(exchange.get("reply_candidates"), list):
+        return [item for item in exchange["reply_candidates"] if isinstance(item, dict)]
+    action_space = moment.get("action_space")
+    candidates = action_space.get("mouthpiece_candidates", []) if isinstance(action_space, dict) else []
+    if not isinstance(candidates, list):
+        return []
+    return [item for item in candidates if isinstance(item, dict)]

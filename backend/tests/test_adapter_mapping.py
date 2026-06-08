@@ -90,6 +90,8 @@ class DeadmanAdapterMappingTests(unittest.TestCase):
             self.assertIn("future episodes follow this branch", moment_pack["watch_flow_rationale"]["must_not_claim"])
             self.assertIn("canon was wrong", moment_pack["watch_flow_rationale"]["must_not_claim"])
             self.assertIn("the branch continues automatically", moment_pack["watch_flow_rationale"]["must_not_claim"])
+            self.assertEqual(moment_pack["action_space"]["mouthpiece_candidates_schema_version"], "mouthpiece_candidates.v0.1")
+            self.assertEqual(len(moment_pack["action_space"]["mouthpiece_candidates"]), 3)
 
     def test_mapped_packs_validate_against_v03_json_schema(self) -> None:
         schema = json.loads(
@@ -114,8 +116,36 @@ class DeadmanAdapterMappingTests(unittest.TestCase):
         self.assertEqual(adapter_input["requested_output"]["visual_result"], "preset_slot")
         self.assertEqual(
             adapter_input["moment_pack"]["action_space"]["preset_options"][2]["text"],
-            "把兔子当成四蛋的功劳，只少量处理给全家尝味",
+            "功劳算孩子的",
         )
+
+    def test_preset_candidate_maps_hidden_payload_to_runtime_event(self) -> None:
+        moment = self.pack.moments_by_id["huangnian_ep12_m001"]
+        candidate = moment["action_space"]["mouthpiece_candidates"][0]
+        request = JudgmentRequest(
+            drama_id=self.pack.drama_id,
+            moment_id=moment["moment_id"],
+            action=UserAction(
+                source="preset_candidate",
+                candidate_id=candidate["candidate_id"],
+                text=candidate["display_text"],
+                action_payload=candidate["action_payload"],
+            ),
+        )
+        adapter_input = build_adapter_input(
+            request_id="test-preset-candidate",
+            drama_pack=self.pack,
+            moment=moment,
+            request=request,
+        )
+        self.assertEqual(adapter_input["user_action"]["origin"], "preset")
+        self.assertEqual(adapter_input["user_action"]["source"], "preset_candidate")
+        self.assertEqual(adapter_input["user_action"]["preset_id"], "preset_0")
+        self.assertEqual(adapter_input["user_action"]["candidate_id"], "preset_0")
+        self.assertEqual(adapter_input["user_action"]["display_text"], "四蛋该吃肉")
+        self.assertEqual(adapter_input["user_action"]["text"], "今晚分兔肉，先让四蛋确认自己也有份")
+        self.assertEqual(adapter_input["user_action"]["semantic_role"], "include_child_first")
+        self.assertEqual(adapter_input["requested_output"]["visual_result"], "preset_slot")
 
     def test_custom_action_maps_without_future_branch_claims(self) -> None:
         moment = self.pack.moments_by_id["huangnian_ep03_m001"]

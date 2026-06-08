@@ -1,0 +1,109 @@
+{
+  "schema_version": "deadman_reviewed_demo_nodes_evidence.v0.1",
+  "evidence_policy": "sanitized tracked evidence; no runtime dereference of ignored tmp artifacts",
+  "demo_node_count": 3,
+  "demo_nodes": [
+    {
+      "moment_id": "lihun_ep06_m001",
+      "candidate_id": "lihun_ep06_c001",
+      "review_status": "demo_candidate",
+      "corrected_trigger_type": "medical_or_pregnancy_risk",
+      "source_window": {
+        "start_ms": 0,
+        "end_ms": 20000,
+        "transcript_refs": [
+          {
+            "id": "lihun_ep06_m001_u001",
+            "episode_id": "lihun_ep06",
+            "start_ms": 0,
+            "end_ms": 20000,
+            "text": "呐，里面的药我已经换过了，给你老婆吃。这是什么？你不就是因为她现在怀孕了，所以才不忍心跟她离婚吗？嗯，只要她孩子没了，那不就好了？",
+            "source": "sanitized_asr_snippet"
+          }
+        ],
+        "keyframe_refs": [],
+        "provenance_status": "publish_safe_sanitized"
+      },
+      "companion_hook": "这一下我有点想替他说一句。",
+      "viewer_impulse": "要是我来，我想接一句。",
+      "default_options": [
+        "接住眼前这个人此刻的情绪",
+        "为眼前这件事说一句公道话",
+        "先把火气压一压，看眼前怎么落地"
+      ],
+      "evidence": {
+        "grade": "medium",
+        "notes": "呐，里面的药我已经换过了，给你老婆吃。这是什么？你不就是因为她现在怀孕了，所以才不忍心跟她离婚吗？嗯，只要她孩子没了，那不就好了？"
+      },
+      "evidence_vs_inference": "source_window and excerpt are evidence; companion content is reviewed product inference (placeholder pending CAB authoring)."
+    },
+    {
+      "moment_id": "lihun_ep12_m001",
+      "candidate_id": "lihun_ep12_c001",
+      "review_status": "demo_candidate",
+      "corrected_trigger_type": "medical_or_pregnancy_risk",
+      "source_window": {
+        "start_ms": 40000,
+        "end_ms": 60000,
+        "transcript_refs": [
+          {
+            "id": "lihun_ep12_m001_u001",
+            "episode_id": "lihun_ep12",
+            "start_ms": 40000,
+            "end_ms": 60000,
+            "text": "毒药。不只是孩子。所以我肚子疼。不是偶然。",
+            "source": "sanitized_asr_snippet"
+          }
+        ],
+        "keyframe_refs": [],
+        "provenance_status": "publish_safe_sanitized"
+      },
+      "companion_hook": "这一下我有点想替他说一句。",
+      "viewer_impulse": "要是我来，我想接一句。",
+      "default_options": [
+        "接住眼前这个人此刻的情绪",
+        "为眼前这件事说一句公道话",
+        "先把火气压一压，看眼前怎么落地"
+      ],
+      "evidence": {
+        "grade": "medium",
+        "notes": "毒药。不只是孩子。所以我肚子疼。不是偶然。"
+      },
+      "evidence_vs_inference": "source_window and excerpt are evidence; companion content is reviewed product inference (placeholder pending CAB authoring)."
+    },
+    {
+      "moment_id": "lihun_ep19_m001",
+      "candidate_id": "lihun_ep19_c002",
+      "review_status": "demo_candidate",
+      "corrected_trigger_type": "evidence_or_trap",
+      "source_window": {
+        "start_ms": 60000,
+        "end_ms": 80000,
+        "transcript_refs": [
+          {
+            "id": "lihun_ep19_m001_u001",
+            "episode_id": "lihun_ep19",
+            "start_ms": 60000,
+            "end_ms": 80000,
+            "text": "只能偷偷地你这算骚扰。",
+            "source": "sanitized_asr_snippet"
+          }
+        ],
+        "keyframe_refs": [],
+        "provenance_status": "publish_safe_sanitized"
+      },
+      "companion_hook": "这一下我有点想替他说一句。",
+      "viewer_impulse": "要是我来，我想接一句。",
+      "default_options": [
+        "接住眼前这个人此刻的情绪",
+        "为眼前这件事说一句公道话",
+        "先把火气压一压，看眼前怎么落地"
+      ],
+      "evidence": {
+        "grade": "medium",
+        "notes": "只能偷偷地你这算骚扰。"
+      },
+      "evidence_vs_inference": "source_window and excerpt are evidence; companion content is reviewed product inference (placeholder pending CAB authoring)."
+    }
+  ]
+}

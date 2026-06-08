@@ -57,7 +57,7 @@
           "draft_moment_id",
           "hook_draft",
           "viewer_impulse_draft",
-          "preset_action_drafts",
+          "mouthpiece_candidate_drafts",
           "actor_context_draft",
           "local_constraints_draft",
           "canon_baseline_draft",
@@ -85,9 +85,18 @@
             "minLength": 1
           },
           "preset_action_drafts": {
+            "description": "Legacy v0.3 action-menu draft list. Keep only for compatibility.",
             "type": "array",
             "items": {
               "type": "string"
+            }
+          },
+          "mouthpiece_candidate_drafts": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 4,
+            "items": {
+              "$ref": "#/$defs/mouthpiece_candidate_draft"
             }
           },
           "actor_context_draft": {
@@ -199,6 +208,95 @@
               "minimum": 0
             }
           }
+        }
+      }
+    },
+    "mouthpiece_candidate_draft": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "candidate_id",
+        "display_text",
+        "action_payload",
+        "selected_echo",
+        "emotion_role",
+        "semantic_role",
+        "distinctness_rationale",
+        "evidence_refs",
+        "constraint_refs",
+        "requires_human_review"
+      ],
+      "properties": {
+        "candidate_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "display_text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 14
+        },
+        "action_payload": {
+          "type": "object",
+          "additionalProperties": true,
+          "required": [
+            "text"
+          ],
+          "properties": {
+            "text": {
+              "type": "string",
+              "minLength": 1
+            },
+            "action_type": {
+              "type": "string"
+            },
+            "intent": {
+              "type": "string"
+            },
+            "target_actors": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "risk_posture": {
+              "type": "string"
+            }
+          }
+        },
+        "emotion_role": {
+          "type": "string",
+          "minLength": 1
+        },
+        "semantic_role": {
+          "type": "string",
+          "minLength": 1
+        },
+        "distinctness_rationale": {
+          "type": "string"
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "constraint_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "selected_echo": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "friend_voice_seed": {
+          "type": "string"
+        },
+        "requires_human_review": {
+          "const": true
         }
       }
     }

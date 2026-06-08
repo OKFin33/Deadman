@@ -18,21 +18,21 @@ export default function App() {
 
   return (
     <main className="deadman-catalog-app">
-      <section aria-label="要是我来短剧目录" className="deadman-catalog__device" role="region">
+      <section aria-label="看剧搭子短剧目录" className="deadman-catalog__device" role="region">
         <header className="deadman-catalog__topbar">
           <div>
             <span>短剧高光</span>
-            <h1>要是我来</h1>
+            <h1>看剧搭子</h1>
           </div>
-          <strong>Branch 3</strong>
+          <strong>陪看</strong>
         </header>
 
         <section className="deadman-catalog__hero" aria-label="今日高光">
           <div className="deadman-catalog__hero-still" aria-hidden="true">
-            <span>第 12 集</span>
-            <strong>兔子肉要不要下锅</strong>
+            <span>第 3 集</span>
+            <strong>最后一点野菜</strong>
           </div>
-          <p>四蛋把兔子拎回灶边，全家都盯着那口锅。</p>
+          <p>孩子盯着最后一点野菜，怕它又被送走。</p>
         </section>
 
         <article className="deadman-catalog__drama">
@@ -42,8 +42,8 @@ export default function App() {
           </div>
           <div className="deadman-catalog__drama-copy">
             <p>荒年全村啃树皮，我有系统满仓肉</p>
-            <strong>第 12 集 · 兔子肉要不要下锅</strong>
-            <span>5 个已发布介入点 · 当前高光 00:12</span>
+            <strong>第 3 集 · 最后一口先留家里</strong>
+            <span>5 个已发布介入点 · 当前高光 00:37</span>
           </div>
           <button onClick={() => setScreen("player")} type="button">
             进入

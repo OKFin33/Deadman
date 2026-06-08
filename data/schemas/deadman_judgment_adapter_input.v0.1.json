@@ -36,10 +36,20 @@
             "custom"
           ]
         },
+        "source": {
+          "enum": [
+            "preset_candidate",
+            "preset",
+            "custom"
+          ]
+        },
         "action_type": {
           "type": "string"
         },
         "text": {
+          "type": "string"
+        },
+        "display_text": {
           "type": "string"
         },
         "preset_id": {
@@ -47,6 +57,25 @@
             "string",
             "null"
           ]
+        },
+        "candidate_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "action_payload": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": true
+        },
+        "emotion_role": {
+          "type": "string"
+        },
+        "semantic_role": {
+          "type": "string"
         }
       },
       "additionalProperties": false

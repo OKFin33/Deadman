@@ -1,4 +1,4 @@
-"""Deterministic-first judgment service for Branch 3."""
+"""Deterministic-first judgment service for Deadman companion runtime."""
 
 from __future__ import annotations
 
@@ -111,6 +111,23 @@ class DeterministicJudgmentService:
 
     def _validate_action(self, request: JudgmentRequest, moment: dict[str, Any]) -> None:
         options = self._default_options(moment)
+        if request.action.source == "preset_candidate":
+            candidate = self._candidate_for_action(request, moment)
+            if request.action.text.strip() != str(candidate.get("display_text") or "").strip():
+                raise PackStoreError(
+                    "preset_candidate_text_mismatch",
+                    "Preset candidate action.text must match the selected display_text.",
+                    status_code=422,
+                )
+            submitted_payload = request.action.action_payload or {}
+            expected_payload = candidate.get("action_payload") if isinstance(candidate.get("action_payload"), dict) else {}
+            if submitted_payload != expected_payload:
+                raise PackStoreError(
+                    "preset_candidate_payload_mismatch",
+                    "Preset candidate action_payload must match the reviewed moment pack payload.",
+                    status_code=422,
+                )
+            return
         if request.action.source == "preset":
             if request.action.option_index is None:
                 raise PackStoreError(
@@ -132,12 +149,29 @@ class DeterministicJudgmentService:
                     status_code=422,
                 )
 
+    def _candidate_for_action(self, request: JudgmentRequest, moment: dict[str, Any]) -> dict[str, Any]:
+        candidate_id = (request.action.candidate_id or "").strip()
+        if not candidate_id:
+            raise PackStoreError(
+                "preset_candidate_required",
+                "Preset candidate actions must include action.candidate_id.",
+                status_code=422,
+            )
+        for candidate in _reply_candidates(moment):
+            if isinstance(candidate, dict) and str(candidate.get("candidate_id") or "") == candidate_id:
+                return candidate
+        raise PackStoreError(
+            "preset_candidate_invalid",
+            f"Preset candidate_id {candidate_id!r} is not available for this moment.",
+            status_code=422,
+        )
+
     def _stance(self, request: JudgmentRequest, moment: dict[str, Any], is_overpowered: bool) -> str:
         if is_overpowered:
             return "reject_softly"
         if request.action.source == "custom":
             return "caution"
-        if request.action.option_index == 0 and self._has_module(moment, "resource_scarcity", "relationship_pressure"):
+        if self._selected_option_index(request, moment) == 0 and self._has_module(moment, "resource_scarcity", "relationship_pressure"):
             return "support"
         return "caution"
 
@@ -242,7 +276,7 @@ class DeterministicJudgmentService:
         hook = moment.get("companion_surface", {}).get("hook")
         if stance == "reject_softly":
             return "爽点收束一下"
-        return str(hook or "要是我来")
+        return str(hook or "看剧搭子")
 
     def _card_prompt(
         self,
@@ -312,9 +346,10 @@ class DeterministicJudgmentService:
         result_media = moment.get("result_media", {})
         if not isinstance(result_media, dict):
             result_media = {}
-        if request.action.source == "preset" and request.action.option_index is not None:
+        selected_index = self._selected_option_index(request, moment)
+        if request.action.source in {"preset", "preset_candidate"} and selected_index is not None:
             for slot in result_media.get("preset_options", []):
-                if isinstance(slot, dict) and slot.get("option_index") == request.action.option_index:
+                if isinstance(slot, dict) and slot.get("option_index") == selected_index:
                     return JudgmentMedia(
                         status=str(slot.get("status") or "placeholder"),  # type: ignore[arg-type]
                         image_url=str(slot.get("image_url") or ""),
@@ -350,7 +385,7 @@ class DeterministicJudgmentService:
         else:
             base = [46, 33, 21] + [0] * (option_count - 3)
 
-        selected_index = request.action.option_index if request.action.source == "preset" else None
+        selected_index = self._selected_option_index(request, moment) if request.action.source in {"preset", "preset_candidate"} else None
         if selected_index is not None and 0 <= selected_index < option_count:
             boosted = base[:option_count]
             boosted[selected_index] += 6
@@ -412,6 +447,17 @@ class DeterministicJudgmentService:
 
     def _default_options(self, moment: dict[str, Any]) -> list[str]:
         return [str(option) for option in moment.get("action_space", {}).get("default_options", [])]
+
+    def _selected_option_index(self, request: JudgmentRequest, moment: dict[str, Any]) -> int | None:
+        if request.action.source == "preset":
+            return request.action.option_index
+        if request.action.source != "preset_candidate":
+            return None
+        candidate_id = (request.action.candidate_id or "").strip()
+        for index, candidate in enumerate(_reply_candidates(moment)):
+            if isinstance(candidate, dict) and str(candidate.get("candidate_id") or "") == candidate_id:
+                return index
+        return None
 
     def _is_overpowered(self, text: str) -> bool:
         return any(keyword in text for keyword in OVERPOWERED_KEYWORDS)
@@ -560,7 +606,7 @@ class CabRuntimeJudgmentService(DeterministicJudgmentService):
     ) -> JudgmentResponse:
         verdict = str(adapter_output.get("verdict") or "mixed")
         stance = self._stance_from_adapter_verdict(verdict)
-        consequence_text = str(adapter_output.get("result_text") or "这一步只能按当前场景给出局部后果。")
+        consequence_text = str(adapter_output.get("result_text") or "这一步只能按眼前这场来接。")
         companion_reaction = str(adapter_output.get("companion_reaction") or self._label(stance))
         why_this_happens = [str(item) for item in adapter_output.get("why_this_happens", []) if item]
         watch_flow_rationale = str(adapter_output.get("watch_flow_rationale") or self._original_plot_note(moment))
@@ -655,3 +701,14 @@ class CabRuntimeJudgmentService(DeterministicJudgmentService):
         if isinstance(prompt_plan, dict) and prompt_plan.get("prompt_text"):
             return str(prompt_plan["prompt_text"])
         return fallback or "结果图只可作为演示插图，不能当作剧情证据。"
+
+
+def _reply_candidates(moment: dict[str, Any]) -> list[dict[str, Any]]:
+    exchange = moment.get("companion_exchange")
+    if isinstance(exchange, dict) and isinstance(exchange.get("reply_candidates"), list):
+        return [item for item in exchange["reply_candidates"] if isinstance(item, dict)]
+    action_space = moment.get("action_space")
+    candidates = action_space.get("mouthpiece_candidates", []) if isinstance(action_space, dict) else []
+    if not isinstance(candidates, list):
+        return []
+    return [item for item in candidates if isinstance(item, dict)]

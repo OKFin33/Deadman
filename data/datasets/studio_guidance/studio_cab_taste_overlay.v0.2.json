@@ -1,0 +1,249 @@
+{
+  "schema_version": "studio_cab_taste_overlay.v0.2",
+  "status": "accumulating",
+  "base_frozen": "studio_cab_guidance_dataset.v0.1.json (owner_reviewed_v1_frozen — do NOT mutate)",
+  "reflow_mechanism": "Each round, owner taste from review is captured here as TYPED deltas: *_rules_addendum (rules), named_negatives (each = a generalizable FAILURE PATTERN/situation, not a verbatim string; illustrative_examples only illustrate; severity = hard | soft_preference), gold_examples (approved drafts; carry viewer_motivation = L3 ground truth). tools/ars/deadman_author_drama_heroes.py feeds the PATTERNS to the model on top of frozen v1 few-shot (stage A: lead+display+reply_set; stage B: echo), so it generalizes. Promote to a full v2 dataset later via the reflow tooling.",
+  "lead_rules_addendum": [
+    "The companion_lead is a PURE in-the-moment reaction with NO topic-naming / preface ('说到X', '聊到X', 'X的这段', '看到X'). You are watching together, so the referent is already shared on screen — just emit the reaction. (owner, rounds 3+5)",
+    "The companion_lead OPENS and INVITES — surfaces the beat's feeling, makes the viewer want to chime in, but does NOT deliver the conclusion/punchline the viewer themselves would say. Leave that take to the display_text. (owner, round-4)"
+  ],
+  "echo_rules_addendum": [
+    "The affirmation 'catch' (是啊 / 确实 / 也是 / 可不是 / 太对了 …) is the 接住感, BUT do NOT put it on all three echoes — that reads as a template/overuse. Aim ~2 of 3 with a catch and ~1 softer / without (有∶无 ≈ 2∶1), and vary which catch. (owner, rounds 1+6)",
+    "The catch MUST match the viewer's speech-act. '太对了/确实' RATIFIES a claim/opinion — use it only when the display is a claim/judgment. A WORRY/ALARM ('太危险了') needs a shared-alarm beat ('是啊，真替她捏把汗' / '可不，看得揪心'), NOT 'correct'. A WISH/PLEA ('千万别…') needs shared hope, softly — never a cocky guarantee. Agreeing-as-fact with a worry or wish is a category error. (owner, round-6)",
+    "Keep the echo's register fitting the moment — no jarring net-slang ('必须的!') or cocky certainty on a serious/worried beat — and NEVER predict what happens next ('下一秒…就…'). (owner, round-6)",
+    "The echo must ADD a distinct angle or detail — never just paraphrase the display_text (复读机). Stay grounded and natural (not theatrical/夸张/尬) and simple (trim over-specific framing). (owner, round-6)"
+  ],
+  "display_text_rules_addendum": [
+    "The display_text is a line the viewer CHOOSES to say about the SCENE — not a reply to the lead. Restrained, plausibly-shared; not a presumptuous reaction or claimed personal experience. (owner, round-2)",
+    "Keep display_texts SIMPLE and fairly general/abstract — a broad posture many viewers could own — NOT hyper-specific or finely nuanced (which only fits a few). Simpler = wider coverage. (owner, round-5)",
+    "In short-drama the viewer usually ALREADY KNOWS what is happening (no withheld info). Do NOT write reveal / suspense-payoff reactions ('这下终于找到真相了', '真相大白', '原来如此') unless the plot genuinely withheld it from the viewer. Respect the viewer's knowledge state. (owner, round-6)"
+  ],
+  "reply_set_rules_addendum": [
+    "Compose the three reply_candidates for COVERAGE: #1 and #2 hit the CORE (要害) from two distinct directions; #3 is a catch-all FALLBACK (兜底). Keep each simple and broad. (owner, round-5)"
+  ],
+  "named_negatives": [
+    {
+      "layer": "display_text",
+      "negative_type": "overclaims_viewer_reaction",
+      "severity": "hard",
+      "pattern": "Asserts a strong physical/emotional reaction as fact on the viewer's behalf — crying, tearing up, chills, '太好哭了', '鼻酸'. Assigns the viewer a reaction instead of offering a line they choose to say.",
+      "illustrative_examples": [
+        "我直接看红了眼，这也太好哭了"
+      ],
+      "why_bad": "puts a reaction in the viewer's mouth they may not have"
+    },
+    {
+      "layer": "display_text",
+      "negative_type": "presumes_viewer_personal_experience",
+      "severity": "hard",
+      "pattern": "Presumes the viewer personally shares the on-screen experience or had a parallel one ('难怪我也…', '难怪最近总…', '我家也…'). Even without 我, framings implying the viewer themselves dreams/cried/went-through-it fall in.",
+      "illustrative_examples": [
+        "难怪我最近也总梦到家里老人，太懂这种感觉了",
+        "难怪最近总频繁梦到家里老人"
+      ],
+      "why_bad": "forces a personal experience the viewer may not own"
+    },
+    {
+      "layer": "display_text",
+      "negative_type": "too_specific_narrow_coverage",
+      "severity": "hard",
+      "pattern": "Over-specific / over-detailed / too finely nuanced — packs a particular scenario or fine feeling that only a narrow set of viewers would own. Should be simple and general.",
+      "illustrative_examples": [
+        "最近接连发生这么多糟心事，总做这种梦也太熬人了",
+        "能被过世的长辈这么实打实惦记着，其实特别暖啊"
+      ],
+      "why_bad": "over-specific = narrow coverage"
+    },
+    {
+      "layer": "display_text",
+      "negative_type": "reaction_assumes_withheld_info",
+      "severity": "hard",
+      "pattern": "A reveal / suspense-payoff reaction ('这下终于找到真相了', '真相大白', '原来如此') that only makes sense if the plot WITHHELD the info from the viewer. In short-drama the audience usually already saw the setup, so 'finally the truth' rings false.",
+      "illustrative_examples": [
+        "这下终于找到真相了"
+      ],
+      "why_bad": "treats the viewer as if a mystery was withheld, when short-drama viewers already know"
+    },
+    {
+      "layer": "companion_lead",
+      "negative_type": "lead_prefaces_or_names_topic",
+      "severity": "hard",
+      "pattern": "Points at / names / introduces the on-screen topic before reacting — '说到X', '聊到X', 'X的这段', '看到X' — instead of being a pure in-the-moment reaction. The referent is already shared on screen; any topic-preface reads like an outside narrator.",
+      "illustrative_examples": [
+        "聊到过世长辈舍不得小辈这段，太戳人了",
+        "说到咱妈生前不肯走的原因，听完心里怪不是滋味的"
+      ],
+      "why_bad": "naming the topic positions the speaker as an outside narrator; a co-watcher just reacts"
+    },
+    {
+      "layer": "companion_lead",
+      "negative_type": "lead_preempts_viewer",
+      "severity": "hard",
+      "pattern": "抢戏 — delivers the full conclusion/punchline the VIEWER would want to say ('原来不是X，全是Y啊'), leaving the viewer nothing to add. The display_texts then collapse into replies to the lead. The lead must OPEN/INVITE and leave the take to the display_text.",
+      "illustrative_examples": [
+        "原来老人家不肯走根本不是有执念，全是放心不下小辈啊"
+      ],
+      "why_bad": "lead and the viewer's line collapse; display becomes a reply to the lead"
+    },
+    {
+      "layer": "echo",
+      "negative_type": "catch_mismatches_speech_act",
+      "severity": "hard",
+      "pattern": "The affirmation catch does not match the viewer's speech-act — ratifying with '太对了/确实' a display that is a WORRY/ALARM ('女主太危险了') or a WISH/PLEA ('千万别…') rather than a claim. You cannot agree-as-correct with a worry or a wish; share the alarm / share the hope instead.",
+      "illustrative_examples": [
+        "太对了 ← 接「女主现在处境也太危险了」",
+        "必须的！ ← 接「接下来可千万别让他们得逞啊」"
+      ],
+      "why_bad": "treats an emotion (worry/wish) as a proposition to grade as correct; reads cold/odd"
+    },
+    {
+      "layer": "echo",
+      "negative_type": "register_clash_or_predicts_plot",
+      "severity": "hard",
+      "pattern": "Echo register clashes with the moment (net-slang / cocky certainty like '必须的!' on a serious/worried beat), OR the echo predicts what happens next ('下一秒…就…', '后面肯定…').",
+      "illustrative_examples": [
+        "必须的！下一秒说不定就有人撞破他们换药的阴谋"
+      ],
+      "why_bad": "tonal whiplash + predicting future plot (forbidden)"
+    },
+    {
+      "layer": "echo",
+      "negative_type": "echo_restates_display",
+      "severity": "hard",
+      "pattern": "复读机 — the echo merely paraphrases the display_text instead of adding a distinct angle/detail ('对面人都直接看傻了' → '孙家人现在全僵在原地看懵了').",
+      "illustrative_examples": [
+        "确实，孙家人现在全僵在原地看懵了 ← 接「对面人都直接看傻了」"
+      ],
+      "why_bad": "no new content; the host just echoes the same words"
+    },
+    {
+      "layer": "echo",
+      "negative_type": "echo_overwrought_or_overspecific",
+      "severity": "hard",
+      "pattern": "The echo is theatrical / exaggerated / 尬 ('冷得刺骨的眼神，哪是普通小辈能有的气场'), or over-specific ('追这么多集…今天'). Echoes stay grounded, natural, and simple.",
+      "illustrative_examples": [
+        "太对了，就刚才那冷得刺骨的眼神，哪是普通小辈能有的气场啊",
+        "确实，追这么多集埋的伏笔今天总算全部串起来了"
+      ],
+      "why_bad": "overwrought/wordy echoes read fake and overshadow the viewer"
+    }
+  ],
+  "gold_examples": [
+    {
+      "drama_id": "yunmiao",
+      "moment_id": "yunmiao_ep17_m001",
+      "episode_id": "yunmiao_ep17",
+      "provenance": "owner_confirmed",
+      "review_status": "owner_reviewed",
+      "companion_lead": "听完心里怪不是滋味的",
+      "reply_candidates": [
+        {
+          "display_text": "长辈的惦记永远是最戳人的",
+          "viewer_motivation": "想要抒发对长辈纯粹牵挂的触动感",
+          "selected_echo": "太对了，哪有什么执念，全是长辈放心不下小辈的软牵挂。",
+          "coverage": "core_direction_a"
+        },
+        {
+          "display_text": "接连遇上糟心事真的太耗人了",
+          "viewer_motivation": "想要吐槽连续遭遇变故的疲惫感",
+          "selected_echo": "可不是，攒了一堆糟心事连觉都睡不踏实啊",
+          "coverage": "core_direction_b"
+        },
+        {
+          "display_text": "这种感觉真的太复杂了",
+          "viewer_motivation": "没有明确的单一情绪，只想笼统表达当下的复杂感受",
+          "selected_echo": "确实，暖得发烫又酸得发堵，全是长辈藏在心底的软牵挂",
+          "coverage": "fallback"
+        }
+      ],
+      "taste_note": "owner-approved exemplar (round-5): pure-reaction lead, simple/broad displays, 2-direction+fallback, echo catches. NOTE: this gold predates the round-6 catch-ratio (有∶无≈2∶1) rule — its 3 echoes all carry a catch; acceptable as approved, but new authoring should vary."
+    },
+    {
+      "drama_id": "yunmiao",
+      "moment_id": "yunmiao_ep18_m001",
+      "episode_id": "yunmiao_ep18",
+      "provenance": "owner_confirmed",
+      "review_status": "owner_reviewed",
+      "companion_lead": "这眼神谁看了不发怵啊",
+      "reply_candidates": [
+        {
+          "display_text": "孙家这下要踢到铁板了",
+          "viewer_motivation": "期待嚣张的孙家当场吃瘪",
+          "selected_echo": "可不是，刚还放话的孙家这下要栽了",
+          "coverage": "core_direction_a"
+        },
+        {
+          "display_text": "她藏的实力果然深不可测",
+          "viewer_motivation": "嗑主角扮猪吃虎的碾压人设",
+          "selected_echo": "那身气场，哪是普通小辈能压得住的",
+          "coverage": "core_direction_b"
+        },
+        {
+          "display_text": "这气场也太唬人了",
+          "viewer_motivation": "单纯被主角的强大气场震到",
+          "selected_echo": "确实，站她跟前的人连大气都不敢喘",
+          "coverage": "fallback"
+        }
+      ],
+      "taste_note": "owner-approved + light polish (round-6 2026-06-09): 2-direction+fallback, catch~2:1, speech-act-matched echoes."
+    },
+    {
+      "drama_id": "lihun",
+      "moment_id": "lihun_ep06_m001",
+      "episode_id": "lihun_ep06",
+      "provenance": "owner_confirmed",
+      "review_status": "owner_reviewed",
+      "companion_lead": "他们居然敢打这种恶毒主意",
+      "reply_candidates": [
+        {
+          "display_text": "这也太歹毒了吧",
+          "viewer_motivation": "第一时间对反派的恶毒计划表达愤怒",
+          "selected_echo": "可不是，连孕妇肚里的小生命都下得去手",
+          "coverage": "core_direction_a"
+        },
+        {
+          "display_text": "绝对不能让他们得逞啊",
+          "viewer_motivation": "代入女主处境盼她躲过这一劫",
+          "selected_echo": "我也攥着心呢，盼着她能早点识破",
+          "coverage": "core_direction_b"
+        },
+        {
+          "display_text": "看得人心里直发毛",
+          "viewer_motivation": "单纯抒发当下看得心里发毛",
+          "selected_echo": "确实，这种害人的手段太阴损了",
+          "coverage": "fallback"
+        }
+      ],
+      "taste_note": "owner-approved + light polish (round-6 2026-06-09): 2-direction+fallback, catch~2:1, speech-act-matched echoes."
+    },
+    {
+      "drama_id": "lihun",
+      "moment_id": "lihun_ep12_m001",
+      "episode_id": "lihun_ep12",
+      "provenance": "owner_confirmed",
+      "review_status": "owner_reviewed",
+      "companion_lead": "这摆明了是故意害她",
+      "reply_candidates": [
+        {
+          "display_text": "这人也太恶毒了",
+          "viewer_motivation": "发泄对施害者的强烈不满",
+          "selected_echo": "可不是，连没出世的孩子都下毒手",
+          "coverage": "core_direction_a"
+        },
+        {
+          "display_text": "之前肚子疼果然不是巧合",
+          "viewer_motivation": "说出之前就觉得不对劲的感受",
+          "selected_echo": "太对了，那些小疑点这下全对上了",
+          "coverage": "core_direction_b"
+        },
+        {
+          "display_text": "女主实在太委屈了",
+          "viewer_motivation": "表达对女主处境的共情",
+          "selected_echo": "受了这么多罪，竟全是被人算计的",
+          "coverage": "fallback"
+        }
+      ],
+      "taste_note": "owner-approved + light polish (round-6 2026-06-09): 2-direction+fallback, catch~2:1, speech-act-matched echoes."
+    }
+  ]
+}

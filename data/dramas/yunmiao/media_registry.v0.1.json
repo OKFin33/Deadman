@@ -1,0 +1,40 @@
+{
+  "schema_version": "deadman_media_registry.v0.1",
+  "drama_id": "yunmiao",
+  "title": "云渺1：我修仙多年强亿点怎么了",
+  "media_policy": "local producer media; runtime serves via runtime_video_url; raw mp4 not committed",
+  "episode_count": 3,
+  "registered_count": 3,
+  "episodes": [
+    {
+      "episode_id": "yunmiao_ep17",
+      "title": "第17集",
+      "runtime_video_url": "/api/deadman/media/yunmiao/yunmiao_ep17.mp4",
+      "status": "registered",
+      "producer_media": {
+        "local_media_path": "tmp/视频素材/云渺/第17集.mp4",
+        "policy": "producer-only local metadata; runtime should use runtime_video_url"
+      }
+    },
+    {
+      "episode_id": "yunmiao_ep03",
+      "title": "第3集",
+      "runtime_video_url": "/api/deadman/media/yunmiao/yunmiao_ep03.mp4",
+      "status": "registered",
+      "producer_media": {
+        "local_media_path": "tmp/视频素材/云渺/第3集.mp4",
+        "policy": "producer-only local metadata; runtime should use runtime_video_url"
+      }
+    },
+    {
+      "episode_id": "yunmiao_ep18",
+      "title": "第18集",
+      "runtime_video_url": "/api/deadman/media/yunmiao/yunmiao_ep18.mp4",
+      "status": "registered",
+      "producer_media": {
+        "local_media_path": "tmp/视频素材/云渺/第18集.mp4",
+        "policy": "producer-only local metadata; runtime should use runtime_video_url"
+      }
+    }
+  ]
+}

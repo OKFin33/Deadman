@@ -1,6 +1,7 @@
 # Deadman Backend
 
-Branch 3 / Deadman API for `要是我来`.
+Deadman backend API for `看剧搭子`. `要是我来` is archived pivot language and
+must not be used as the viewer-facing product promise.
 
 This backend reads promoted runtime packs from:
 

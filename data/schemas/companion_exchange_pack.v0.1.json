@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://oseria.local/schemas/deadman/companion_exchange_pack.v0.1.json",
+  "title": "Deadman CompanionExchangePack v0.1",
+  "description": "Reviewed friend-style exchange artifact for one Deadman v0.4 companion moment.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema_version",
+    "scene_signal",
+    "window_rationale",
+    "notice_marker",
+    "companion_lead",
+    "reply_candidates",
+    "custom_reply_policy",
+    "evidence_refs",
+    "constraint_refs",
+    "blocked_claims",
+    "review_status"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "companion_exchange_pack.v0.1"
+    },
+    "scene_signal": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80
+    },
+    "window_rationale": {
+      "type": "string",
+      "minLength": 1
+    },
+    "notice_marker": {
+      "enum": ["!", "?"]
+    },
+    "companion_lead": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 40
+    },
+    "reply_candidates": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "$ref": "#/$defs/reply_candidate"
+      }
+    },
+    "custom_reply_policy": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "evidence_refs": {
+      "$ref": "#/$defs/non_empty_string_array"
+    },
+    "constraint_refs": {
+      "$ref": "#/$defs/non_empty_string_array"
+    },
+    "blocked_claims": {
+      "$ref": "#/$defs/non_empty_string_array"
+    },
+    "review_status": {
+      "enum": ["draft", "needs_review", "reviewed", "rejected"]
+    }
+  },
+  "$defs": {
+    "reply_candidate": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "candidate_id",
+        "display_text",
+        "action_payload",
+        "selected_echo",
+        "emotion_role",
+        "semantic_role",
+        "distinctness_rationale",
+        "evidence_refs",
+        "constraint_refs"
+      ],
+      "properties": {
+        "candidate_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "display_text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 14
+        },
+        "action_payload": {
+          "type": "object",
+          "required": ["text"],
+          "properties": {
+            "text": {
+              "type": "string",
+              "minLength": 1
+            },
+            "action_type": {
+              "type": "string"
+            },
+            "intent": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": true
+        },
+        "selected_echo": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "emotion_role": {
+          "type": "string",
+          "minLength": 1
+        },
+        "semantic_role": {
+          "type": "string",
+          "minLength": 1
+        },
+        "distinctness_rationale": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_refs": {
+          "$ref": "#/$defs/non_empty_string_array"
+        },
+        "constraint_refs": {
+          "$ref": "#/$defs/non_empty_string_array"
+        }
+      }
+    },
+    "non_empty_string_array": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  }
+}

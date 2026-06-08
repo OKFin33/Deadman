@@ -1,0 +1,908 @@
+{
+  "schema_version": "moment_causality_pack.v0.1",
+  "collection_schema_version": "moment_causality_pack_collection.v0.1",
+  "drama_id": "lihun",
+  "title": "幸得相遇离婚时",
+  "drama_context_ref": "context.v0.1.json",
+  "source_policy": "light promote from reviewed mined candidates; companion content pending CAB authoring",
+  "moment_count": 3,
+  "moments": [
+    {
+      "pack_id": "lihun_ep06_m001",
+      "moment_id": "lihun_ep06_m001",
+      "schema_version": "moment_causality_pack.v0.1",
+      "drama_id": "lihun",
+      "drama_context_ref": "context.v0.1.json",
+      "source_drama": {
+        "title": "幸得相遇离婚时",
+        "episode_id": "lihun_ep06",
+        "source_policy": "reviewed mined candidate (light promote); companion content pending CAB authoring",
+        "time_range_seconds": [
+          0,
+          20
+        ],
+        "runtime_video_url": "/api/deadman/media/lihun/lihun_ep06.mp4",
+        "media_registry_ref": "data/dramas/lihun/media_registry.v0.1.json#lihun_ep06"
+      },
+      "source_window": {
+        "start_ms": 0,
+        "end_ms": 20000,
+        "transcript_refs": [
+          {
+            "id": "lihun_ep06_m001_u001",
+            "episode_id": "lihun_ep06",
+            "start_ms": 0,
+            "end_ms": 20000,
+            "text": "呐，里面的药我已经换过了，给你老婆吃。这是什么？你不就是因为她现在怀孕了，所以才不忍心跟她离婚吗？嗯，只要她孩子没了，那不就好了？",
+            "source": "sanitized_asr_snippet"
+          }
+        ],
+        "keyframe_refs": [],
+        "provenance_status": "publish_safe_sanitized"
+      },
+      "provenance": {
+        "candidate_id": "lihun_ep06_c001",
+        "reviewed_candidate_ref": "lihun_ep06_c001",
+        "source_artifact": "data/dramas/lihun/evidence/reviewed_demo_nodes.v0.1.json#lihun_ep06_m001"
+      },
+      "review_state": {
+        "status": "demo_candidate",
+        "reviewed_at": "2026-06-08",
+        "evidence_grade": "medium",
+        "evidence_notes": "呐，里面的药我已经换过了，给你老婆吃。这是什么？你不就是因为她现在怀孕了，所以才不忍心跟她离婚吗？嗯，只要她孩子没了，那不就好了？",
+        "evidence_vs_inference": "window is mined+reviewed evidence; companion content pending CAB authoring"
+      },
+      "companion_surface": {
+        "notice_marker": "!",
+        "hook": "他们居然敢打这种恶毒主意",
+        "viewer_impulse": "要是我来，我想接一句。",
+        "scene_specificity_check": "must name an object, relation, witness, rule, or decision pressure from the source window",
+        "companion_lead": "他们居然敢打这种恶毒主意"
+      },
+      "action_space": {
+        "action_type": "other",
+        "default_options": [
+          "这也太歹毒了吧",
+          "绝对不能让他们得逞啊",
+          "看得人心里直发毛"
+        ],
+        "mouthpiece_candidates_schema_version": "mouthpiece_candidates.v0.1",
+        "mouthpiece_candidates": [
+          {
+            "candidate_id": "preset_0",
+            "display_text": "这也太歹毒了吧",
+            "action_payload": {
+              "text": "这也太歹毒了吧",
+              "action_type": "other",
+              "intent": "condemn",
+              "target_actors": [
+                "scene_focus"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "谴责反派",
+            "semantic_role": "condemn",
+            "distinctness_rationale": "coverage:core_direction_a; CAB+owner-polish (round-6)",
+            "evidence_refs": [
+              "lihun_ep06_m001_u001",
+              "current_scene_window"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "no_branch_rewrite",
+              "source_window_grounding"
+            ],
+            "viewer_motivation": "第一时间对反派的恶毒计划表达愤怒",
+            "friend_voice_seed": "可不是，连孕妇肚里的小生命都下得去手",
+            "selected_echo": "可不是，连孕妇肚里的小生命都下得去手"
+          },
+          {
+            "candidate_id": "preset_1",
+            "display_text": "绝对不能让他们得逞啊",
+            "action_payload": {
+              "text": "绝对不能让他们得逞啊",
+              "action_type": "other",
+              "intent": "protect",
+              "target_actors": [
+                "scene_focus"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "护女主",
+            "semantic_role": "protect",
+            "distinctness_rationale": "coverage:core_direction_b; CAB+owner-polish (round-6)",
+            "evidence_refs": [
+              "lihun_ep06_m001_u001",
+              "current_scene_window"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "no_branch_rewrite",
+              "source_window_grounding"
+            ],
+            "viewer_motivation": "代入女主处境盼她躲过这一劫",
+            "friend_voice_seed": "我也攥着心呢，盼着她能早点识破",
+            "selected_echo": "我也攥着心呢，盼着她能早点识破"
+          },
+          {
+            "candidate_id": "preset_2",
+            "display_text": "看得人心里直发毛",
+            "action_payload": {
+              "text": "看得人心里直发毛",
+              "action_type": "other",
+              "intent": "catch_all",
+              "target_actors": [
+                "scene_focus"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "不适",
+            "semantic_role": "catch_all",
+            "distinctness_rationale": "coverage:fallback; CAB+owner-polish (round-6)",
+            "evidence_refs": [
+              "lihun_ep06_m001_u001",
+              "current_scene_window"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "no_branch_rewrite",
+              "source_window_grounding"
+            ],
+            "viewer_motivation": "单纯抒发当下看得心里发毛",
+            "friend_voice_seed": "确实，这种害人的手段太阴损了",
+            "selected_echo": "确实，这种害人的手段太阴损了"
+          }
+        ]
+      },
+      "original_plot_note": "原剧情按当前场景推进；互动只接当下这一口气。",
+      "evidence": {
+        "grade": "medium",
+        "notes": "呐，里面的药我已经换过了，给你老婆吃。这是什么？你不就是因为她现在怀孕了，所以才不忍心跟她离婚吗？嗯，只要她孩子没了，那不就好了？",
+        "excerpt": "呐，里面的药我已经换过了，给你老婆吃。这是什么？你不就是因为她现在怀孕了，所以才不忍心跟她离婚吗？嗯，只要她孩子没了，那不就好了？"
+      },
+      "source_refs": {
+        "reviewed_demo_node": "data/dramas/lihun/evidence/reviewed_demo_nodes.v0.1.json#lihun_ep06_m001",
+        "transcript_snippets": [
+          {
+            "id": "lihun_ep06_m001_u001",
+            "episode_id": "lihun_ep06",
+            "start_ms": 0,
+            "end_ms": 20000,
+            "text": "呐，里面的药我已经换过了，给你老婆吃。这是什么？你不就是因为她现在怀孕了，所以才不忍心跟她离婚吗？嗯，只要她孩子没了，那不就好了？",
+            "source": "sanitized_asr_snippet"
+          }
+        ],
+        "keyframe_refs": []
+      },
+      "interaction_window": {
+        "notice_at_seconds": 0,
+        "start_seconds": 0,
+        "end_seconds": 20,
+        "source": "reviewed_ars",
+        "confidence": "medium",
+        "pause_policy": "pause_on_invite",
+        "expire_behavior": "return_to_idle"
+      },
+      "producer_refs": {
+        "policy": "light promote; producer evidence under ignored tmp/ars_<drama>_analysis; runtime refs sanitized"
+      },
+      "companion_exchange": {
+        "schema_version": "companion_exchange_pack.v0.1",
+        "scene_signal": "他们居然敢打这种恶毒主意",
+        "window_rationale": "呐，里面的药我已经换过了，给你老婆吃。这是什么？你不就是因为她现在怀孕了，所以才不忍心跟她离婚吗？嗯，只要她孩子没了，那不就好了？",
+        "notice_marker": "!",
+        "companion_lead": "他们居然敢打这种恶毒主意",
+        "reply_candidates": [
+          {
+            "candidate_id": "preset_0",
+            "display_text": "这也太歹毒了吧",
+            "action_payload": {
+              "text": "这也太歹毒了吧",
+              "action_type": "other",
+              "intent": "condemn",
+              "target_actors": [
+                "scene_focus"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "谴责反派",
+            "semantic_role": "condemn",
+            "distinctness_rationale": "coverage:core_direction_a; CAB+owner-polish (round-6)",
+            "evidence_refs": [
+              "lihun_ep06_m001_u001",
+              "current_scene_window"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "no_branch_rewrite",
+              "source_window_grounding"
+            ],
+            "viewer_motivation": "第一时间对反派的恶毒计划表达愤怒",
+            "friend_voice_seed": "可不是，连孕妇肚里的小生命都下得去手",
+            "selected_echo": "可不是，连孕妇肚里的小生命都下得去手"
+          },
+          {
+            "candidate_id": "preset_1",
+            "display_text": "绝对不能让他们得逞啊",
+            "action_payload": {
+              "text": "绝对不能让他们得逞啊",
+              "action_type": "other",
+              "intent": "protect",
+              "target_actors": [
+                "scene_focus"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "护女主",
+            "semantic_role": "protect",
+            "distinctness_rationale": "coverage:core_direction_b; CAB+owner-polish (round-6)",
+            "evidence_refs": [
+              "lihun_ep06_m001_u001",
+              "current_scene_window"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "no_branch_rewrite",
+              "source_window_grounding"
+            ],
+            "viewer_motivation": "代入女主处境盼她躲过这一劫",
+            "friend_voice_seed": "我也攥着心呢，盼着她能早点识破",
+            "selected_echo": "我也攥着心呢，盼着她能早点识破"
+          },
+          {
+            "candidate_id": "preset_2",
+            "display_text": "看得人心里直发毛",
+            "action_payload": {
+              "text": "看得人心里直发毛",
+              "action_type": "other",
+              "intent": "catch_all",
+              "target_actors": [
+                "scene_focus"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "不适",
+            "semantic_role": "catch_all",
+            "distinctness_rationale": "coverage:fallback; CAB+owner-polish (round-6)",
+            "evidence_refs": [
+              "lihun_ep06_m001_u001",
+              "current_scene_window"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "no_branch_rewrite",
+              "source_window_grounding"
+            ],
+            "viewer_motivation": "单纯抒发当下看得心里发毛",
+            "friend_voice_seed": "确实，这种害人的手段太阴损了",
+            "selected_echo": "确实，这种害人的手段太阴损了"
+          }
+        ],
+        "custom_reply_policy": {
+          "allowed": true,
+          "scope": "local credible consequence only",
+          "reject_or_soften": [
+            "continuous branch rewrite",
+            "unbounded system/power escalation",
+            "claims not grounded in source window"
+          ],
+          "runtime_personalization": "bounded"
+        },
+        "evidence_refs": [
+          "lihun_ep06_m001_u001",
+          "current_scene_window"
+        ],
+        "constraint_refs": [
+          "current_scene_only",
+          "no_branch_rewrite",
+          "source_window_grounding",
+          "no_future_episode_claim"
+        ],
+        "blocked_claims": [
+          "Do not claim what happens in later episodes.",
+          "Do not infer hidden motives from visual context alone.",
+          "Do not turn the reply into a new story branch."
+        ],
+        "review_status": "reviewed",
+        "content_status": "cab_authored_owner_reviewed"
+      },
+      "title": "幸得相遇离婚时"
+    },
+    {
+      "pack_id": "lihun_ep12_m001",
+      "moment_id": "lihun_ep12_m001",
+      "schema_version": "moment_causality_pack.v0.1",
+      "drama_id": "lihun",
+      "drama_context_ref": "context.v0.1.json",
+      "source_drama": {
+        "title": "幸得相遇离婚时",
+        "episode_id": "lihun_ep12",
+        "source_policy": "reviewed mined candidate (light promote); companion content pending CAB authoring",
+        "time_range_seconds": [
+          40,
+          60
+        ],
+        "runtime_video_url": "/api/deadman/media/lihun/lihun_ep12.mp4",
+        "media_registry_ref": "data/dramas/lihun/media_registry.v0.1.json#lihun_ep12"
+      },
+      "source_window": {
+        "start_ms": 40000,
+        "end_ms": 60000,
+        "transcript_refs": [
+          {
+            "id": "lihun_ep12_m001_u001",
+            "episode_id": "lihun_ep12",
+            "start_ms": 40000,
+            "end_ms": 60000,
+            "text": "毒药。不只是孩子。所以我肚子疼。不是偶然。",
+            "source": "sanitized_asr_snippet"
+          }
+        ],
+        "keyframe_refs": [],
+        "provenance_status": "publish_safe_sanitized"
+      },
+      "provenance": {
+        "candidate_id": "lihun_ep12_c001",
+        "reviewed_candidate_ref": "lihun_ep12_c001",
+        "source_artifact": "data/dramas/lihun/evidence/reviewed_demo_nodes.v0.1.json#lihun_ep12_m001"
+      },
+      "review_state": {
+        "status": "demo_candidate",
+        "reviewed_at": "2026-06-08",
+        "evidence_grade": "medium",
+        "evidence_notes": "毒药。不只是孩子。所以我肚子疼。不是偶然。",
+        "evidence_vs_inference": "window is mined+reviewed evidence; companion content pending CAB authoring"
+      },
+      "companion_surface": {
+        "notice_marker": "!",
+        "hook": "这摆明了是故意害她",
+        "viewer_impulse": "要是我来，我想接一句。",
+        "scene_specificity_check": "must name an object, relation, witness, rule, or decision pressure from the source window",
+        "companion_lead": "这摆明了是故意害她"
+      },
+      "action_space": {
+        "action_type": "other",
+        "default_options": [
+          "这人也太恶毒了",
+          "之前肚子疼果然不是巧合",
+          "女主实在太委屈了"
+        ],
+        "mouthpiece_candidates_schema_version": "mouthpiece_candidates.v0.1",
+        "mouthpiece_candidates": [
+          {
+            "candidate_id": "preset_0",
+            "display_text": "这人也太恶毒了",
+            "action_payload": {
+              "text": "这人也太恶毒了",
+              "action_type": "other",
+              "intent": "condemn",
+              "target_actors": [
+                "scene_focus"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "谴责",
+            "semantic_role": "condemn",
+            "distinctness_rationale": "coverage:core_direction_a; CAB+owner-polish (round-6)",
+            "evidence_refs": [
+              "lihun_ep12_m001_u001",
+              "current_scene_window"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "no_branch_rewrite",
+              "source_window_grounding"
+            ],
+            "viewer_motivation": "发泄对施害者的强烈不满",
+            "friend_voice_seed": "可不是，连没出世的孩子都下毒手",
+            "selected_echo": "可不是，连没出世的孩子都下毒手"
+          },
+          {
+            "candidate_id": "preset_1",
+            "display_text": "之前肚子疼果然不是巧合",
+            "action_payload": {
+              "text": "之前肚子疼果然不是巧合",
+              "action_type": "other",
+              "intent": "realize",
+              "target_actors": [
+                "scene_focus"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "反应过来",
+            "semantic_role": "realize",
+            "distinctness_rationale": "coverage:core_direction_b; CAB+owner-polish (round-6)",
+            "evidence_refs": [
+              "lihun_ep12_m001_u001",
+              "current_scene_window"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "no_branch_rewrite",
+              "source_window_grounding"
+            ],
+            "viewer_motivation": "说出之前就觉得不对劲的感受",
+            "friend_voice_seed": "太对了，那些小疑点这下全对上了",
+            "selected_echo": "太对了，那些小疑点这下全对上了"
+          },
+          {
+            "candidate_id": "preset_2",
+            "display_text": "女主实在太委屈了",
+            "action_payload": {
+              "text": "女主实在太委屈了",
+              "action_type": "other",
+              "intent": "catch_all",
+              "target_actors": [
+                "scene_focus"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "共情",
+            "semantic_role": "catch_all",
+            "distinctness_rationale": "coverage:fallback; CAB+owner-polish (round-6)",
+            "evidence_refs": [
+              "lihun_ep12_m001_u001",
+              "current_scene_window"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "no_branch_rewrite",
+              "source_window_grounding"
+            ],
+            "viewer_motivation": "表达对女主处境的共情",
+            "friend_voice_seed": "受了这么多罪，竟全是被人算计的",
+            "selected_echo": "受了这么多罪，竟全是被人算计的"
+          }
+        ]
+      },
+      "original_plot_note": "原剧情按当前场景推进；互动只接当下这一口气。",
+      "evidence": {
+        "grade": "medium",
+        "notes": "毒药。不只是孩子。所以我肚子疼。不是偶然。",
+        "excerpt": "毒药。不只是孩子。所以我肚子疼。不是偶然。"
+      },
+      "source_refs": {
+        "reviewed_demo_node": "data/dramas/lihun/evidence/reviewed_demo_nodes.v0.1.json#lihun_ep12_m001",
+        "transcript_snippets": [
+          {
+            "id": "lihun_ep12_m001_u001",
+            "episode_id": "lihun_ep12",
+            "start_ms": 40000,
+            "end_ms": 60000,
+            "text": "毒药。不只是孩子。所以我肚子疼。不是偶然。",
+            "source": "sanitized_asr_snippet"
+          }
+        ],
+        "keyframe_refs": []
+      },
+      "interaction_window": {
+        "notice_at_seconds": 40,
+        "start_seconds": 40,
+        "end_seconds": 60,
+        "source": "reviewed_ars",
+        "confidence": "medium",
+        "pause_policy": "pause_on_invite",
+        "expire_behavior": "return_to_idle"
+      },
+      "producer_refs": {
+        "policy": "light promote; producer evidence under ignored tmp/ars_<drama>_analysis; runtime refs sanitized"
+      },
+      "companion_exchange": {
+        "schema_version": "companion_exchange_pack.v0.1",
+        "scene_signal": "这摆明了是故意害她",
+        "window_rationale": "毒药。不只是孩子。所以我肚子疼。不是偶然。",
+        "notice_marker": "!",
+        "companion_lead": "这摆明了是故意害她",
+        "reply_candidates": [
+          {
+            "candidate_id": "preset_0",
+            "display_text": "这人也太恶毒了",
+            "action_payload": {
+              "text": "这人也太恶毒了",
+              "action_type": "other",
+              "intent": "condemn",
+              "target_actors": [
+                "scene_focus"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "谴责",
+            "semantic_role": "condemn",
+            "distinctness_rationale": "coverage:core_direction_a; CAB+owner-polish (round-6)",
+            "evidence_refs": [
+              "lihun_ep12_m001_u001",
+              "current_scene_window"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "no_branch_rewrite",
+              "source_window_grounding"
+            ],
+            "viewer_motivation": "发泄对施害者的强烈不满",
+            "friend_voice_seed": "可不是，连没出世的孩子都下毒手",
+            "selected_echo": "可不是，连没出世的孩子都下毒手"
+          },
+          {
+            "candidate_id": "preset_1",
+            "display_text": "之前肚子疼果然不是巧合",
+            "action_payload": {
+              "text": "之前肚子疼果然不是巧合",
+              "action_type": "other",
+              "intent": "realize",
+              "target_actors": [
+                "scene_focus"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "反应过来",
+            "semantic_role": "realize",
+            "distinctness_rationale": "coverage:core_direction_b; CAB+owner-polish (round-6)",
+            "evidence_refs": [
+              "lihun_ep12_m001_u001",
+              "current_scene_window"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "no_branch_rewrite",
+              "source_window_grounding"
+            ],
+            "viewer_motivation": "说出之前就觉得不对劲的感受",
+            "friend_voice_seed": "太对了，那些小疑点这下全对上了",
+            "selected_echo": "太对了，那些小疑点这下全对上了"
+          },
+          {
+            "candidate_id": "preset_2",
+            "display_text": "女主实在太委屈了",
+            "action_payload": {
+              "text": "女主实在太委屈了",
+              "action_type": "other",
+              "intent": "catch_all",
+              "target_actors": [
+                "scene_focus"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "共情",
+            "semantic_role": "catch_all",
+            "distinctness_rationale": "coverage:fallback; CAB+owner-polish (round-6)",
+            "evidence_refs": [
+              "lihun_ep12_m001_u001",
+              "current_scene_window"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "no_branch_rewrite",
+              "source_window_grounding"
+            ],
+            "viewer_motivation": "表达对女主处境的共情",
+            "friend_voice_seed": "受了这么多罪，竟全是被人算计的",
+            "selected_echo": "受了这么多罪，竟全是被人算计的"
+          }
+        ],
+        "custom_reply_policy": {
+          "allowed": true,
+          "scope": "local credible consequence only",
+          "reject_or_soften": [
+            "continuous branch rewrite",
+            "unbounded system/power escalation",
+            "claims not grounded in source window"
+          ],
+          "runtime_personalization": "bounded"
+        },
+        "evidence_refs": [
+          "lihun_ep12_m001_u001",
+          "current_scene_window"
+        ],
+        "constraint_refs": [
+          "current_scene_only",
+          "no_branch_rewrite",
+          "source_window_grounding",
+          "no_future_episode_claim"
+        ],
+        "blocked_claims": [
+          "Do not claim what happens in later episodes.",
+          "Do not infer hidden motives from visual context alone.",
+          "Do not turn the reply into a new story branch."
+        ],
+        "review_status": "reviewed",
+        "content_status": "cab_authored_owner_reviewed"
+      },
+      "title": "幸得相遇离婚时"
+    },
+    {
+      "pack_id": "lihun_ep19_m001",
+      "moment_id": "lihun_ep19_m001",
+      "schema_version": "moment_causality_pack.v0.1",
+      "drama_id": "lihun",
+      "drama_context_ref": "context.v0.1.json",
+      "source_drama": {
+        "title": "幸得相遇离婚时",
+        "episode_id": "lihun_ep19",
+        "source_policy": "reviewed mined candidate (light promote); companion content pending CAB authoring",
+        "time_range_seconds": [
+          60,
+          80
+        ],
+        "runtime_video_url": "/api/deadman/media/lihun/lihun_ep19.mp4",
+        "media_registry_ref": "data/dramas/lihun/media_registry.v0.1.json#lihun_ep19"
+      },
+      "source_window": {
+        "start_ms": 60000,
+        "end_ms": 80000,
+        "transcript_refs": [
+          {
+            "id": "lihun_ep19_m001_u001",
+            "episode_id": "lihun_ep19",
+            "start_ms": 60000,
+            "end_ms": 80000,
+            "text": "只能偷偷地你这算骚扰。",
+            "source": "sanitized_asr_snippet"
+          }
+        ],
+        "keyframe_refs": [],
+        "provenance_status": "publish_safe_sanitized"
+      },
+      "provenance": {
+        "candidate_id": "lihun_ep19_c002",
+        "reviewed_candidate_ref": "lihun_ep19_c002",
+        "source_artifact": "data/dramas/lihun/evidence/reviewed_demo_nodes.v0.1.json#lihun_ep19_m001"
+      },
+      "review_state": {
+        "status": "demo_candidate",
+        "reviewed_at": "2026-06-08",
+        "evidence_grade": "medium",
+        "evidence_notes": "只能偷偷地你这算骚扰。",
+        "evidence_vs_inference": "window is mined+reviewed evidence; companion content pending CAB authoring"
+      },
+      "companion_surface": {
+        "notice_marker": "!",
+        "hook": "这一下我有点想替他说一句。",
+        "viewer_impulse": "要是我来，我想接一句。",
+        "scene_specificity_check": "must name an object, relation, witness, rule, or decision pressure from the source window",
+        "companion_lead": "这一下我有点想替他说一句。"
+      },
+      "action_space": {
+        "action_type": "evidence_or_trap",
+        "default_options": [
+          "接住眼前这个人此刻的情绪",
+          "为眼前这件事说一句公道话",
+          "先把火气压一压，看眼前怎么落地"
+        ],
+        "mouthpiece_candidates_schema_version": "mouthpiece_candidates.v0.1",
+        "mouthpiece_candidates": [
+          {
+            "candidate_id": "preset_0",
+            "display_text": "想替他接一句",
+            "action_payload": {
+              "text": "接住眼前这个人此刻的情绪",
+              "action_type": "evidence_or_trap",
+              "intent": "stand_with_person",
+              "target_actors": [
+                "scene_focus"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "替他着急",
+            "semantic_role": "stand_with_person",
+            "distinctness_rationale": "placeholder pending CAB authoring (Step 3)",
+            "evidence_refs": [
+              "lihun_ep19_m001_u001",
+              "current_scene_window"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "no_branch_rewrite",
+              "source_window_grounding"
+            ],
+            "friend_voice_seed": "嗯，这一下我也想替他说一句。",
+            "selected_echo": "嗯，这一下我也想替他说一句。"
+          },
+          {
+            "candidate_id": "preset_1",
+            "display_text": "这事得有人吭声",
+            "action_payload": {
+              "text": "为眼前这件事说一句公道话",
+              "action_type": "evidence_or_trap",
+              "intent": "name_the_issue",
+              "target_actors": [
+                "scene_focus"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "替场面发声",
+            "semantic_role": "name_the_issue",
+            "distinctness_rationale": "placeholder pending CAB authoring (Step 3)",
+            "evidence_refs": [
+              "lihun_ep19_m001_u001",
+              "current_scene_window"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "no_branch_rewrite",
+              "source_window_grounding"
+            ],
+            "friend_voice_seed": "对，这场面不能没人吭声。",
+            "selected_echo": "对，这场面不能没人吭声。"
+          },
+          {
+            "candidate_id": "preset_2",
+            "display_text": "先稳一下别急",
+            "action_payload": {
+              "text": "先把火气压一压，看眼前怎么落地",
+              "action_type": "evidence_or_trap",
+              "intent": "soften_first",
+              "target_actors": [
+                "scene_focus"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "先稳住",
+            "semantic_role": "soften_first",
+            "distinctness_rationale": "placeholder pending CAB authoring (Step 3)",
+            "evidence_refs": [
+              "lihun_ep19_m001_u001",
+              "current_scene_window"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "no_branch_rewrite",
+              "source_window_grounding"
+            ],
+            "friend_voice_seed": "我懂，这一下先别急着把话说满。",
+            "selected_echo": "我懂，这一下先别急着把话说满。"
+          }
+        ]
+      },
+      "original_plot_note": "原剧情按当前场景推进；互动只接当下这一口气。",
+      "evidence": {
+        "grade": "medium",
+        "notes": "只能偷偷地你这算骚扰。",
+        "excerpt": "只能偷偷地你这算骚扰。"
+      },
+      "source_refs": {
+        "reviewed_demo_node": "data/dramas/lihun/evidence/reviewed_demo_nodes.v0.1.json#lihun_ep19_m001",
+        "transcript_snippets": [
+          {
+            "id": "lihun_ep19_m001_u001",
+            "episode_id": "lihun_ep19",
+            "start_ms": 60000,
+            "end_ms": 80000,
+            "text": "只能偷偷地你这算骚扰。",
+            "source": "sanitized_asr_snippet"
+          }
+        ],
+        "keyframe_refs": []
+      },
+      "interaction_window": {
+        "notice_at_seconds": 60,
+        "start_seconds": 60,
+        "end_seconds": 80,
+        "source": "reviewed_ars",
+        "confidence": "medium",
+        "pause_policy": "pause_on_invite",
+        "expire_behavior": "return_to_idle"
+      },
+      "producer_refs": {
+        "policy": "light promote; producer evidence under ignored tmp/ars_<drama>_analysis; runtime refs sanitized"
+      },
+      "companion_exchange": {
+        "schema_version": "companion_exchange_pack.v0.1",
+        "scene_signal": "这笔账要不要现在摊开算？",
+        "window_rationale": "只能偷偷地你这算骚扰。",
+        "notice_marker": "!",
+        "companion_lead": "这一下我有点想替他说一句。",
+        "reply_candidates": [
+          {
+            "candidate_id": "preset_0",
+            "display_text": "想替他接一句",
+            "action_payload": {
+              "text": "接住眼前这个人此刻的情绪",
+              "action_type": "evidence_or_trap",
+              "intent": "stand_with_person",
+              "target_actors": [
+                "scene_focus"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "替他着急",
+            "semantic_role": "stand_with_person",
+            "distinctness_rationale": "placeholder pending CAB authoring (Step 3)",
+            "evidence_refs": [
+              "lihun_ep19_m001_u001",
+              "current_scene_window"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "no_branch_rewrite",
+              "source_window_grounding"
+            ],
+            "friend_voice_seed": "嗯，这一下我也想替他说一句。",
+            "selected_echo": "嗯，这一下我也想替他说一句。"
+          },
+          {
+            "candidate_id": "preset_1",
+            "display_text": "这事得有人吭声",
+            "action_payload": {
+              "text": "为眼前这件事说一句公道话",
+              "action_type": "evidence_or_trap",
+              "intent": "name_the_issue",
+              "target_actors": [
+                "scene_focus"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "替场面发声",
+            "semantic_role": "name_the_issue",
+            "distinctness_rationale": "placeholder pending CAB authoring (Step 3)",
+            "evidence_refs": [
+              "lihun_ep19_m001_u001",
+              "current_scene_window"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "no_branch_rewrite",
+              "source_window_grounding"
+            ],
+            "friend_voice_seed": "对，这场面不能没人吭声。",
+            "selected_echo": "对，这场面不能没人吭声。"
+          },
+          {
+            "candidate_id": "preset_2",
+            "display_text": "先稳一下别急",
+            "action_payload": {
+              "text": "先把火气压一压，看眼前怎么落地",
+              "action_type": "evidence_or_trap",
+              "intent": "soften_first",
+              "target_actors": [
+                "scene_focus"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "先稳住",
+            "semantic_role": "soften_first",
+            "distinctness_rationale": "placeholder pending CAB authoring (Step 3)",
+            "evidence_refs": [
+              "lihun_ep19_m001_u001",
+              "current_scene_window"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "no_branch_rewrite",
+              "source_window_grounding"
+            ],
+            "friend_voice_seed": "我懂，这一下先别急着把话说满。",
+            "selected_echo": "我懂，这一下先别急着把话说满。"
+          }
+        ],
+        "custom_reply_policy": {
+          "allowed": true,
+          "scope": "local credible consequence only",
+          "reject_or_soften": [
+            "continuous branch rewrite",
+            "unbounded system/power escalation",
+            "claims not grounded in source window"
+          ],
+          "runtime_personalization": "bounded"
+        },
+        "evidence_refs": [
+          "lihun_ep19_m001_u001",
+          "current_scene_window"
+        ],
+        "constraint_refs": [
+          "current_scene_only",
+          "no_branch_rewrite",
+          "source_window_grounding",
+          "no_future_episode_claim"
+        ],
+        "blocked_claims": [
+          "Do not claim what happens in later episodes.",
+          "Do not infer hidden motives from visual context alone.",
+          "Do not turn the reply into a new story branch."
+        ],
+        "review_status": "reviewed",
+        "content_status": "placeholder_pending_cab"
+      },
+      "title": "幸得相遇离婚时"
+    }
+  ]
+}

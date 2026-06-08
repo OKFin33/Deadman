@@ -53,6 +53,28 @@ NARRATION_TONE_BLOCKLIST = {
 }
 HOOK_MAX_CHARS = 36
 OPTION_MAX_CHARS = 42
+MOUTHPIECE_DISPLAY_MAX_CHARS = 14
+SELECTED_ECHO_MAX_CHARS = 80
+QUESTION_PROMPT_MARKERS = (
+    "?",
+    "？",
+    "要不要",
+    "该不该",
+    "能不能",
+    "是不是",
+    "会不会",
+    "你怎么看",
+    "哪句像你",
+)
+ACTION_MENU_MARKERS = (
+    "选择",
+    "立刻",
+    "改写",
+    "摊牌",
+    "分支",
+    "反击",
+    "攻略",
+)
 
 
 def resolve_path(path: str | Path) -> Path:
@@ -275,9 +297,16 @@ class BridgeValidator:
                 self.error(f"{moment_id} missing source_drama.media_registry_ref")
 
             self.validate_interaction_window(moment_id, moment.get("interaction_window") or {})
-            options = ((moment.get("action_space") or {}).get("default_options") or [])
+            action_space = moment.get("action_space") or {}
+            options = (action_space.get("default_options") or []) if isinstance(action_space, dict) else []
             if len(options) < 2:
                 self.error(f"{moment_id} has fewer than two default options")
+            exchange = moment.get("companion_exchange") or {}
+            self.validate_companion_exchange(
+                moment_id,
+                exchange if isinstance(exchange, dict) else {},
+                action_space if isinstance(action_space, dict) else {},
+            )
             self.validate_companion_tone(moment_id, moment.get("companion_surface") or {}, options)
 
         declared = moments.get("moment_count")
@@ -287,11 +316,10 @@ class BridgeValidator:
 
     def validate_companion_tone(self, moment_id: str, companion_surface: dict[str, Any], options: Any) -> None:
         hook = str(companion_surface.get("hook") or "").strip()
-        self.validate_friend_voice_text(moment_id, "companion_surface.hook", hook, max_chars=HOOK_MAX_CHARS)
-        if hook and "?" not in hook and "？" not in hook:
-            self.error(f"{moment_id} companion_surface.hook is not question-shaped")
-        if hook and not any(marker in hook for marker in ("要不要", "该不该", "能不能", "现在")):
-            self.warn(f"{moment_id} companion_surface.hook may not read like an immediate friend prompt")
+        if hook:
+            self.validate_friend_voice_text(moment_id, "companion_surface.hook", hook, max_chars=HOOK_MAX_CHARS)
+            if self.is_question_prompt(hook):
+                self.error(f"{moment_id} companion_surface.hook is legacy question-shaped copy")
 
         if not isinstance(options, list):
             self.error(f"{moment_id} action_space.default_options must be a list")
@@ -303,6 +331,175 @@ class BridgeValidator:
                 str(option or "").strip(),
                 max_chars=OPTION_MAX_CHARS,
             )
+
+    def validate_companion_exchange(
+        self,
+        moment_id: str,
+        exchange: dict[str, Any],
+        action_space: dict[str, Any],
+    ) -> None:
+        if not exchange:
+            self.error(f"{moment_id} companion_exchange is missing")
+            return
+        if exchange.get("schema_version") != "companion_exchange_pack.v0.1":
+            self.error(f"{moment_id} companion_exchange.schema_version is not companion_exchange_pack.v0.1")
+        if exchange.get("review_status") != "reviewed":
+            self.error(f"{moment_id} companion_exchange.review_status is not reviewed")
+
+        for field in ("scene_signal", "window_rationale", "notice_marker", "companion_lead"):
+            if not str(exchange.get(field) or "").strip():
+                self.error(f"{moment_id} companion_exchange.{field} is empty")
+
+        lead = str(exchange.get("companion_lead") or "").strip()
+        self.validate_friend_voice_text(
+            moment_id,
+            "companion_exchange.companion_lead",
+            lead,
+            max_chars=HOOK_MAX_CHARS,
+        )
+        if self.is_question_prompt(lead):
+            self.error(f"{moment_id} companion_exchange.companion_lead is question-shaped")
+
+        notice_marker = str(exchange.get("notice_marker") or "").strip()
+        if notice_marker != "!":
+            self.error(f"{moment_id} companion_exchange.notice_marker must be ! for P0")
+
+        candidates = exchange.get("reply_candidates")
+        if not isinstance(candidates, list):
+            self.error(f"{moment_id} companion_exchange.reply_candidates must be a list")
+            return
+        if len(candidates) != 3:
+            self.error(f"{moment_id} companion_exchange.reply_candidates must contain exactly 3 candidates")
+
+        semantic_roles: set[str] = set()
+        candidate_ids: set[str] = set()
+        for index, candidate in enumerate(candidates):
+            if not isinstance(candidate, dict):
+                self.error(f"{moment_id} companion_exchange.reply_candidates[{index}] is not an object")
+                continue
+            self.validate_reply_candidate(
+                moment_id,
+                f"companion_exchange.reply_candidates[{index}]",
+                candidate,
+                semantic_roles,
+                candidate_ids,
+                require_selected_echo=True,
+            )
+
+        for list_field in ("evidence_refs", "constraint_refs", "blocked_claims"):
+            self.validate_nonempty_string_list(moment_id, f"companion_exchange.{list_field}", exchange.get(list_field))
+
+        policy = exchange.get("custom_reply_policy")
+        if not isinstance(policy, dict):
+            self.error(f"{moment_id} companion_exchange.custom_reply_policy must be an object")
+        else:
+            if policy.get("allowed") is not True:
+                self.error(f"{moment_id} companion_exchange.custom_reply_policy.allowed must be true for P0")
+            if policy.get("runtime_personalization") != "bounded":
+                self.error(
+                    f"{moment_id} companion_exchange.custom_reply_policy.runtime_personalization must be bounded"
+                )
+            self.validate_nonempty_string_list(
+                moment_id,
+                "companion_exchange.custom_reply_policy.reject_or_soften",
+                policy.get("reject_or_soften"),
+            )
+
+        self.validate_mouthpiece_alias(moment_id, action_space, candidates)
+
+    def validate_mouthpiece_alias(
+        self,
+        moment_id: str,
+        action_space: dict[str, Any],
+        exchange_candidates: list[Any],
+    ) -> None:
+        version = str(action_space.get("mouthpiece_candidates_schema_version") or "")
+        candidates = action_space.get("mouthpiece_candidates")
+        if version != "mouthpiece_candidates.v0.1":
+            self.error(f"{moment_id} action_space.mouthpiece_candidates_schema_version is not mouthpiece_candidates.v0.1")
+        if not isinstance(candidates, list):
+            self.error(f"{moment_id} action_space.mouthpiece_candidates must be a list")
+            return
+        if len(candidates) != 3:
+            self.error(f"{moment_id} action_space.mouthpiece_candidates must contain exactly 3 candidates")
+        for index, candidate in enumerate(candidates):
+            if not isinstance(candidate, dict):
+                self.error(f"{moment_id} action_space.mouthpiece_candidates[{index}] is not an object")
+                continue
+            field = f"action_space.mouthpiece_candidates[{index}]"
+            if index >= len(exchange_candidates) or not isinstance(exchange_candidates[index], dict):
+                self.error(f"{moment_id} {field} has no companion_exchange counterpart")
+                continue
+            source = exchange_candidates[index]
+            for key in ("candidate_id", "display_text", "selected_echo"):
+                if candidate.get(key) != source.get(key):
+                    self.error(f"{moment_id} {field}.{key} does not match companion_exchange.reply_candidates[{index}]")
+            if json_text(candidate.get("action_payload")) != json_text(source.get("action_payload")):
+                self.error(f"{moment_id} {field}.action_payload does not match companion_exchange.reply_candidates[{index}]")
+
+    def validate_reply_candidate(
+        self,
+        moment_id: str,
+        field: str,
+        candidate: dict[str, Any],
+        semantic_roles: set[str],
+        candidate_ids: set[str],
+        *,
+        require_selected_echo: bool,
+    ) -> None:
+        candidate_id = str(candidate.get("candidate_id") or "").strip()
+        if not candidate_id:
+            self.error(f"{moment_id} {field}.candidate_id is empty")
+        elif candidate_id in candidate_ids:
+            self.error(f"{moment_id} {field}.candidate_id is duplicated: {candidate_id}")
+        candidate_ids.add(candidate_id)
+
+        display_text = str(candidate.get("display_text") or "").strip()
+        self.validate_friend_voice_text(
+            moment_id,
+            f"{field}.display_text",
+            display_text,
+            max_chars=MOUTHPIECE_DISPLAY_MAX_CHARS,
+        )
+        if self.is_action_menu_text(display_text):
+            self.error(f"{moment_id} {field}.display_text reads like an action menu")
+
+        selected_echo = str(candidate.get("selected_echo") or "").strip()
+        if require_selected_echo or selected_echo:
+            self.validate_friend_voice_text(
+                moment_id,
+                f"{field}.selected_echo",
+                selected_echo,
+                max_chars=SELECTED_ECHO_MAX_CHARS,
+            )
+            if self.is_question_prompt(selected_echo):
+                self.error(f"{moment_id} {field}.selected_echo is question-shaped")
+
+        action_payload = candidate.get("action_payload")
+        if not isinstance(action_payload, dict) or not str(action_payload.get("text") or "").strip():
+            self.error(f"{moment_id} {field}.action_payload.text is missing")
+
+        semantic_role = str(candidate.get("semantic_role") or "").strip()
+        if not semantic_role:
+            self.error(f"{moment_id} {field}.semantic_role is empty")
+        elif semantic_role in semantic_roles:
+            self.error(f"{moment_id} {field}.semantic_role is duplicated: {semantic_role}")
+        semantic_roles.add(semantic_role)
+
+        if not str(candidate.get("distinctness_rationale") or "").strip():
+            self.error(f"{moment_id} {field}.distinctness_rationale is empty")
+        for list_field in ("evidence_refs", "constraint_refs"):
+            self.validate_nonempty_string_list(moment_id, f"{field}.{list_field}", candidate.get(list_field))
+
+    def validate_nonempty_string_list(self, moment_id: str, field: str, values: Any) -> None:
+        if not isinstance(values, list) or not [item for item in values if str(item).strip()]:
+            self.error(f"{moment_id} {field} is empty")
+
+    def is_question_prompt(self, text: str) -> bool:
+        return any(marker in text for marker in QUESTION_PROMPT_MARKERS)
+
+    def is_action_menu_text(self, text: str) -> bool:
+        return any(marker in text for marker in ACTION_MENU_MARKERS)
 
     def validate_friend_voice_text(self, moment_id: str, field: str, text: str, *, max_chars: int) -> None:
         if not text:
@@ -438,7 +635,7 @@ def build_report(result: dict[str, Any]) -> str:
         "- Required manifest/context/moments/media registry/reviewed-node files exist and parse as JSON.",
         "- Manifest counts match promoted moments and media registry.",
         "- Promoted moments point back to reviewed demo-node evidence.",
-        "- Companion hooks and quick replies avoid narration/product wording and stay short enough for friend-tone UI.",
+        "- CompanionExchangePack leads and replies avoid narration/product wording and stay short enough for friend-tone UI.",
         "- Runtime-facing fields do not depend on ignored `tmp/` files or absolute local paths.",
         "- Producer-only local refs stay under `producer_refs`, `producer_media`, or `producer_ref`.",
         "- No raw MP4/MOV/M4V or env file exists in the tracked drama data directory.",

@@ -16,6 +16,7 @@ from Deadman.backend.runtime_client import CabRuntimeResult
 DRAMA_ID = "huangnian"
 MOMENT_ID = "huangnian_ep12_m001"
 ACTION_TEXT = "今晚分兔肉，先让四蛋确认自己也有份"
+EP03_MOMENT_ID = "huangnian_ep03_m001"
 EP07_MOMENT_ID = "huangnian_ep07_m001"
 EP07_ACTION_TEXT = "当场让儿媳上桌，直接推翻旧规矩"
 
@@ -47,6 +48,8 @@ class CompanionRuntimeApiTests(unittest.TestCase):
         self.assertEqual(notice.json()["companion"]["next_state"], "notice_exclaim")
         self.assertFalse(notice.json()["companion"]["should_interrupt"])
         self.assertEqual(notice.json()["moment"]["default_options"][0], ACTION_TEXT)
+        self.assertEqual(notice.json()["moment"]["mouthpiece_candidates_schema_version"], "mouthpiece_candidates.v0.1")
+        self.assertEqual(notice.json()["moment"]["mouthpiece_candidates"][0]["display_text"], "四蛋该吃肉")
 
         tap = self.client.post(
             "/api/deadman/runtime/session/event",
@@ -56,22 +59,26 @@ class CompanionRuntimeApiTests(unittest.TestCase):
         self.assertEqual(tap.json()["status"], "ok")
         self.assertEqual(tap.json()["companion"]["next_state"], "stand_bubble")
         self.assertEqual(tap.json()["moment"]["default_options"][0], ACTION_TEXT)
+        self.assertEqual(tap.json()["moment"]["mouthpiece_candidates"][0]["candidate_id"], "preset_0")
 
     def test_user_action_returns_single_narrative_result_surface(self) -> None:
         self._start_session()
+        candidate_action = self._candidate_action()
         response = self.client.post(
             "/api/deadman/runtime/session/event",
             json=self._event(
                 "user_action",
                 event_id="evt-action",
                 playback_time_seconds=5,
-                action={"source": "preset", "text": ACTION_TEXT, "option_index": 0},
+                action=candidate_action,
             ),
         )
 
         self.assertEqual(response.status_code, 200)
         body = response.json()
         self.assertEqual(body["status"], "ok")
+        self.assertEqual(body["judgment"]["action"]["source"], "preset_candidate")
+        self.assertEqual(body["judgment"]["action"]["candidate_id"], "preset_0")
         self.assertEqual(body["companion"]["next_state"], "verdict")
         self.assertEqual(body["result_surface"]["mode"], "single_narrative")
         self.assertEqual(body["result_surface"]["continue_label"], "继续看")
@@ -196,10 +203,58 @@ class CompanionRuntimeApiTests(unittest.TestCase):
         text = body["result_surface"]["text"]
         self.assertEqual(body["status"], "ok")
         self.assertEqual(body["result_surface"]["micro_cue"]["kind"], "cost_hint")
+        self.assertIn("系统那口气", text)
+        self.assertIn("这段先别替剧情往后编", text)
         self.assertNotIn("后面剧集", text)
         self.assertNotIn("未来分支", text)
         self.assertNotIn("原剧情", text)
         self.assertNotIn("分支剧情", text)
+        self.assertNotIn("policy", self._json_text(body["result_surface"]).lower())
+        self.assertNotIn("CAB", self._json_text(body["result_surface"]))
+
+    def test_custom_action_echoes_specific_ep03_feeling(self) -> None:
+        self._start_session()
+        event = self._event(
+            "user_action",
+            event_id="evt-ep03-custom-specific",
+            playback_time_seconds=5,
+            action={"source": "custom", "text": "孩子都怕成这样了，别再把最后一口野菜送走了"},
+        )
+        event["episode_id"] = "huangnian_ep03"
+        event["moment_id"] = EP03_MOMENT_ID
+
+        response = self.client.post("/api/deadman/runtime/session/event", json=event)
+
+        self.assertEqual(response.status_code, 200)
+        body = response.json()
+        text = body["result_surface"]["text"]
+        self.assertEqual(body["status"], "ok")
+        self.assertIn("孩子", text)
+        self.assertIn("最后这口", text)
+        self.assertNotEqual(text, "这句我懂，但这段先别替剧情往后编。")
+        self.assertIsNone(body["result_surface"]["micro_cue"])
+        self.assertNotIn("当前场景", text)
+        self.assertNotIn("后面剧集", text)
+        self.assertNotIn("CAB", self._json_text(body["result_surface"]))
+
+    def test_custom_action_uses_fallback_only_when_ungrounded(self) -> None:
+        self._start_session()
+        event = self._event(
+            "user_action",
+            event_id="evt-custom-low-signal",
+            playback_time_seconds=5,
+            action={"source": "custom", "text": "哈哈"},
+        )
+        event["episode_id"] = "huangnian_ep03"
+        event["moment_id"] = EP03_MOMENT_ID
+
+        response = self.client.post("/api/deadman/runtime/session/event", json=event)
+
+        self.assertEqual(response.status_code, 200)
+        body = response.json()
+        self.assertEqual(body["status"], "ok")
+        self.assertEqual(body["result_surface"]["text"], "这句我懂，但这段先别替剧情往后编。")
+        self.assertIsNone(body["result_surface"]["micro_cue"])
 
     def test_moment_notice_outside_window_returns_idle_without_interrupt(self) -> None:
         self._start_session()
@@ -457,6 +512,17 @@ class CompanionRuntimeApiTests(unittest.TestCase):
             json=self._event("session_start", event_id="evt-start"),
         )
         self.assertEqual(response.status_code, 200)
+
+    def _candidate_action(self, moment_id: str = MOMENT_ID, candidate_index: int = 0) -> dict[str, object]:
+        moment = self.store.get_moment(DRAMA_ID, moment_id)
+        candidates = moment["action_space"]["mouthpiece_candidates"]
+        candidate = candidates[candidate_index]
+        return {
+            "source": "preset_candidate",
+            "candidate_id": candidate["candidate_id"],
+            "text": candidate["display_text"],
+            "action_payload": candidate["action_payload"],
+        }
 
     def _event(
         self,

@@ -225,6 +225,133 @@ def result_media(moment_id: str, options: list[str]) -> dict[str, Any]:
     }
 
 
+def mouthpiece_action_space(moment: dict[str, Any], node: dict[str, Any] | None) -> dict[str, Any]:
+    action_space = dict(moment.get("action_space", {}) or {})
+    node_candidates = (node or {}).get("mouthpiece_candidates")
+    if isinstance(node_candidates, list) and node_candidates:
+        action_space["mouthpiece_candidates_schema_version"] = str(
+            (node or {}).get("mouthpiece_candidates_schema_version")
+            or action_space.get("mouthpiece_candidates_schema_version")
+            or "mouthpiece_candidates.v0.1"
+        )
+        action_space["mouthpiece_candidates"] = node_candidates
+    elif isinstance(action_space.get("mouthpiece_candidates"), list) and action_space.get("mouthpiece_candidates"):
+        action_space["mouthpiece_candidates_schema_version"] = str(
+            action_space.get("mouthpiece_candidates_schema_version") or "mouthpiece_candidates.v0.1"
+        )
+    return action_space
+
+
+def display_options_for_result_media(action_space: dict[str, Any]) -> list[str]:
+    candidates = action_space.get("mouthpiece_candidates")
+    if isinstance(candidates, list) and candidates:
+        options = [
+            str(candidate.get("display_text"))
+            for candidate in candidates
+            if isinstance(candidate, dict) and candidate.get("display_text")
+        ]
+        if options:
+            return options[:3]
+    return [str(option) for option in action_space.get("default_options", []) if isinstance(option, str)]
+
+
+def companion_exchange_pack(
+    *,
+    moment_id: str,
+    moment: dict[str, Any],
+    node: dict[str, Any] | None,
+    action_space: dict[str, Any],
+) -> dict[str, Any]:
+    existing = moment.get("companion_exchange") if isinstance(moment.get("companion_exchange"), dict) else {}
+    node_exchange = (node or {}).get("companion_exchange")
+    if isinstance(node_exchange, dict) and node_exchange.get("reply_candidates"):
+        existing = node_exchange
+
+    candidates = existing.get("reply_candidates") if isinstance(existing, dict) else None
+    if not isinstance(candidates, list) or not candidates:
+        candidates = action_space.get("mouthpiece_candidates")
+    if not isinstance(candidates, list):
+        candidates = []
+    candidates = [normalized_reply_candidate(candidate, index, moment_id) for index, candidate in enumerate(candidates[:3])]
+
+    companion_surface = moment.get("companion_surface") if isinstance(moment.get("companion_surface"), dict) else {}
+    lead = str(
+        (existing or {}).get("companion_lead")
+        or companion_surface.get("companion_lead")
+        or companion_surface.get("hook")
+        or (node or {}).get("companion_hook")
+        or "这段我真忍不了。"
+    ).strip()
+    scene_signal = str(
+        (existing or {}).get("scene_signal")
+        or (node or {}).get("viewer_impulse")
+        or companion_surface.get("hook")
+        or "这个窗口值得搭子介入"
+    ).strip()
+    return {
+        "schema_version": "companion_exchange_pack.v0.1",
+        "scene_signal": scene_signal,
+        "window_rationale": str(
+            (existing or {}).get("window_rationale")
+            or (node or {}).get("why_now_reviewed")
+            or (node or {}).get("evidence_vs_inference")
+            or "Reviewed P0 window selected for companion interruption."
+        ).strip(),
+        "notice_marker": str((existing or {}).get("notice_marker") or "!"),
+        "companion_lead": lead,
+        "reply_candidates": candidates,
+        "custom_reply_policy": (existing or {}).get("custom_reply_policy")
+        or {
+            "allowed": True,
+            "runtime_personalization": "bounded",
+            "reject_or_soften": [
+                "future branch claim",
+                "unbounded revenge",
+                "source-window-unsupported fact",
+            ],
+        },
+        "evidence_refs": normalized_string_list((existing or {}).get("evidence_refs")) or [moment_id],
+        "constraint_refs": normalized_string_list((existing or {}).get("constraint_refs"))
+        or ["current_scene_only", "no_future_episode_claim"],
+        "blocked_claims": normalized_string_list((existing or {}).get("blocked_claims"))
+        or [
+            "Do not claim what happens in later episodes.",
+            "Do not infer hidden motives from visual context alone.",
+            "Do not turn the reply into a new story branch.",
+        ],
+        "review_status": str((existing or {}).get("review_status") or "reviewed"),
+    }
+
+
+def normalized_reply_candidate(candidate: Any, index: int, moment_id: str) -> dict[str, Any]:
+    raw = candidate if isinstance(candidate, dict) else {}
+    action_payload = raw.get("action_payload") if isinstance(raw.get("action_payload"), dict) else {}
+    display_text = str(raw.get("display_text") or action_payload.get("text") or f"这句先接住{index + 1}").strip()[:14]
+    selected_echo = str(raw.get("selected_echo") or raw.get("friend_voice_seed") or f"这句我懂，{display_text}。").strip()
+    return {
+        "candidate_id": str(raw.get("candidate_id") or f"preset_{index}"),
+        "display_text": display_text,
+        "action_payload": {
+            **action_payload,
+            "text": str(action_payload.get("text") or display_text),
+        },
+        "selected_echo": selected_echo[:80],
+        "emotion_role": str(raw.get("emotion_role") or f"reviewed_emotion_{index}"),
+        "semantic_role": str(raw.get("semantic_role") or f"reviewed_semantic_{index}"),
+        "distinctness_rationale": str(
+            raw.get("distinctness_rationale") or "Reviewed distinct expression path for this scene."
+        ),
+        "evidence_refs": normalized_string_list(raw.get("evidence_refs")) or [moment_id],
+        "constraint_refs": normalized_string_list(raw.get("constraint_refs")) or ["current_scene_only"],
+    }
+
+
+def normalized_string_list(value: Any) -> list[str]:
+    if not isinstance(value, list):
+        return []
+    return [str(item) for item in value if str(item).strip()]
+
+
 def safe_source_refs(
     *,
     drama_dir: Path,
@@ -266,10 +393,18 @@ def publish_moments(
         episode_id = episode_id_for_moment(moment, node)
         source_window = source_window_for(moment, node)
         grade = evidence_grade(moment, node)
-        options = [str(option) for option in (moment.get("action_space", {}) or {}).get("default_options", [])]
+        action_space = mouthpiece_action_space(moment, node)
+        options = display_options_for_result_media(action_space)
         registry_entry = media_entry(media_registry, episode_id)
 
         next_moment = dict(moment)
+        next_moment["action_space"] = action_space
+        next_moment["companion_exchange"] = companion_exchange_pack(
+            moment_id=moment_id,
+            moment=moment,
+            node=node,
+            action_space=action_space,
+        )
         source_drama = dict(next_moment.get("source_drama", {}) or {})
         source_drama["episode_id"] = episode_id
         source_drama["time_range_seconds"] = [
@@ -318,6 +453,9 @@ def sanitized_demo_node(moment_id: str, node: dict[str, Any]) -> dict[str, Any]:
         "source_window": safe_source_window(episode_id, source_window),
         "companion_hook": node.get("companion_hook"),
         "viewer_impulse": node.get("viewer_impulse"),
+        "companion_exchange": node.get("companion_exchange"),
+        "mouthpiece_candidates_schema_version": node.get("mouthpiece_candidates_schema_version"),
+        "mouthpiece_candidates": node.get("mouthpiece_candidates", []),
         "default_options": node.get("default_options", []),
         "canon_baseline_reviewed": node.get("canon_baseline_reviewed", {}),
         "original_plot_note_reviewed": node.get("original_plot_note_reviewed", ""),

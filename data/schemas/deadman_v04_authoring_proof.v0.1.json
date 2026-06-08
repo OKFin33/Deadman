@@ -1,0 +1,207 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://oseria.local/schemas/deadman/deadman_v04_authoring_proof.v0.1.json",
+  "title": "Deadman v0.4 Studio Authoring Proof v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "product",
+    "proof_status",
+    "created_at",
+    "authoring_runtime",
+    "scope",
+    "runs"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "deadman_v0.4_authoring_proof.v0.1"
+    },
+    "product": {
+      "const": "看剧搭子"
+    },
+    "proof_status": {
+      "enum": ["pass", "failed"]
+    },
+    "created_at": {
+      "type": "string",
+      "minLength": 1
+    },
+    "authoring_runtime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "mode", "provider", "claim_boundary"],
+      "properties": {
+        "name": {
+          "const": "deadman-companion-exchange-authoring"
+        },
+        "mode": {
+          "type": "string",
+          "minLength": 1
+        },
+        "provider": {
+          "type": "object",
+          "additionalProperties": true,
+          "required": ["name", "model", "mock_provider"]
+        },
+        "claim_boundary": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "gold_smoke_moment_id",
+        "non_gold_moment_id",
+        "source_pack_ref",
+        "published_pack_ref"
+      ],
+      "properties": {
+        "gold_smoke_moment_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "non_gold_moment_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_pack_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "published_pack_ref": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "runs": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "$ref": "#/$defs/run"
+      }
+    }
+  },
+  "$defs": {
+    "run": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "run_role",
+        "moment_id",
+        "episode_id",
+        "is_gold_reference",
+        "input_window",
+        "generated_draft",
+        "draft_validation",
+        "human_review",
+        "final_status"
+      ],
+      "properties": {
+        "run_role": {
+          "enum": ["ep03_gold_smoke", "non_gold_authoring_proof"]
+        },
+        "moment_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "episode_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "is_gold_reference": {
+          "type": "boolean"
+        },
+        "input_window": {
+          "type": "object",
+          "additionalProperties": true,
+          "required": [
+            "moment_id",
+            "episode_id",
+            "interaction_window",
+            "scene_signal",
+            "evidence_refs",
+            "constraint_refs",
+            "blocked_claims"
+          ]
+        },
+        "generated_draft": {
+          "type": "object",
+          "additionalProperties": true,
+          "required": [
+            "provider",
+            "moment_pack_draft",
+            "companion_exchange_draft"
+          ]
+        },
+        "draft_validation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["schema_valid", "conformance_valid", "errors"],
+          "properties": {
+            "schema_valid": {
+              "type": "boolean"
+            },
+            "conformance_valid": {
+              "type": "boolean"
+            },
+            "errors": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "human_review": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["decision", "reviewer", "notes"],
+          "properties": {
+            "decision": {
+              "enum": ["accepted", "accepted_with_revision", "rejected"]
+            },
+            "reviewer": {
+              "type": "string",
+              "minLength": 1
+            },
+            "notes": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "final_status": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "published",
+            "published_review_status",
+            "published_pack_ref"
+          ],
+          "properties": {
+            "published": {
+              "type": "boolean"
+            },
+            "published_review_status": {
+              "type": "string",
+              "minLength": 1
+            },
+            "published_pack_ref": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      }
+    }
+  }
+}

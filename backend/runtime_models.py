@@ -6,7 +6,7 @@ from typing import Literal
 
 from pydantic import BaseModel, Field, model_validator
 
-from .models import ErrorPayload, JudgmentResponse, UserAction, ViewerProfile
+from .models import CompanionExchangePack, ErrorPayload, JudgmentResponse, MouthpieceCandidate, UserAction, ViewerProfile
 
 
 RuntimeEventType = Literal[
@@ -50,11 +50,15 @@ class RuntimeMomentPayload(BaseModel):
     moment_id: str | None = None
     interaction_window_active: bool = False
     default_options: list[str] = Field(default_factory=list)
+    companion_exchange: CompanionExchangePack | None = None
+    mouthpiece_candidates_schema_version: str | None = None
+    mouthpiece_candidates: list[MouthpieceCandidate] = Field(default_factory=list)
     hook: str | None = None
+    companion_lead: str | None = None
 
 
 class RuntimeMicroCue(BaseModel):
-    kind: Literal["aggregate_hint", "cost_hint", "visual_fallback_hint"]
+    kind: Literal["aggregate_hint", "cost_hint", "evidence_hint", "visual_fallback_hint"]
     text: str
 
 

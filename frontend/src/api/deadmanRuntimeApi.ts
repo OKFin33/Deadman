@@ -1,8 +1,10 @@
 import {
   getDeadmanApiBase,
   requestJson,
+  type DeadmanCompanionExchange,
   type DeadmanJudgmentAction,
   type DeadmanJudgmentResponse,
+  type DeadmanMouthpieceCandidate,
 } from "./deadmanApi";
 
 export type DeadmanRuntimeEventType =
@@ -41,7 +43,11 @@ export type DeadmanRuntimeResponse = {
     moment_id?: string | null;
     interaction_window_active: boolean;
     default_options: string[];
+    companion_exchange?: DeadmanCompanionExchange | null;
+    mouthpiece_candidates_schema_version?: string | null;
+    mouthpiece_candidates?: DeadmanMouthpieceCandidate[];
     hook?: string | null;
+    companion_lead?: string | null;
   };
   judgment?: DeadmanJudgmentResponse | null;
   result_surface?: DeadmanResultSurface | null;

@@ -12,12 +12,14 @@ from langgraph.checkpoint.memory import MemorySaver
 from langgraph.types import Command
 
 from Deadman.tools.ars.deadman_run_producer_graph import (
+    DEFAULT_STUDIO_GUIDANCE_DATASET,
     LLM_CANDIDATE_JUDGMENT_SCHEMA,
     LLM_BATCH_MANIFEST_SCHEMA,
     LLM_DRAMA_CONTEXT_DRAFT_SCHEMA,
     LLM_MOMENT_PACK_DRAFTS_SCHEMA,
     LLM_SEMANTIC_CANDIDATES_SCHEMA,
     REVIEW_REQUEST_SCHEMA,
+    STUDIO_CAB_GRAPH_NODE_ORDER,
     ProducerConfig,
     append_errors,
     build_spike_graph,
@@ -37,6 +39,7 @@ from Deadman.tools.ars.deadman_run_producer_graph import (
     run_llm_json_node,
     run_llm_moment_pack_draft,
     run_llm_semantic_miner,
+    run_studio_cab_graph_proof,
     stable_review_payload,
     validate_json_schema,
     verify_command_plan,
@@ -48,6 +51,7 @@ from Deadman.tools.ars.deadman_producer_graph_llm import (
     build_candidate_judge_prompt,
     normalize_context_draft,
 )
+from Deadman.tools.ars.deadman_validate_studio_cab_graph_proof import validate_studio_cab_graph_proof
 
 
 @contextmanager
@@ -71,6 +75,71 @@ def patched_attr(obj: object, name: str, value: object):
         yield
     finally:
         setattr(obj, name, previous)
+
+
+class FakeStudioCabProvider:
+    name = "ark"
+    model = "fake-real-provider"
+    mock_provider = False
+
+    def complete_case(self, prompt: dict[str, object], schema: dict[str, object]) -> dict[str, object]:
+        meta = {
+            "name": "ark",
+            "model": self.model,
+            "mock_provider": False,
+            "latency_ms": 1200,
+            "token_usage": {"input_tokens": 10, "output_tokens": 20, "total_tokens": 30},
+        }
+        if prompt.get("stage") == "stage_b_echo":
+            viewer = prompt.get("this_viewer", {}) if isinstance(prompt.get("this_viewer"), dict) else {}
+            motivation = str(viewer.get("viewer_motivation") or "")
+            payload = {
+                "case_id": prompt.get("case_id"),
+                "selected_echo": f"懂你这点，{motivation[:8]}，这段确实戳人。",
+                "echo_rationale": "answer this viewer",
+            }
+            return {"payload": payload, "provider": meta}
+        case = prompt.get("case")
+        if isinstance(case, dict) and case.get("case_type") == "owner_reviewed_window_reject":
+            payload = {
+                "case_id": case["case_id"],
+                "window_decision": "reject_window",
+                "companion_lead": "",
+                "reply_candidates": [],
+                "failure_buckets": [],
+                "rationale_summary": "Owner boundary says this window should not open.",
+                "repair_notes": [],
+            }
+        else:
+            payload = {
+                "case_id": case["case_id"] if isinstance(case, dict) else "case",
+                "window_decision": "recommend_window",
+                "companion_lead": "这一下挺有戏。",
+                "reply_candidates": [
+                    {
+                        "display_text": "这人设确实有点离谱",
+                        "emotion_role": "viewer_callout",
+                        "semantic_role": "persona_callout",
+                        "viewer_motivation": "想吐槽原主，盼搭子接梗",
+                    },
+                    {
+                        "display_text": "现在就看她怎么圆",
+                        "emotion_role": "viewer_watch",
+                        "semantic_role": "watch_flow",
+                        "viewer_motivation": "好奇接下来怎么发展",
+                    },
+                    {
+                        "display_text": "这段节奏挺短剧",
+                        "emotion_role": "viewer_genre",
+                        "semantic_role": "genre_read",
+                        "viewer_motivation": "老剧迷想确认爽点",
+                    },
+                ],
+                "failure_buckets": [],
+                "rationale_summary": "Scene-bound viewer reaction with three short replies.",
+                "repair_notes": [],
+            }
+        return {"payload": payload, "provider": meta}
 
 
 class ProducerGraphTests(unittest.TestCase):
@@ -139,6 +208,11 @@ class ProducerGraphTests(unittest.TestCase):
             self.assertLessEqual(judgment["judgment_count"], judgment["input_candidate_count"])
             self.assertIn("context_draft", context_draft)
             self.assertEqual(moment_drafts["draft_count"], 1)
+            mouthpiece_drafts = moment_drafts["moment_drafts"][0]["mouthpiece_candidate_drafts"]
+            self.assertEqual(len(mouthpiece_drafts), 3)
+            self.assertIn("display_text", mouthpiece_drafts[0])
+            self.assertIn("action_payload", mouthpiece_drafts[0])
+            self.assertIn("selected_echo", mouthpiece_drafts[0])
             review_payload, _ = stable_review_payload(config)
             review_ok, review_message = validate_json_schema(review_payload, REVIEW_REQUEST_SCHEMA)
             self.assertTrue(review_ok, review_message)
@@ -828,6 +902,33 @@ class ProducerGraphTests(unittest.TestCase):
             resumed = graph.invoke(Command(resume={"decision": "approve"}), config=thread_config)
             self.assertEqual(resumed["status"], "pass")
             self.assertEqual(resumed["review_decision"], "approve")
+
+    def test_studio_cab_graph_runs_core_authoring_node(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            output_path = Path(temp) / "studio_cab_graph_proof.json"
+            config = self._config(Path(temp), run_id="studio_cab_graph")
+
+            result = run_studio_cab_graph_proof(
+                config,
+                guidance_path=DEFAULT_STUDIO_GUIDANCE_DATASET,
+                output_path=output_path,
+                created_at="2026-06-07T00:00:00Z",
+                provider=FakeStudioCabProvider(),
+            )
+
+            self.assertEqual(result["status"], "pass")
+            self.assertEqual(result["validation_result"], "pass")
+            self.assertEqual(result["node_statuses"]["cab_author_displays_node"], "pass")
+            self.assertEqual(result["node_statuses"]["cab_author_echoes_node"], "pass")
+            self.assertEqual(result["node_statuses"]["write_sanitized_graph_proof"], "pass")
+            graph_proof = read_json(output_path)
+            self.assertEqual(graph_proof["graph_identity"]["node_order"], STUDIO_CAB_GRAPH_NODE_ORDER)
+            self.assertEqual(graph_proof["graph_identity"]["core_semantic_node"], "cab_author_displays_node")
+            self.assertEqual(graph_proof["graph_identity"]["echo_authoring_node"], "cab_author_echoes_node")
+            self.assertEqual(graph_proof["proof_report"]["planned_case_count"], 8)
+            first_reply = graph_proof["proof_report"]["case_results"][0]["draft"]["reply_candidates"][0]
+            self.assertIn("viewer_motivation", first_reply)
+            self.assertEqual(validate_studio_cab_graph_proof(proof=graph_proof, proof_path=output_path), [])
 
     def _config(
         self,

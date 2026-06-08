@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://oseria.local/schemas/deadman/studio_cab_phase2_eval.v0.1.json",
+  "title": "Deadman Studio CAB Phase2 Eval v0.1",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema_version",
+    "product",
+    "created_at",
+    "run_id",
+    "input_fixture",
+    "claim_boundary",
+    "baseline_summary",
+    "report_refs",
+    "layer_coverage",
+    "review_gates",
+    "repair_status",
+    "phase3_demo_pack_candidates",
+    "goal_gate_summary"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "studio_cab_phase2_eval.v0.1"
+    },
+    "product": {
+      "const": "看剧搭子"
+    },
+    "created_at": {
+      "type": "string",
+      "minLength": 1
+    },
+    "input_fixture": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["path", "sha256", "schema_version"]
+    },
+    "report_refs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "window_judge_report",
+        "exchange_authoring_report",
+        "exchange_repair_candidates",
+        "phase2_eval_report",
+        "local_window_html",
+        "local_exchange_html",
+        "local_repair_html"
+      ],
+      "properties": {
+        "window_judge_report": {
+          "type": "string"
+        },
+        "exchange_authoring_report": {
+          "type": "string"
+        },
+        "exchange_repair_candidates": {
+          "type": "string"
+        },
+        "phase2_eval_report": {
+          "type": "string"
+        },
+        "local_window_html": {
+          "type": "string"
+        },
+        "local_exchange_html": {
+          "type": "string"
+        },
+        "local_repair_html": {
+          "type": "string"
+        }
+      }
+    },
+    "layer_coverage": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "window_selection",
+        "opening_lead",
+        "preset_replies",
+        "selected_echo_answer_direction",
+        "custom_input_policy"
+      ]
+    },
+    "phase3_demo_pack_candidates": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 5,
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": [
+          "item_id",
+          "episode_id",
+          "time_range",
+          "coverage_role",
+          "promotion_status",
+          "why_candidate",
+          "companion_lead",
+          "reply_displays"
+        ],
+        "properties": {
+          "promotion_status": {
+            "const": "nominated_only_not_promoted"
+          }
+        }
+      }
+    },
+    "goal_gate_summary": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "baseline_validated",
+        "window_judge_report_generated",
+        "review_gate_a_needed",
+        "exchange_authoring_report_generated",
+        "review_gate_b_needed",
+        "runtime_pack_promotion"
+      ],
+      "properties": {
+        "runtime_pack_promotion": {
+          "const": "not_performed_phase3_only"
+        }
+      }
+    }
+  }
+}

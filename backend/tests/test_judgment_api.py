@@ -6,7 +6,7 @@ from unittest.mock import patch
 
 from fastapi.testclient import TestClient
 
-from Deadman.backend.api import create_app
+from Deadman.backend.api import LOCAL_MEDIA_ROOT, create_app, _safe_local_media_path
 from Deadman.backend.judgment import CabRuntimeJudgmentService
 from Deadman.backend.pack_store import DeadmanPackStore
 from Deadman.backend.runtime_client import CabRuntimeResult, RuntimeClientError
@@ -97,6 +97,13 @@ class DeadmanJudgmentApiTests(unittest.TestCase):
         self.assertEqual(blocked.status_code, 400)
         self.assertNotIn("access-control-allow-origin", blocked.headers)
 
+    def test_registered_tmp_media_path_resolves_under_deadman_tmp(self) -> None:
+        media_path = _safe_local_media_path("tmp/视频素材/荒年/第12集.mp4")
+        self.assertIsNotNone(media_path)
+        assert media_path is not None
+        self.assertTrue(media_path.is_relative_to(LOCAL_MEDIA_ROOT))
+        self.assertEqual(media_path.name, "第12集.mp4")
+
     def test_moment_lookup_returns_summaries_and_full_pack(self) -> None:
         moments = self.client.get("/api/deadman/dramas/huangnian/moments")
         self.assertEqual(moments.status_code, 200)
@@ -104,6 +111,14 @@ class DeadmanJudgmentApiTests(unittest.TestCase):
         self.assertEqual(len(body), 5)
         self.assertEqual(body[0]["drama_id"], "huangnian")
         self.assertIn("default_options", body[0])
+        self.assertEqual(body[0]["mouthpiece_candidates_schema_version"], "mouthpiece_candidates.v0.1")
+        self.assertEqual(len(body[0]["mouthpiece_candidates"]), 3)
+        self.assertEqual(body[0]["mouthpiece_candidates"][0]["candidate_id"], "preset_0")
+        self.assertEqual(body[0]["mouthpiece_candidates"][0]["display_text"], "四蛋该吃肉")
+        self.assertEqual(
+            body[0]["mouthpiece_candidates"][0]["action_payload"]["text"],
+            "今晚分兔肉，先让四蛋确认自己也有份",
+        )
         self.assertIn("interaction_window", body[0])
         self.assertIn("result_media", body[0])
         self.assertRegex(
@@ -190,8 +205,8 @@ class DeadmanJudgmentApiTests(unittest.TestCase):
         self.assertEqual(body["verdict"]["stance"], "reject_softly")
         self.assertTrue(body["canon_anchor"]["safe_to_continue"])
         self.assertEqual(body["consequence"]["watch_flow_fit"], "low")
-        self.assertIn("系统把普通物品换成活命资源这件事", body["consequence"]["text"])
-        self.assertIn("不让公开围观者知道", body["consequence"]["text"])
+        self.assertIn("野菜/最后一点吃的", body["consequence"]["text"])
+        self.assertIn("不把系统、后续剧集", body["consequence"]["text"])
         self.assertNotIn("system can convert", body["consequence"]["text"])
         self.assertNotIn("keep hidden", body["consequence"]["text"])
         self.assertEqual(body["media"]["status"], "not_available")
@@ -227,6 +242,43 @@ class DeadmanJudgmentApiTests(unittest.TestCase):
         response = self.client.post("/api/deadman/judgment", json=payload)
         self.assertEqual(response.status_code, 422)
         self.assertEqual(response.json()["error"]["code"], "preset_option_invalid")
+
+    def test_preset_candidate_judgment_verifies_reviewed_payload(self) -> None:
+        moments = self.client.get("/api/deadman/dramas/huangnian/moments").json()
+        candidate = moments[0]["mouthpiece_candidates"][0]
+        payload = {
+            "drama_id": "huangnian",
+            "moment_id": "huangnian_ep12_m001",
+            "action": {
+                "source": "preset_candidate",
+                "candidate_id": candidate["candidate_id"],
+                "text": candidate["display_text"],
+                "action_payload": candidate["action_payload"],
+            },
+        }
+
+        response = self.client.post("/api/deadman/judgment", json=payload)
+
+        self.assertEqual(response.status_code, 200)
+        body = response.json()
+        self.assertEqual(body["action"]["source"], "preset_candidate")
+        self.assertEqual(body["action"]["candidate_id"], "preset_0")
+        self.assertEqual(body["action"]["text"], "四蛋该吃肉")
+        self.assertTrue(body["aggregate_stats"]["choices"][0]["selected"])
+
+        bad_payload = {
+            **payload,
+            "action": {
+                **payload["action"],
+                "action_payload": {
+                    **candidate["action_payload"],
+                    "intent": "client_forged_intent",
+                },
+            },
+        }
+        bad_response = self.client.post("/api/deadman/judgment", json=bad_payload)
+        self.assertEqual(bad_response.status_code, 422)
+        self.assertEqual(bad_response.json()["error"]["code"], "preset_candidate_payload_mismatch")
 
     def _json_text(self, value: Any) -> str:
         import json

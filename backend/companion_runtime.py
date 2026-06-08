@@ -266,7 +266,11 @@ class CompanionRuntime:
             moment_id=request.moment_id,
             interaction_window_active=self._is_window_active(moment, request.playback_time_seconds),
             default_options=_default_options(moment),
+            companion_exchange=_companion_exchange(moment),
+            mouthpiece_candidates_schema_version=_mouthpiece_candidates_schema_version(moment),
+            mouthpiece_candidates=_mouthpiece_candidates(moment),
             hook=self._hook_from_moment(moment),
+            companion_lead=self._companion_lead_from_moment(moment),
         )
 
     def _is_window_active(self, moment: dict[str, Any], playback_time_seconds: float | None) -> bool:
@@ -293,13 +297,23 @@ class CompanionRuntime:
         if not request.moment_id:
             return ""
         try:
-            return self._hook_from_moment(self.store.get_moment(request.drama_id, request.moment_id))
+            return self._companion_utterance_from_moment(self.store.get_moment(request.drama_id, request.moment_id))
         except PackStoreError:
             return ""
 
     def _hook_from_moment(self, moment: dict[str, Any]) -> str:
         hook = moment.get("companion_surface", {}).get("hook")
-        return str(hook or "要不要换你来一手？")
+        return str(hook or self._companion_lead_from_moment(moment) or "这段我真忍不了。")
+
+    def _companion_lead_from_moment(self, moment: dict[str, Any]) -> str:
+        exchange = _companion_exchange(moment)
+        lead = exchange.get("companion_lead") if isinstance(exchange, dict) else None
+        if not lead:
+            lead = moment.get("companion_surface", {}).get("companion_lead")
+        return str(lead or "")
+
+    def _companion_utterance_from_moment(self, moment: dict[str, Any]) -> str:
+        return self._companion_lead_from_moment(moment) or self._hook_from_moment(moment)
 
     def _safe_to_reference(self, session: ViewerSession) -> bool:
         return bool(session.last_action and session.last_action.summary_for_next_moment)
@@ -368,6 +382,34 @@ def _default_options(moment: dict[str, Any]) -> list[str]:
     if not isinstance(action_space, dict):
         return []
     return [str(item) for item in action_space.get("default_options", []) if str(item).strip()]
+
+
+def _mouthpiece_candidates_schema_version(moment: dict[str, Any]) -> str | None:
+    if _mouthpiece_candidates(moment):
+        return "mouthpiece_candidates.v0.1"
+    action_space = moment.get("action_space")
+    if not isinstance(action_space, dict):
+        return None
+    value = action_space.get("mouthpiece_candidates_schema_version")
+    return str(value) if value else None
+
+
+def _mouthpiece_candidates(moment: dict[str, Any]) -> list[dict[str, Any]]:
+    exchange = _companion_exchange(moment)
+    if isinstance(exchange, dict) and isinstance(exchange.get("reply_candidates"), list):
+        return [item for item in exchange["reply_candidates"] if isinstance(item, dict)]
+    action_space = moment.get("action_space")
+    if not isinstance(action_space, dict):
+        return []
+    candidates = action_space.get("mouthpiece_candidates")
+    if not isinstance(candidates, list):
+        return []
+    return [item for item in candidates if isinstance(item, dict)]
+
+
+def _companion_exchange(moment: dict[str, Any]) -> dict[str, Any] | None:
+    exchange = moment.get("companion_exchange")
+    return exchange if isinstance(exchange, dict) else None
 
 
 def _as_float(value: Any, fallback: float) -> float:

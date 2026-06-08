@@ -6,6 +6,7 @@ from __future__ import annotations
 import json
 import math
 import os
+import re
 import time
 from dataclasses import dataclass
 from typing import Any, Protocol
@@ -150,7 +151,7 @@ class MockSemanticMinerProvider:
                 safe_int(candidate.get("end_ms"), default=safe_int(candidate.get("start_ms"), default=0)),
             ],
             "hook": str(candidate.get("hook") or "这个节点适合二审。"),
-            "viewer_impulse": str(candidate.get("viewer_impulse") or "要是我来，会想换一种做法。"),
+            "viewer_impulse": str(candidate.get("viewer_impulse") or "我想说一句，这里不该被轻轻带过。"),
             "intervention_logic": str(candidate.get("why_now") or candidate.get("evidence_excerpt") or "场景出现可行动压力。")[:500],
             "evidence_excerpt": str(candidate.get("evidence_excerpt") or "source evidence unavailable")[:500],
             "uncertainty": "medium",
@@ -174,7 +175,7 @@ class MockSemanticMinerProvider:
             "window_id": window_id,
             "time_range_ms": [start_ms, end_ms],
             "hook": "这里可能有一个被规则漏掉的可互动点。",
-            "viewer_impulse": "要是我来，会想在这一刻插手。",
+            "viewer_impulse": "我想说一句，这里有个情绪点没被接住。",
             "intervention_logic": "Mock semantic pass marks one source window for human review only.",
             "evidence_excerpt": excerpt,
             "uncertainty": "high",
@@ -262,13 +263,25 @@ class MockMomentPackDraftProvider:
     def _draft_from_demo_node(self, item: dict[str, Any]) -> dict[str, Any]:
         candidate_id = str(item.get("candidate_id") or item.get("moment_id") or "unknown_candidate")
         options = item.get("default_options") or item.get("revised_default_options") or []
+        preset_action_drafts = [str(option) for option in options if isinstance(option, str)][:3] or [
+            "稳住局面",
+            "温和介入",
+            "强行改局",
+        ]
+        mouthpiece_candidates = item.get("mouthpiece_candidates")
+        mouthpiece_candidate_drafts = normalize_mouthpiece_candidate_drafts(
+            mouthpiece_candidates,
+            fallback_options=preset_action_drafts,
+            candidate_id=candidate_id,
+            source=item,
+        )
         return {
             "candidate_id": candidate_id,
             "draft_moment_id": f"{candidate_id}_llm_draft",
-            "hook_draft": str(item.get("companion_hook") or item.get("scene_specific_hook") or "这里要不要换个做法？"),
-            "viewer_impulse_draft": str(item.get("viewer_impulse") or "要是我来，会想试试另一种选择。"),
-            "preset_action_drafts": [str(option) for option in options if isinstance(option, str)][:3]
-            or ["稳住局面", "温和介入", "强行改局"],
+            "hook_draft": str(item.get("companion_hook") or item.get("scene_specific_hook") or "这段值得搭子接一句。"),
+            "viewer_impulse_draft": str(item.get("viewer_impulse") or "我想说一句，这里不该被轻轻带过。"),
+            "mouthpiece_candidate_drafts": mouthpiece_candidate_drafts,
+            "preset_action_drafts": preset_action_drafts,
             "actor_context_draft": str(item.get("why_now_reviewed") or item.get("evidence_notes") or "Draft actor context needs review."),
             "local_constraints_draft": ["source-bounded", "requires human review before promotion"],
             "canon_baseline_draft": {
@@ -588,7 +601,7 @@ def build_candidate_judge_prompt(
         "drama_title": drama_title,
         "source_candidate_ref": source_candidate_ref,
         "system_prompt": (
-            "You are the semantic shortlist gate for a short-drama feature called 要是我来. "
+            "You are the semantic shortlist gate for a short-drama feature called 看剧搭子. "
             "Deterministic recall is only an evidence pool. Select only the moments where a viewer would feel "
             "emotional fluctuation and want to say something immediately. Return strict JSON only."
         ),
@@ -775,7 +788,9 @@ def build_moment_pack_draft_prompt(
         ),
         "instructions": [
             "Use only reviewed demo nodes or reviewed candidates supplied in the prompt.",
-            "Keep hook/options viewer-language, not analysis labels.",
+            "Draft two to four mouthpiece_candidate_drafts: short display_text, selected_echo, and hidden action_payload.",
+            "Keep visible candidate display_text like words the viewer wants to say, not action-menu labels.",
+            "Keep legacy preset_action_drafts only as compatibility material.",
             "Set requires_human_review to true for every draft.",
             "Never claim visual output as source proof.",
         ],
@@ -786,7 +801,21 @@ def build_moment_pack_draft_prompt(
                     "draft_moment_id": "string",
                     "hook_draft": "viewer-facing hook",
                     "viewer_impulse_draft": "viewer impulse",
-                    "preset_action_drafts": ["short action"],
+                    "mouthpiece_candidate_drafts": [
+                        {
+                            "candidate_id": "preset_0",
+                            "display_text": "short viewer speech",
+                            "action_payload": {"text": "scene-grounded semantic action"},
+                            "selected_echo": "friend-style echo after selection",
+                            "emotion_role": "string",
+                            "semantic_role": "string",
+                            "distinctness_rationale": "string",
+                            "evidence_refs": ["string"],
+                            "constraint_refs": ["string"],
+                            "requires_human_review": True,
+                        }
+                    ],
+                    "preset_action_drafts": ["legacy short action"],
                     "actor_context_draft": "string",
                     "local_constraints_draft": ["string"],
                     "canon_baseline_draft": {
@@ -885,7 +914,7 @@ def normalize_semantic_candidates(provider_payload: dict[str, Any], prompt: dict
                 "window_id": str(raw.get("window_id") or "unknown_window"),
                 "time_range_ms": [safe_int(time_range[0], default=0), safe_int(time_range[1], default=0)],
                 "hook": str(raw.get("hook") or "这里适合进入人工复核。")[:200],
-                "viewer_impulse": str(raw.get("viewer_impulse") or "要是我来，会想试试另一种选择。")[:200],
+                "viewer_impulse": str(raw.get("viewer_impulse") or "我想说一句，这里不该被轻轻带过。")[:200],
                 "intervention_logic": str(raw.get("intervention_logic") or "Model marked this as review-worthy.")[:800],
                 "evidence_excerpt": str(raw.get("evidence_excerpt") or "source evidence omitted")[:800],
                 "uncertainty": uncertainty,
@@ -950,16 +979,23 @@ def normalize_moment_drafts(raw_drafts: list[Any], prompt: dict[str, Any]) -> li
         inference_level = str(raw.get("inference_level") or "human_review_required")
         if inference_level not in {"source_supported", "model_inferred", "human_review_required"}:
             inference_level = "human_review_required"
+        preset_action_drafts = [
+            str(value) for value in raw.get("preset_action_drafts", []) if isinstance(value, str)
+        ][:5] or ["稳住局面", "温和介入", "强行改局"]
+        mouthpiece_candidate_drafts = normalize_mouthpiece_candidate_drafts(
+            raw.get("mouthpiece_candidate_drafts"),
+            fallback_options=preset_action_drafts[:3],
+            candidate_id=candidate_id,
+            source=raw,
+        )
         normalized.append(
             {
                 "candidate_id": candidate_id,
                 "draft_moment_id": str(raw.get("draft_moment_id") or f"{candidate_id}_llm_draft"),
-                "hook_draft": str(raw.get("hook_draft") or "这里要不要换个做法？")[:200],
-                "viewer_impulse_draft": str(raw.get("viewer_impulse_draft") or "要是我来，会想试试另一种选择。")[:200],
-                "preset_action_drafts": [
-                    str(value) for value in raw.get("preset_action_drafts", []) if isinstance(value, str)
-                ][:5]
-                or ["稳住局面", "温和介入", "强行改局"],
+                "hook_draft": str(raw.get("hook_draft") or "这段值得搭子接一句。")[:200],
+                "viewer_impulse_draft": str(raw.get("viewer_impulse_draft") or "我想说一句，这里不该被轻轻带过。")[:200],
+                "mouthpiece_candidate_drafts": mouthpiece_candidate_drafts,
+                "preset_action_drafts": preset_action_drafts,
                 "actor_context_draft": str(raw.get("actor_context_draft") or "Draft actor context needs review.")[:800],
                 "local_constraints_draft": [
                     str(value) for value in raw.get("local_constraints_draft", []) if isinstance(value, str)
@@ -982,6 +1018,128 @@ def normalize_moment_drafts(raw_drafts: list[Any], prompt: dict[str, Any]) -> li
             }
         )
     return normalized
+
+
+def normalize_mouthpiece_candidate_drafts(
+    value: Any,
+    *,
+    fallback_options: list[str],
+    candidate_id: str,
+    source: dict[str, Any],
+) -> list[dict[str, Any]]:
+    raw_candidates = value if isinstance(value, list) else []
+    normalized: list[dict[str, Any]] = []
+    for index, raw in enumerate(raw_candidates[:4]):
+        if not isinstance(raw, dict):
+            continue
+        action_payload = raw.get("action_payload")
+        if not isinstance(action_payload, dict):
+            action_payload = {}
+        display_text = compact_mouthpiece_display(raw.get("display_text") or action_payload.get("text"))
+        payload_text = str(action_payload.get("text") or display_text or fallback_text_for_index(fallback_options, index))
+        payload = {
+            "text": payload_text[:80],
+            "action_type": str(action_payload.get("action_type") or source.get("corrected_trigger_type") or "scene_response")[:80],
+            "intent": str(action_payload.get("intent") or f"mouthpiece_candidate_{index}")[:120],
+            "target_actors": normalize_string_list(action_payload.get("target_actors"))[:6],
+            "risk_posture": str(action_payload.get("risk_posture") or "balanced")[:80],
+        }
+        selected_echo = str(
+            raw.get("selected_echo")
+            or raw.get("friend_voice_seed")
+            or build_selected_echo(display_text or payload_text)
+        )[:80]
+        normalized.append(
+            {
+                "candidate_id": str(raw.get("candidate_id") or f"preset_{index}"),
+                "display_text": display_text or compact_mouthpiece_display(payload_text),
+                "action_payload": payload,
+                "selected_echo": selected_echo,
+                "emotion_role": str(raw.get("emotion_role") or default_emotion_role(index))[:120],
+                "semantic_role": str(raw.get("semantic_role") or default_semantic_role(index))[:120],
+                "distinctness_rationale": str(
+                    raw.get("distinctness_rationale") or "Different emotional expression path for the same scene."
+                )[:240],
+                "evidence_refs": normalize_string_list(raw.get("evidence_refs"))[:8] or [candidate_id],
+                "constraint_refs": normalize_string_list(raw.get("constraint_refs"))[:8]
+                or ["current_scene_only", "source_window_grounding"],
+                "requires_human_review": True,
+            }
+        )
+    if len(normalized) < 3:
+        generated = build_mouthpiece_candidate_drafts(fallback_options, candidate_id=candidate_id, source=source)
+        for candidate in generated:
+            if len(normalized) >= 3:
+                break
+            if candidate["candidate_id"] not in {item["candidate_id"] for item in normalized}:
+                normalized.append(candidate)
+    return normalized[:4]
+
+
+def build_mouthpiece_candidate_drafts(
+    options: list[str],
+    *,
+    candidate_id: str,
+    source: dict[str, Any],
+) -> list[dict[str, Any]]:
+    candidates: list[dict[str, Any]] = []
+    fallback_options = options[:3] or ["稳住局面", "温和介入", "强行改局"]
+    while len(fallback_options) < 3:
+        fallback_options.append(fallback_options[-1])
+    for index, option in enumerate(fallback_options[:3]):
+        display_text = compact_mouthpiece_display(option)
+        payload_text = str(option)[:80]
+        candidates.append(
+            {
+                "candidate_id": f"preset_{index}",
+                "display_text": display_text,
+                "action_payload": {
+                    "text": payload_text,
+                    "action_type": str(source.get("corrected_trigger_type") or source.get("action_type") or "scene_response")[:80],
+                    "intent": f"mouthpiece_candidate_{index}",
+                    "target_actors": [],
+                    "risk_posture": "balanced",
+                },
+                "selected_echo": build_selected_echo(display_text),
+                "emotion_role": default_emotion_role(index),
+                "semantic_role": default_semantic_role(index),
+                "distinctness_rationale": "Compatibility draft generated from reviewed legacy option; producer must review wording.",
+                "evidence_refs": [candidate_id],
+                "constraint_refs": ["current_scene_only", "source_window_grounding"],
+                "requires_human_review": True,
+            }
+        )
+    return candidates
+
+
+def build_selected_echo(display_text: str) -> str:
+    text = str(display_text or "").strip() or "这句"
+    return f"这句我懂，{text}。"
+
+
+def compact_mouthpiece_display(value: Any) -> str:
+    text = str(value or "").strip()
+    if not text:
+        text = "先稳住"
+    text = re.sub(r"\s+", "", text)
+    return text[:14]
+
+
+def fallback_text_for_index(options: list[str], index: int) -> str:
+    if 0 <= index < len(options):
+        return options[index]
+    defaults = ["稳住局面", "温和介入", "强行改局"]
+    return defaults[index] if index < len(defaults) else defaults[-1]
+
+
+def default_emotion_role(index: int) -> str:
+    roles = ["直接说出口", "先护住人", "留一点余地"]
+    return roles[index] if index < len(roles) else roles[-1]
+
+
+def default_semantic_role(index: int) -> str:
+    roles = ["direct_reaction", "protective_reaction", "controlled_reaction"]
+    return roles[index] if index < len(roles) else roles[-1]
 
 
 def compact_candidate(candidate: dict[str, Any]) -> dict[str, Any]:
@@ -1038,6 +1196,8 @@ def compact_demo_node(item: dict[str, Any]) -> dict[str, Any]:
         "trigger_type": item.get("corrected_trigger_type"),
         "hook": item.get("companion_hook") or item.get("scene_specific_hook"),
         "viewer_impulse": item.get("viewer_impulse"),
+        "mouthpiece_candidates_schema_version": item.get("mouthpiece_candidates_schema_version"),
+        "mouthpiece_candidates": item.get("mouthpiece_candidates") or [],
         "default_options": item.get("default_options") or item.get("revised_default_options") or [],
         "original_plot_note": item.get("original_plot_note_reviewed"),
         "evidence": item.get("evidence") or item.get("source_evidence_excerpt"),
@@ -1051,6 +1211,8 @@ def compact_reviewed_candidate(item: dict[str, Any]) -> dict[str, Any]:
         "episode_id": item.get("episode_id"),
         "window_id": item.get("window_id"),
         "hook": item.get("scene_specific_hook"),
+        "mouthpiece_candidates_schema_version": item.get("mouthpiece_candidates_schema_version"),
+        "mouthpiece_candidates": item.get("mouthpiece_candidates") or [],
         "default_options": item.get("revised_default_options") or [],
         "why_now": item.get("why_now_reviewed"),
         "evidence_grade": item.get("evidence_grade"),

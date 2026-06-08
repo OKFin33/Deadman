@@ -31,7 +31,7 @@
   ],
   "source_artifacts": {
     "reviewed_demo_nodes": "data/dramas/huangnian/evidence/reviewed_demo_nodes.v0.1.json",
-    "allowed_summary": "docs/Byte_AI_Allowed_Drama_Summaries_2026-05-23.md"
+    "allowed_summary": "docs/archive/source-context/Byte_AI_Allowed_Drama_Summaries_2026-05-23.md"
   },
   "promoted_dir": "data/dramas/huangnian",
   "ingestion_status": {

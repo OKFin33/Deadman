@@ -73,9 +73,40 @@
       "description": "Companion hook and entry copy. It is surface UX, not causal evidence.",
       "additionalProperties": true
     },
+    "companion_exchange": {
+      "$ref": "#/$defs/companion_exchange_pack"
+    },
     "action_space": {
       "type": "object",
-      "description": "Preset actions and custom action policy bounded to local consequence.",
+      "description": "Legacy preset actions plus v0.4 mouthpiece candidates and custom action policy bounded to local consequence.",
+      "properties": {
+        "action_type": {
+          "type": "string"
+        },
+        "default_options": {
+          "$ref": "#/$defs/string_array"
+        },
+        "mouthpiece_candidates_schema_version": {
+          "type": "string"
+        },
+        "mouthpiece_candidates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/mouthpiece_candidate"
+          }
+        },
+        "preset_options": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "custom_action_policy": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
       "additionalProperties": true
     },
     "response_contract": {
@@ -321,6 +352,139 @@
           },
           "minItems": 1,
           "uniqueItems": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "mouthpiece_candidate": {
+      "type": "object",
+      "required": [
+        "candidate_id",
+        "display_text",
+        "action_payload",
+        "selected_echo",
+        "emotion_role",
+        "semantic_role",
+        "distinctness_rationale",
+        "evidence_refs",
+        "constraint_refs"
+      ],
+      "properties": {
+        "candidate_id": {
+          "type": "string"
+        },
+        "display_text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 14
+        },
+        "action_payload": {
+          "type": "object",
+          "required": [
+            "text"
+          ],
+          "properties": {
+            "text": {
+              "type": "string"
+            },
+            "action_type": {
+              "type": "string"
+            },
+            "intent": {
+              "type": "string"
+            },
+            "target_actors": {
+              "$ref": "#/$defs/string_array"
+            },
+            "risk_posture": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": true
+        },
+        "emotion_role": {
+          "type": "string"
+        },
+        "semantic_role": {
+          "type": "string"
+        },
+        "distinctness_rationale": {
+          "type": "string"
+        },
+        "evidence_refs": {
+          "$ref": "#/$defs/string_array"
+        },
+        "constraint_refs": {
+          "$ref": "#/$defs/string_array"
+        },
+        "selected_echo": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "friend_voice_seed": {
+          "type": "string"
+        },
+        "requires_review": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "companion_exchange_pack": {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "scene_signal",
+        "window_rationale",
+        "notice_marker",
+        "companion_lead",
+        "reply_candidates",
+        "custom_reply_policy",
+        "evidence_refs",
+        "constraint_refs",
+        "blocked_claims",
+        "review_status"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "companion_exchange_pack.v0.1"
+        },
+        "scene_signal": {
+          "type": "string"
+        },
+        "window_rationale": {
+          "type": "string"
+        },
+        "notice_marker": {
+          "type": "string"
+        },
+        "companion_lead": {
+          "type": "string"
+        },
+        "reply_candidates": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {
+            "$ref": "#/$defs/mouthpiece_candidate"
+          }
+        },
+        "custom_reply_policy": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "evidence_refs": {
+          "$ref": "#/$defs/string_array"
+        },
+        "constraint_refs": {
+          "$ref": "#/$defs/string_array"
+        },
+        "blocked_claims": {
+          "$ref": "#/$defs/string_array"
+        },
+        "review_status": {
+          "type": "string"
         }
       },
       "additionalProperties": true

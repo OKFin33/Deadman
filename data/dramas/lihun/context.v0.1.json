@@ -1,0 +1,38 @@
+{
+  "schema_version": "drama_context_pack.v0.1",
+  "drama_id": "lihun",
+  "title": "幸得相遇离婚时",
+  "source_scope": {
+    "episode_scope": "reviewed_demo_windows",
+    "basis": [
+      "reviewed_candidates",
+      "asr_snippets",
+      "keyframe_contact_sheet_refs"
+    ],
+    "evidence_status": "reviewed_bridge_artifact"
+  },
+  "premise": "幸得相遇离婚时",
+  "genre_contract": [
+    {
+      "claim": "P0 interaction answers local credible consequences, then lets the viewer keep watching.",
+      "evidence_ids": [
+        "light-promote-001"
+      ],
+      "confidence": "high"
+    }
+  ],
+  "evidence_map": [
+    {
+      "id": "light-promote-001",
+      "claim": "windows are mined+reviewed; companion content pending CAB authoring",
+      "evidence": "reviewed_candidates",
+      "confidence": "medium"
+    }
+  ],
+  "global_constraints": {
+    "hard_constraints": [
+      "answer only current scene or immediate aftermath",
+      "do not claim continuous branch rewrite"
+    ]
+  }
+}

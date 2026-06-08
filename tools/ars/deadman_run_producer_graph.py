@@ -67,6 +67,8 @@ DEFAULT_LLM_CACHE_MODE = "read_write"
 DEFAULT_LLM_CHUNK_CONCURRENCY = 1
 DEFAULT_SEMANTIC_MINER_WINDOW_CAP = 40
 DEFAULT_CANDIDATE_JUDGE_BATCH_SIZE = 40
+DEFAULT_STUDIO_GUIDANCE_DATASET = REPO_ROOT / "data/datasets/studio_guidance/studio_cab_guidance_dataset.v0.1.json"
+DEFAULT_STUDIO_CAB_GRAPH_PROOF = REPO_ROOT / "data/evals/studio_cab_graph_proof.v0.1.json"
 LLM_CACHE_ENTRY_SCHEMA_VERSION = "deadman_llm_cache_entry.v0.1"
 LLM_BATCH_MANIFEST_SCHEMA_VERSION = "deadman_llm_batch_manifest.v0.1"
 LLM_PROMPT_CONTRACT_VERSION = "deadman_producer_graph_prompts.v0.1"
@@ -85,6 +87,14 @@ BASE_NODE_ORDER = [
     "publish_p0_bridge",
     "validate_producer_bridge",
     "final_report",
+]
+STUDIO_CAB_GRAPH_NODE_ORDER = [
+    "load_studio_guidance_dataset",
+    "select_phase2_6_cases",
+    "cab_author_displays_node",
+    "cab_author_echoes_node",
+    "validate_and_compress",
+    "write_sanitized_graph_proof",
 ]
 ARS_ARTIFACT_VERSION = "v0.1"
 
@@ -2863,6 +2873,453 @@ class SpikeState(TypedDict, total=False):
     review_decision: str
 
 
+class StudioCabGraphState(TypedDict, total=False):
+    run_id: str
+    thread_id: str
+    status: str
+    current_node: str
+    node_statuses: Annotated[dict[str, str], merge_dict]
+    artifact_paths: Annotated[dict[str, str], merge_dict]
+    errors: Annotated[list[ProducerRunError], append_errors]
+    validation_result: str
+    guidance_dataset_path: str
+    guidance_dataset: dict[str, Any]
+    selected_cases: list[dict[str, Any]]
+    stage_a_results: list[dict[str, Any]]
+    proof_report: dict[str, Any]
+    graph_proof: dict[str, Any]
+
+
+def studio_cab_graph_identity() -> dict[str, Any]:
+    return {
+        "graph_api": "StateGraph",
+        "graph_mode": "studio_cab_guidance",
+        "executor": "tools/ars/deadman_run_producer_graph.py",
+        "node_order": list(STUDIO_CAB_GRAPH_NODE_ORDER),
+        "core_semantic_node": "cab_author_displays_node",
+        "echo_authoring_node": "cab_author_echoes_node",
+        "baseline_reference": "data/evals/studio_cab_real_provider_proof.v0.1.json",
+    }
+
+
+def studio_cab_graph_artifacts(config: ProducerConfig, guidance_path: Path, output_path: Path) -> dict[str, str]:
+    return {
+        "run_dir": repo_relative(config.run_dir),
+        "checkpoint": repo_relative(checkpoint_path(config)),
+        "guidance_dataset": repo_relative(guidance_path),
+        "studio_cab_graph_proof": repo_relative(output_path),
+        "baseline_real_provider_proof": "data/evals/studio_cab_real_provider_proof.v0.1.json",
+    }
+
+
+def studio_graph_update(
+    node: str,
+    *,
+    status: str = "running",
+    node_status: str = "running",
+    artifact_paths: Mapping[str, str] | None = None,
+    errors: list[ProducerRunError] | None = None,
+    validation_result: str | None = None,
+    **extra: Any,
+) -> StudioCabGraphState:
+    update: StudioCabGraphState = {
+        "status": status,
+        "current_node": node,
+        "node_statuses": {node: node_status},
+    }
+    if artifact_paths:
+        update["artifact_paths"] = dict(artifact_paths)
+    if errors:
+        update["errors"] = errors
+    if validation_result:
+        update["validation_result"] = validation_result
+    update.update(extra)
+    return update
+
+
+def studio_graph_failure(node: str, code: str, message: str, *, retryable: bool = False) -> StudioCabGraphState:
+    return studio_graph_update(
+        node,
+        status="failed",
+        node_status="failed",
+        validation_result="failed",
+        errors=[
+            {
+                "node": node,
+                "code": code,
+                "message": message,
+                "retryable": retryable,
+                "artifact_refs": [],
+            }
+        ],
+    )
+
+
+def load_studio_guidance_dataset_node(guidance_path: Path, artifact_paths: Mapping[str, str]):
+    def node(state: StudioCabGraphState) -> StudioCabGraphState:
+        try:
+            guidance = read_json(guidance_path)
+        except FileNotFoundError:
+            return studio_graph_failure(
+                "load_studio_guidance_dataset",
+                "guidance_dataset_missing",
+                f"guidance dataset missing: {repo_relative(guidance_path)}",
+            )
+        except json.JSONDecodeError as exc:
+            return studio_graph_failure(
+                "load_studio_guidance_dataset",
+                "guidance_dataset_invalid_json",
+                f"guidance dataset invalid JSON: {exc.msg}",
+            )
+        from Deadman.tools.ars.deadman_validate_studio_guidance_dataset import validate_studio_guidance_dataset
+
+        errors = validate_studio_guidance_dataset(dataset=guidance, dataset_path=guidance_path)
+        if errors:
+            return studio_graph_failure(
+                "load_studio_guidance_dataset",
+                "guidance_dataset_contract_failed",
+                "; ".join(errors[:5]),
+            )
+        return studio_graph_update(
+            "load_studio_guidance_dataset",
+            status="running",
+            node_status="pass",
+            artifact_paths=artifact_paths,
+            guidance_dataset_path=repo_relative(guidance_path),
+            guidance_dataset=guidance,
+        )
+
+    return node
+
+
+def select_phase2_6_cases_node(case_limit: int = 0):
+    def node(state: StudioCabGraphState) -> StudioCabGraphState:
+        guidance = state.get("guidance_dataset")
+        if not isinstance(guidance, dict):
+            return studio_graph_failure(
+                "select_phase2_6_cases",
+                "guidance_dataset_not_loaded",
+                "guidance dataset must be loaded before selecting proof cases",
+            )
+        planned_cases = list(guidance["real_provider_proof_plan"]["planned_cases"])
+        if case_limit > 0:
+            planned_cases = planned_cases[:case_limit]
+        if not planned_cases:
+            return studio_graph_failure(
+                "select_phase2_6_cases",
+                "no_planned_cases",
+                "real_provider_proof_plan.planned_cases is empty",
+            )
+        return studio_graph_update(
+            "select_phase2_6_cases",
+            status="running",
+            node_status="pass",
+            selected_cases=planned_cases,
+        )
+
+    return node
+
+
+def cab_author_displays_node(
+    config: ProducerConfig,
+    *,
+    guidance_path: Path,
+    created_at: str,
+    provider: Any | None = None,
+):
+    """Core CAB stage 1: window decision + lead + viewer entries (Layer 1).
+
+    This is the semantic heart of the graph: it decides whether the window
+    opens, authors the host's lead, and surfaces the three viewer postures
+    (display_text + viewer_motivation). It does not author echoes.
+    """
+    def node(state: StudioCabGraphState) -> StudioCabGraphState:
+        guidance = state.get("guidance_dataset")
+        selected_cases = state.get("selected_cases")
+        if not isinstance(guidance, dict) or not isinstance(selected_cases, list):
+            return studio_graph_failure(
+                "cab_author_displays_node",
+                "missing_authoring_inputs",
+                "guidance dataset and selected cases are required before CAB authoring",
+            )
+        from Deadman.tools.ars.deadman_producer_graph_llm import LlmProviderError
+        from Deadman.tools.ars.deadman_run_studio_real_provider_proof import (
+            ArkStudioProofProvider,
+            run_case_stage_a,
+        )
+
+        try:
+            active_provider = provider or ArkStudioProofProvider.from_env()
+        except LlmProviderError as exc:
+            return studio_graph_failure(
+                "cab_author_displays_node",
+                "provider_unavailable",
+                str(exc),
+                retryable=True,
+            )
+        stage_a_results = [run_case_stage_a(active_provider, guidance, case) for case in selected_cases]
+        return studio_graph_update(
+            "cab_author_displays_node",
+            status="running",
+            node_status="pass",
+            stage_a_results=stage_a_results,
+        )
+
+    return node
+
+
+def cab_author_echoes_node(
+    config: ProducerConfig,
+    *,
+    guidance_path: Path,
+    created_at: str,
+    provider: Any | None = None,
+):
+    """Core CAB stage 2: per-viewer echo (Layer 2) + proof report assembly.
+
+    For each viewer entry from stage 1, the host replies to that one viewer
+    (selected_echo), then the full sanitized proof report is assembled.
+    """
+    def node(state: StudioCabGraphState) -> StudioCabGraphState:
+        guidance = state.get("guidance_dataset")
+        selected_cases = state.get("selected_cases")
+        stage_a_results = state.get("stage_a_results")
+        if not isinstance(guidance, dict) or not isinstance(selected_cases, list) or not isinstance(stage_a_results, list):
+            return studio_graph_failure(
+                "cab_author_echoes_node",
+                "missing_echo_inputs",
+                "guidance, selected cases, and stage_a_results are required before echo authoring",
+            )
+        from Deadman.tools.ars.deadman_producer_graph_llm import LlmProviderError
+        from Deadman.tools.ars.deadman_run_studio_real_provider_proof import (
+            ArkStudioProofProvider,
+            assemble_proof_report,
+            build_rejected_display_text_blacklist,
+            case_result_from_combined,
+            run_case_stage_b,
+        )
+
+        try:
+            active_provider = provider or ArkStudioProofProvider.from_env()
+        except LlmProviderError as exc:
+            return studio_graph_failure(
+                "cab_author_echoes_node",
+                "provider_unavailable",
+                str(exc),
+                retryable=True,
+            )
+        blacklist = build_rejected_display_text_blacklist(guidance)
+        case_results = []
+        for stage_a in stage_a_results:
+            case = stage_a.get("case", {})
+            combined = run_case_stage_b(active_provider, guidance, stage_a)
+            case_results.append(case_result_from_combined(combined, case, blacklist))
+        report = assemble_proof_report(
+            selected_cases=selected_cases,
+            case_results=case_results,
+            guidance=guidance,
+            guidance_path=guidance_path,
+            provider_name=active_provider.name,
+            provider_model=active_provider.model,
+            provider_mock=bool(active_provider.mock_provider),
+            created_at=created_at,
+        )
+        report["claim_boundary"] = (
+            "Phase 2.7 LangGraph Studio proof. Two CAB stages (cab_author_displays_node "
+            "then cab_author_echoes_node) consumed the Studio Guidance Dataset and "
+            "produced draft_not_owner_reviewed provider drafts; no runtime pack "
+            "promotion occurred."
+        )
+        return studio_graph_update(
+            "cab_author_echoes_node",
+            status="running",
+            node_status="pass",
+            proof_report=report,
+        )
+
+    return node
+
+
+def validate_and_compress_node(output_path: Path):
+    def node(state: StudioCabGraphState) -> StudioCabGraphState:
+        proof_report = state.get("proof_report")
+        if not isinstance(proof_report, dict):
+            return studio_graph_failure(
+                "validate_and_compress",
+                "proof_report_missing",
+                "CAB authoring node must produce proof_report before validation",
+            )
+        from Deadman.tools.ars.deadman_validate_studio_real_provider_proof import (
+            DEFAULT_PROOF_PATH as REAL_PROVIDER_PROOF_PATH,
+            validate_studio_real_provider_proof,
+        )
+
+        errors = validate_studio_real_provider_proof(proof=proof_report, proof_path=REAL_PROVIDER_PROOF_PATH)
+        if errors:
+            return studio_graph_failure(
+                "validate_and_compress",
+                "proof_report_validation_failed",
+                "; ".join(errors[:5]),
+            )
+        return studio_graph_update(
+            "validate_and_compress",
+            status="running",
+            node_status="pass",
+            validation_result="pass",
+        )
+
+    return node
+
+
+def write_sanitized_graph_proof_node(
+    config: ProducerConfig,
+    *,
+    guidance_path: Path,
+    output_path: Path,
+    created_at: str,
+    artifact_paths: Mapping[str, str],
+):
+    def node(state: StudioCabGraphState) -> StudioCabGraphState:
+        proof_report = state.get("proof_report")
+        if not isinstance(proof_report, dict):
+            return studio_graph_failure(
+                "write_sanitized_graph_proof",
+                "proof_report_missing",
+                "proof_report is required before writing graph proof",
+            )
+        graph_proof = {
+            "schema_version": "studio_cab_graph_proof.v0.1",
+            "product": "看剧搭子",
+            "created_at": created_at,
+            "status": proof_report["status"],
+            "claim_boundary": (
+                "LangGraph outer orchestration with a CAB authoring core node. "
+                "The report is proof/eval only: all provider drafts remain "
+                "draft_not_owner_reviewed and no runtime pack promotion occurred."
+            ),
+            "graph_identity": studio_cab_graph_identity(),
+            "guidance_dataset_ref": proof_report["guidance_dataset_ref"],
+            "publication_decision": proof_report["publication_decision"],
+            "proof_report": proof_report,
+        }
+        from Deadman.tools.ars.deadman_validate_studio_cab_graph_proof import validate_studio_cab_graph_proof
+
+        errors = validate_studio_cab_graph_proof(proof=graph_proof, proof_path=output_path)
+        if errors:
+            return studio_graph_failure(
+                "write_sanitized_graph_proof",
+                "graph_proof_validation_failed",
+                "; ".join(errors[:5]),
+            )
+        write_json(output_path, graph_proof)
+        return studio_graph_update(
+            "write_sanitized_graph_proof",
+            status="pass",
+            node_status="pass",
+            artifact_paths=artifact_paths,
+            validation_result="pass",
+            graph_proof=graph_proof,
+        )
+
+    return node
+
+
+def build_studio_cab_graph(
+    config: ProducerConfig,
+    *,
+    guidance_path: Path = DEFAULT_STUDIO_GUIDANCE_DATASET,
+    output_path: Path = DEFAULT_STUDIO_CAB_GRAPH_PROOF,
+    created_at: str = "",
+    case_limit: int = 0,
+    provider: Any | None = None,
+):
+    from langgraph.graph import END, START, StateGraph
+
+    created_at = created_at or now_iso()
+    artifacts = studio_cab_graph_artifacts(config, guidance_path, output_path)
+    builder = StateGraph(StudioCabGraphState)
+    builder.add_node("load_studio_guidance_dataset", load_studio_guidance_dataset_node(guidance_path, artifacts))
+    builder.add_node("select_phase2_6_cases", select_phase2_6_cases_node(case_limit))
+    builder.add_node(
+        "cab_author_displays_node",
+        cab_author_displays_node(config, guidance_path=guidance_path, created_at=created_at, provider=provider),
+    )
+    builder.add_node(
+        "cab_author_echoes_node",
+        cab_author_echoes_node(config, guidance_path=guidance_path, created_at=created_at, provider=provider),
+    )
+    builder.add_node("validate_and_compress", validate_and_compress_node(output_path))
+    builder.add_node(
+        "write_sanitized_graph_proof",
+        write_sanitized_graph_proof_node(
+            config,
+            guidance_path=guidance_path,
+            output_path=output_path,
+            created_at=created_at,
+            artifact_paths=artifacts,
+        ),
+    )
+    builder.add_edge(START, "load_studio_guidance_dataset")
+    builder.add_conditional_edges(
+        "load_studio_guidance_dataset",
+        lambda state: END if state.get("status") == "failed" else "select_phase2_6_cases",
+    )
+    builder.add_conditional_edges(
+        "select_phase2_6_cases",
+        lambda state: END if state.get("status") == "failed" else "cab_author_displays_node",
+    )
+    builder.add_conditional_edges(
+        "cab_author_displays_node",
+        lambda state: END if state.get("status") == "failed" else "cab_author_echoes_node",
+    )
+    builder.add_conditional_edges(
+        "cab_author_echoes_node",
+        lambda state: END if state.get("status") == "failed" else "validate_and_compress",
+    )
+    builder.add_conditional_edges(
+        "validate_and_compress",
+        lambda state: END if state.get("status") == "failed" else "write_sanitized_graph_proof",
+    )
+    builder.add_edge("write_sanitized_graph_proof", END)
+    return builder
+
+
+def run_studio_cab_graph_proof(
+    config: ProducerConfig,
+    *,
+    guidance_path: Path = DEFAULT_STUDIO_GUIDANCE_DATASET,
+    output_path: Path = DEFAULT_STUDIO_CAB_GRAPH_PROOF,
+    created_at: str = "",
+    case_limit: int = 0,
+    provider: Any | None = None,
+) -> dict[str, Any]:
+    created_at = created_at or now_iso()
+    conn, checkpointer = open_checkpointer(config)
+    try:
+        graph = build_studio_cab_graph(
+            config,
+            guidance_path=guidance_path,
+            output_path=output_path,
+            created_at=created_at,
+            case_limit=case_limit,
+            provider=provider,
+        ).compile(checkpointer=checkpointer)
+        state: StudioCabGraphState = {
+            "run_id": config.run_id,
+            "thread_id": config.thread_id,
+            "status": "running",
+            "current_node": "",
+            "node_statuses": {node: "planned" for node in STUDIO_CAB_GRAPH_NODE_ORDER},
+            "artifact_paths": studio_cab_graph_artifacts(config, guidance_path, output_path),
+            "errors": [],
+            "validation_result": "not_run",
+        }
+        result = graph.invoke(state, config={"configurable": {"thread_id": config.thread_id}})
+        return result if isinstance(result, dict) else {"result": repr(result)}
+    finally:
+        conn.close()
+
+
 def spike_review_node(config: ProducerConfig):
     def node(state: SpikeState) -> SpikeState:
         from langgraph.types import interrupt
@@ -3035,6 +3492,12 @@ def parse_args() -> argparse.Namespace:
     spike_resume_parser = subparsers.add_parser("spike-resume")
     add_common_args(spike_resume_parser)
     spike_resume_parser.add_argument("--review-decision", choices=("approve", "reject"), default="approve")
+    studio_cab_parser = subparsers.add_parser("studio-cab-proof")
+    add_common_args(studio_cab_parser)
+    studio_cab_parser.add_argument("--guidance", default=str(DEFAULT_STUDIO_GUIDANCE_DATASET))
+    studio_cab_parser.add_argument("--output", default=str(DEFAULT_STUDIO_CAB_GRAPH_PROOF))
+    studio_cab_parser.add_argument("--created-at", default="")
+    studio_cab_parser.add_argument("--case-limit", type=int, default=0)
     return parser.parse_args()
 
 
@@ -3057,6 +3520,16 @@ def main() -> int:
         config = resume_config_from_manifest(config)
         print_json(run_graph_resume(config, args.review_decision, args.reviewer_note))
         return 0
+    if args.command == "studio-cab-proof":
+        result = run_studio_cab_graph_proof(
+            config,
+            guidance_path=resolve_path(args.guidance),
+            output_path=resolve_path(args.output),
+            created_at=args.created_at,
+            case_limit=int(args.case_limit or 0),
+        )
+        print_json(result)
+        return 0 if isinstance(result, dict) and result.get("status") == "pass" else 1
     raise AssertionError(f"unhandled command {args.command}")
 
 

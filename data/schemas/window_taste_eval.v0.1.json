@@ -1,0 +1,561 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://oseria.local/schemas/deadman/window_taste_eval.v0.1.json",
+  "title": "Deadman Window Taste Eval v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "product",
+    "created_at",
+    "status",
+    "policy",
+    "targets",
+    "rubric",
+    "items"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "window_taste_eval.v0.1"
+    },
+    "product": {
+      "const": "看剧搭子"
+    },
+    "created_at": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "enum": ["draft_owner_calibration", "reviewed_gate"]
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "episode_window_policy",
+        "interaction_window_duration_ms",
+        "source_window_policy",
+        "publish_policy"
+      ],
+      "properties": {
+        "episode_window_policy": {
+          "const": "at_most_one_best_window_per_episode_publish_zero_allowed"
+        },
+        "interaction_window_duration_ms": {
+          "const": 10000
+        },
+        "source_window_policy": {
+          "type": "string",
+          "minLength": 1
+        },
+        "publish_policy": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "targets": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "owner_confirmed_gold_min",
+        "gold_candidate_min",
+        "hard_negative_min",
+        "hard_negative_acceptance_target"
+      ],
+      "properties": {
+        "owner_confirmed_gold_min": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "gold_candidate_min": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "hard_negative_min": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "hard_negative_acceptance_target": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "rubric": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["positive_axes", "penalty_axes"],
+      "properties": {
+        "positive_axes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/rubric_axis"
+          }
+        },
+        "penalty_axes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/rubric_axis"
+          }
+        }
+      }
+    },
+    "items": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/item"
+      }
+    }
+  },
+  "$defs": {
+    "rubric_axis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["axis_id", "description", "weight"],
+      "properties": {
+        "axis_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "weight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "item_id",
+        "label",
+        "review_status",
+        "evaluation_focus",
+        "episode_id",
+        "anchor_ms",
+        "interaction_window",
+        "source_window",
+        "nomination_role",
+        "source_origin",
+        "window_review",
+        "context_card",
+        "viewer_line_pressure",
+        "why_now",
+        "expected_tone",
+        "expected_reply_axes",
+        "reject_dimensions",
+        "reject_reason",
+        "evidence_refs",
+        "owner_notes",
+        "agent_notes"
+      ],
+      "properties": {
+        "item_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "label": {
+          "enum": ["gold", "hard_negative"]
+        },
+        "review_status": {
+          "enum": ["owner_confirmed", "proposed_for_owner_review", "agent_labeled"]
+        },
+        "evaluation_focus": {
+          "enum": ["window_selection", "framing_quality"]
+        },
+        "episode_id": {
+          "type": "string",
+          "pattern": "^huangnian_ep[0-9]{2}$"
+        },
+        "anchor_ms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "interaction_window": {
+          "$ref": "#/$defs/time_window"
+        },
+        "source_window": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["start_ms", "end_ms", "evidence_excerpt"],
+          "properties": {
+            "start_ms": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "end_ms": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "evidence_excerpt": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "nomination_role": {
+          "enum": ["episode_best_candidate", "legacy_false_positive", "near_miss", "skip_candidate"]
+        },
+        "source_origin": {
+          "enum": ["owner_seed", "agent_proposed", "legacy_miner", "near_miss"]
+        },
+        "window_review": {
+          "$ref": "#/$defs/window_review"
+        },
+        "context_card": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "card_version",
+            "episode_context",
+            "scene_function",
+            "adjacent_asr",
+            "character_relationship_state",
+            "mouthpiece_pressure",
+            "dependency_note",
+            "owner_review_prompt",
+            "owner_review_outcome",
+            "agent_input_readiness",
+            "authoring_seed"
+          ],
+          "properties": {
+            "card_version": {
+              "const": "context_card.v0.2"
+            },
+            "episode_context": {
+              "type": "string",
+              "minLength": 1
+            },
+            "scene_function": {
+              "type": "string",
+              "minLength": 1
+            },
+            "adjacent_asr": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["before", "current", "after"],
+              "properties": {
+                "before": {
+                  "type": "string"
+                },
+                "current": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "after": {
+                  "type": "string"
+                }
+              }
+            },
+            "character_relationship_state": {
+              "type": "string",
+              "minLength": 1
+            },
+            "mouthpiece_pressure": {
+              "type": "string",
+              "minLength": 1
+            },
+            "dependency_note": {
+              "type": "string",
+              "minLength": 1
+            },
+            "owner_review_prompt": {
+              "type": "string",
+              "minLength": 1
+            },
+            "owner_review_outcome": {
+              "enum": [
+                "unreviewed",
+                "understood_gold",
+                "understood_gold_with_revision",
+                "understood_wrong_taste",
+                "context_insufficient"
+              ]
+            },
+            "agent_input_readiness": {
+              "enum": ["owner_confirmed", "needs_owner_review", "context_insufficient", "negative_training_only"]
+            },
+            "authoring_seed": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "seed_version",
+                "applicability",
+                "companion_lead_seed",
+                "lead_style_policy",
+                "reply_set_policy",
+                "viewer_stance_policy",
+                "reply_candidate_seeds",
+                "response_tone_policy",
+                "preset_echo_policy",
+                "custom_reply_policy_hint",
+                "rejected_lead_examples",
+                "rejected_reply_examples",
+                "blocked_claims_hint"
+              ],
+              "properties": {
+                "seed_version": {
+                  "const": "authoring_seed.v0.1"
+                },
+                "applicability": {
+                  "enum": ["authoring_reference", "negative_boundary", "not_ready"]
+                },
+                "companion_lead_seed": {
+                  "type": "string"
+                },
+                "lead_style_policy": {
+                  "type": "string"
+                },
+                "reply_set_policy": {
+                  "type": "string"
+                },
+                "viewer_stance_policy": {
+                  "type": "string"
+                },
+                "reply_candidate_seeds": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "display_text",
+                      "emotion_role",
+                      "semantic_role",
+                      "intent_note"
+                    ],
+                    "properties": {
+                      "display_text": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "emotion_role": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "semantic_role": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "intent_note": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    }
+                  }
+                },
+                "response_tone_policy": {
+                  "type": "string"
+                },
+                "preset_echo_policy": {
+                  "type": "string"
+                },
+                "custom_reply_policy_hint": {
+                  "type": "string"
+                },
+                "rejected_lead_examples": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "display_text",
+                      "negative_type",
+                      "reject_reason",
+                      "correction_hint"
+                    ],
+                    "properties": {
+                      "display_text": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "negative_type": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "reject_reason": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "correction_hint": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    }
+                  }
+                },
+                "rejected_reply_examples": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "display_text",
+                      "negative_type",
+                      "reject_reason",
+                      "correction_hint"
+                    ],
+                    "properties": {
+                      "display_text": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "negative_type": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "reject_reason": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "correction_hint": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    }
+                  }
+                },
+                "blocked_claims_hint": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "viewer_line_pressure": {
+          "type": "string",
+          "minLength": 1
+        },
+        "why_now": {
+          "type": "string",
+          "minLength": 1
+        },
+        "expected_tone": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "expected_reply_axes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "reject_dimensions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "reject_reason": {
+          "type": "string"
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "owner_notes": {
+          "type": "string"
+        },
+        "agent_notes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "window_review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "review_version",
+        "decision",
+        "decision_source",
+        "episode_rank",
+        "reason",
+        "needs_video_review",
+        "competing_candidate_ids",
+        "owner_review_prompt"
+      ],
+      "properties": {
+        "review_version": {
+          "const": "window_review.v0.1"
+        },
+        "decision": {
+          "enum": [
+            "accepted_best",
+            "accepted_possible",
+            "rejected_window",
+            "rejected_framing",
+            "context_insufficient",
+            "unreviewed"
+          ]
+        },
+        "decision_source": {
+          "enum": ["owner_seed", "owner_episode_review", "owner_context_review", "agent_labeled", "unreviewed"]
+        },
+        "episode_rank": {
+          "enum": ["best", "backup", "not_best", "unranked"]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "needs_video_review": {
+          "type": "boolean"
+        },
+        "competing_candidate_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "owner_review_prompt": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "time_window": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["start_ms", "end_ms", "duration_ms"],
+      "properties": {
+        "start_ms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "end_ms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "duration_ms": {
+          "const": 10000
+        }
+      }
+    }
+  }
+}

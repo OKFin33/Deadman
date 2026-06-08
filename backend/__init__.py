@@ -1,4 +1,4 @@
-"""Deadman Branch 3 backend package."""
+"""Deadman companion backend package."""
 
 from .api import create_app
 

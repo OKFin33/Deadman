@@ -18,10 +18,42 @@ export type DeadmanMomentSummary = {
   };
   notice_marker?: string | null;
   hook?: string | null;
+  companion_lead?: string | null;
   action_type?: string | null;
   default_options?: string[];
+  companion_exchange?: DeadmanCompanionExchange | null;
+  mouthpiece_candidates_schema_version?: string | null;
+  mouthpiece_candidates?: DeadmanMouthpieceCandidate[];
   result_media?: DeadmanResultMedia;
   original_plot_note?: string | null;
+};
+
+export type DeadmanMouthpieceCandidate = {
+  candidate_id: string;
+  display_text: string;
+  action_payload: Record<string, unknown>;
+  selected_echo?: string | null;
+  emotion_role: string;
+  semantic_role: string;
+  distinctness_rationale?: string;
+  evidence_refs?: string[];
+  constraint_refs?: string[];
+  friend_voice_seed?: string | null;
+  requires_review?: boolean;
+};
+
+export type DeadmanCompanionExchange = {
+  schema_version: string;
+  scene_signal: string;
+  window_rationale?: string;
+  notice_marker: "!" | "?" | string;
+  companion_lead: string;
+  reply_candidates: DeadmanMouthpieceCandidate[];
+  custom_reply_policy?: Record<string, unknown>;
+  evidence_refs?: string[];
+  constraint_refs?: string[];
+  blocked_claims?: string[];
+  review_status?: string;
 };
 
 export type DeadmanMediaSlot = {
@@ -43,9 +75,11 @@ export type DeadmanResultMedia = {
 };
 
 export type DeadmanJudgmentAction = {
-  source: "preset" | "custom";
+  source: "preset_candidate" | "preset" | "custom";
   text: string;
   option_index?: number | null;
+  candidate_id?: string | null;
+  action_payload?: Record<string, unknown> | null;
 };
 
 export type DeadmanJudgmentResponse = {

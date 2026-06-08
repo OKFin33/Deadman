@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://oseria.local/schemas/deadman/exchange_authoring_phase2_repair_candidates.v0.1.json",
+  "title": "Deadman Phase2 Exchange Authoring Repair Candidates v0.1",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema_version",
+    "product",
+    "created_at",
+    "source_report_ref",
+    "input_fixture",
+    "claim_boundary",
+    "items"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "exchange_authoring_phase2_repair_candidates.v0.1"
+    },
+    "product": {
+      "const": "看剧搭子"
+    },
+    "created_at": {
+      "type": "string",
+      "minLength": 1
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": [
+          "repair_id",
+          "item_id",
+          "episode_id",
+          "time_range",
+          "field",
+          "failure_type",
+          "bad_text",
+          "replacement_text",
+          "reason",
+          "source",
+          "owner_review_needed",
+          "writeback_recommendation"
+        ]
+      }
+    }
+  }
+}

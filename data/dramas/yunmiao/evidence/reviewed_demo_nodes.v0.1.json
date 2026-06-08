@@ -1,0 +1,109 @@
+{
+  "schema_version": "deadman_reviewed_demo_nodes_evidence.v0.1",
+  "evidence_policy": "sanitized tracked evidence; no runtime dereference of ignored tmp artifacts",
+  "demo_node_count": 3,
+  "demo_nodes": [
+    {
+      "moment_id": "yunmiao_ep17_m001",
+      "candidate_id": "yunmiao_ep17_c001",
+      "review_status": "demo_candidate",
+      "corrected_trigger_type": "identity_reveal",
+      "source_window": {
+        "start_ms": 40000,
+        "end_ms": 60000,
+        "transcript_refs": [
+          {
+            "id": "yunmiao_ep17_m001_u001",
+            "episode_id": "yunmiao_ep17",
+            "start_ms": 40000,
+            "end_ms": 60000,
+            "text": "沈先生，您说是不是？当然。听到了吧？咱妈和你们家老爷子那不一样，咱妈生前不肯走，那不是因为有什么执念，而是因为舍不得我们这些小辈。是不是？",
+            "source": "sanitized_asr_snippet"
+          }
+        ],
+        "keyframe_refs": [],
+        "provenance_status": "publish_safe_sanitized"
+      },
+      "companion_hook": "这一下我有点想替他说一句。",
+      "viewer_impulse": "要是我来，我想接一句。",
+      "default_options": [
+        "接住眼前这个人此刻的情绪",
+        "为眼前这件事说一句公道话",
+        "先把火气压一压，看眼前怎么落地"
+      ],
+      "evidence": {
+        "grade": "medium",
+        "notes": "沈先生，您说是不是？当然。听到了吧？咱妈和你们家老爷子那不一样，咱妈生前不肯走，那不是因为有什么执念，而是因为舍不得我们这些小辈。是不是？"
+      },
+      "evidence_vs_inference": "source_window and excerpt are evidence; companion content is reviewed product inference (placeholder pending CAB authoring)."
+    },
+    {
+      "moment_id": "yunmiao_ep03_m001",
+      "candidate_id": "yunmiao_ep03_c001",
+      "review_status": "demo_candidate",
+      "corrected_trigger_type": "identity_reveal",
+      "source_window": {
+        "start_ms": 60000,
+        "end_ms": 80000,
+        "transcript_refs": [
+          {
+            "id": "yunmiao_ep03_m001_u001",
+            "episode_id": "yunmiao_ep03",
+            "start_ms": 60000,
+            "end_ms": 80000,
+            "text": "我知道，云小姐，不是我不信任你，我家请了大师，大师说我父亲心中想见的人是解放前的人，可是你这个年纪。于小姐，您去哪啊？我不和蠢货打交道。周康山生了个蠢货，也是他的一",
+            "source": "sanitized_asr_snippet"
+          }
+        ],
+        "keyframe_refs": [],
+        "provenance_status": "publish_safe_sanitized"
+      },
+      "companion_hook": "这一下我有点想替他说一句。",
+      "viewer_impulse": "要是我来，我想接一句。",
+      "default_options": [
+        "接住眼前这个人此刻的情绪",
+        "为眼前这件事说一句公道话",
+        "先把火气压一压，看眼前怎么落地"
+      ],
+      "evidence": {
+        "grade": "medium",
+        "notes": "我知道，云小姐，不是我不信任你，我家请了大师，大师说我父亲心中想见的人是解放前的人，可是你这个年纪。于小姐，您去哪啊？我不和蠢货打交道。周康山生了个蠢货，也是他的一"
+      },
+      "evidence_vs_inference": "source_window and excerpt are evidence; companion content is reviewed product inference (placeholder pending CAB authoring)."
+    },
+    {
+      "moment_id": "yunmiao_ep18_m001",
+      "candidate_id": "yunmiao_ep18_c001",
+      "review_status": "demo_candidate",
+      "corrected_trigger_type": "hidden_power_rule",
+      "source_window": {
+        "start_ms": 20000,
+        "end_ms": 40000,
+        "transcript_refs": [
+          {
+            "id": "yunmiao_ep18_m001_u001",
+            "episode_id": "yunmiao_ep18",
+            "start_ms": 20000,
+            "end_ms": 40000,
+            "text": "你真的觉得你母亲生前幸福吗？于小姐，我们孙家和你有什么关系？啊？就算我母亲生前有什么，那也轮不到你一个小朋友来这智慧。是吗？这这眼神好冷，哪像是活人的眼神？",
+            "source": "sanitized_asr_snippet"
+          }
+        ],
+        "keyframe_refs": [],
+        "provenance_status": "publish_safe_sanitized"
+      },
+      "companion_hook": "这一下我有点想替他说一句。",
+      "viewer_impulse": "要是我来，我想接一句。",
+      "default_options": [
+        "接住眼前这个人此刻的情绪",
+        "为眼前这件事说一句公道话",
+        "先把火气压一压，看眼前怎么落地"
+      ],
+      "evidence": {
+        "grade": "medium",
+        "notes": "你真的觉得你母亲生前幸福吗？于小姐，我们孙家和你有什么关系？啊？就算我母亲生前有什么，那也轮不到你一个小朋友来这智慧。是吗？这这眼神好冷，哪像是活人的眼神？"
+      },
+      "evidence_vs_inference": "source_window and excerpt are evidence; companion content is reviewed product inference (placeholder pending CAB authoring)."
+    }
+  ]
+}

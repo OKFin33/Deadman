@@ -8,15 +8,15 @@ import "./TomatoCompanion.css";
 const ASSET_BASE = `${import.meta.env.BASE_URL.replace(/\/$/, "")}/assets/branch3/companion/tomato-robes`;
 
 const STATE_LABELS: Record<TomatoCompanionState, string> = {
-  idle: "要是我来搭子待机中",
-  notice_question: "要是我来搭子发现了一个可介入点",
-  notice_exclaim: "要是我来搭子发现了一个高情绪介入点",
-  runout: "要是我来搭子正在跑出",
-  stand_bubble: "要是我来搭子等待你的选择",
-  thinking: "要是我来搭子正在判断后果",
-  verdict: "要是我来搭子给出判断",
-  error: "要是我来搭子判定失败，需要重试或关闭",
-  dismissed: "要是我来搭子正在退回待机",
+  idle: "看剧搭子待机中",
+  notice_question: "看剧搭子发现了一个可介入点",
+  notice_exclaim: "看剧搭子发现了一个高情绪介入点",
+  runout: "看剧搭子正在跑出",
+  stand_bubble: "看剧搭子等待你的选择",
+  thinking: "看剧搭子正在判断后果",
+  verdict: "看剧搭子给出判断",
+  error: "看剧搭子卡住了，需要重试或关闭",
+  dismissed: "看剧搭子正在退回待机",
 };
 
 interface TomatoCompanionProps {

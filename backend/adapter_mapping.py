@@ -46,23 +46,40 @@ def build_adapter_input(
         mapping_warnings=warnings,
     )
     action_space = _require_dict(moment.get("action_space"), "action_space")
-    action_type = _required_string(action_space.get("action_type"), "action_space.action_type")
+    candidate = _candidate_for_action(moment, request) if request.action.source == "preset_candidate" else None
+    candidate_payload = _dict_or_empty(candidate.get("action_payload")) if candidate is not None else {}
+    action_type = _required_string(
+        candidate_payload.get("action_type") or action_space.get("action_type"),
+        "action_space.action_type",
+    )
+    action_text = _required_string(
+        candidate_payload.get("text") or request.action.text,
+        "user_action.text",
+    )
     preset_id: str | None = None
-    if request.action.source == "preset":
+    if request.action.source == "preset_candidate":
+        preset_id = _required_string(request.action.candidate_id, "action.candidate_id")
+    elif request.action.source == "preset":
         if request.action.option_index is None:
             raise AdapterMappingError("adapter_mapping_invalid_action", "Preset adapter input requires action.option_index.")
         preset_id = f"preset_{request.action.option_index}"
 
-    visual_result = "preset_slot" if request.action.source == "preset" else "plan_only"
+    visual_result = "preset_slot" if request.action.source in {"preset", "preset_candidate"} else "plan_only"
     adapter_input: dict[str, Any] = {
         "request_id": request_id,
         "drama_id": drama_pack.drama_id,
         "moment_pack": moment_pack,
         "user_action": {
-            "origin": request.action.source,
+            "origin": "preset" if request.action.source == "preset_candidate" else request.action.source,
+            "source": request.action.source,
             "action_type": action_type,
-            "text": request.action.text,
+            "text": action_text,
+            "display_text": request.action.text,
             "preset_id": preset_id,
+            "candidate_id": request.action.candidate_id,
+            "action_payload": candidate_payload if candidate_payload else request.action.action_payload,
+            "emotion_role": str(candidate.get("emotion_role") or "") if candidate is not None else "",
+            "semantic_role": str(candidate.get("semantic_role") or "") if candidate is not None else "",
         },
         "runtime_policy": {
             "time_horizon": LOCAL_TIME_HORIZON,
@@ -277,9 +294,12 @@ def _evidence_ref_list(source_refs: dict[str, Any]) -> list[dict[str, Any]]:
 
 def _map_companion_entry(moment: dict[str, Any]) -> dict[str, Any]:
     companion = _dict_or_empty(moment.get("companion_surface"))
+    exchange = _dict_or_empty(moment.get("companion_exchange"))
     return {
         "notice_marker": str(companion.get("notice_marker") or ""),
         "hook": str(companion.get("hook") or ""),
+        "scene_signal": str(exchange.get("scene_signal") or companion.get("hook") or ""),
+        "companion_lead": str(exchange.get("companion_lead") or companion.get("companion_lead") or ""),
         "viewer_impulse": str(companion.get("viewer_impulse") or ""),
         "interaction_window": _dict_or_empty(moment.get("interaction_window")),
     }
@@ -290,15 +310,65 @@ def _map_action_space(moment: dict[str, Any]) -> dict[str, Any]:
     default_options = _as_string_list(source.get("default_options", []))
     if not default_options:
         raise AdapterMappingError("adapter_mapping_invalid", "Preset moment has no action_space.default_options.")
+    mouthpiece_candidates = _reply_candidates(moment, source)
     return {
         "action_type": _required_string(source.get("action_type"), "action_space.action_type"),
         "default_options": default_options,
-        "preset_options": [
-            {"preset_id": f"preset_{index}", "option_index": index, "text": text}
-            for index, text in enumerate(default_options)
-        ],
+        "mouthpiece_candidates_schema_version": str(source.get("mouthpiece_candidates_schema_version") or ("mouthpiece_candidates.v0.1" if mouthpiece_candidates else "")),
+        "mouthpiece_candidates": mouthpiece_candidates,
+        "preset_options": _preset_options(default_options, mouthpiece_candidates),
         "custom_action_policy": _dict_or_empty(source.get("custom_action_policy")),
     }
+
+
+def _preset_options(default_options: list[str], mouthpiece_candidates: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    options: list[dict[str, Any]] = []
+    for index, text in enumerate(default_options):
+        candidate = mouthpiece_candidates[index] if index < len(mouthpiece_candidates) else {}
+        options.append(
+            {
+                "preset_id": str(candidate.get("candidate_id") or f"preset_{index}"),
+                "option_index": index,
+                "text": str(candidate.get("display_text") or text),
+                "action_payload": _dict_or_empty(candidate.get("action_payload")),
+            }
+        )
+    return options
+
+
+def _candidate_for_action(moment: dict[str, Any], request: JudgmentRequest) -> dict[str, Any] | None:
+    candidate_id = str(request.action.candidate_id or "").strip()
+    if not candidate_id:
+        raise AdapterMappingError("adapter_mapping_invalid_action", "Preset candidate adapter input requires action.candidate_id.")
+    source = _require_dict(moment.get("action_space"), "action_space")
+    for candidate in _reply_candidates(moment, source):
+        if str(candidate.get("candidate_id") or "") == candidate_id:
+            display_text = str(candidate.get("display_text") or "").strip()
+            if display_text and request.action.text.strip() != display_text:
+                raise AdapterMappingError("adapter_mapping_invalid_action", "Preset candidate action.text must match display_text.")
+            expected_payload = _dict_or_empty(candidate.get("action_payload"))
+            if expected_payload and request.action.action_payload != expected_payload:
+                raise AdapterMappingError("adapter_mapping_invalid_action", "Preset candidate action_payload must match the reviewed payload.")
+            return candidate
+    raise AdapterMappingError("adapter_mapping_invalid_action", f"Preset candidate_id {candidate_id!r} is not in companion_exchange.reply_candidates.")
+
+
+def _reply_candidates(moment: dict[str, Any], action_space: dict[str, Any]) -> list[dict[str, Any]]:
+    exchange = moment.get("companion_exchange")
+    if isinstance(exchange, dict) and isinstance(exchange.get("reply_candidates"), list):
+        return [item for item in exchange["reply_candidates"] if isinstance(item, dict)]
+    return _mouthpiece_candidates(action_space)
+
+
+def _mouthpiece_candidates(action_space: dict[str, Any]) -> list[dict[str, Any]]:
+    candidates = action_space.get("mouthpiece_candidates")
+    if not isinstance(candidates, list):
+        return []
+    safe_candidates: list[dict[str, Any]] = []
+    for candidate in candidates:
+        if isinstance(candidate, dict):
+            safe_candidates.append(candidate)
+    return safe_candidates
 
 
 def _map_response_contract(moment: dict[str, Any]) -> dict[str, Any]:

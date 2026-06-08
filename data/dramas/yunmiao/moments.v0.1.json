@@ -1,0 +1,908 @@
+{
+  "schema_version": "moment_causality_pack.v0.1",
+  "collection_schema_version": "moment_causality_pack_collection.v0.1",
+  "drama_id": "yunmiao",
+  "title": "云渺1：我修仙多年强亿点怎么了",
+  "drama_context_ref": "context.v0.1.json",
+  "source_policy": "light promote from reviewed mined candidates; companion content pending CAB authoring",
+  "moment_count": 3,
+  "moments": [
+    {
+      "pack_id": "yunmiao_ep17_m001",
+      "moment_id": "yunmiao_ep17_m001",
+      "schema_version": "moment_causality_pack.v0.1",
+      "drama_id": "yunmiao",
+      "drama_context_ref": "context.v0.1.json",
+      "source_drama": {
+        "title": "云渺1：我修仙多年强亿点怎么了",
+        "episode_id": "yunmiao_ep17",
+        "source_policy": "reviewed mined candidate (light promote); companion content pending CAB authoring",
+        "time_range_seconds": [
+          40,
+          60
+        ],
+        "runtime_video_url": "/api/deadman/media/yunmiao/yunmiao_ep17.mp4",
+        "media_registry_ref": "data/dramas/yunmiao/media_registry.v0.1.json#yunmiao_ep17"
+      },
+      "source_window": {
+        "start_ms": 40000,
+        "end_ms": 60000,
+        "transcript_refs": [
+          {
+            "id": "yunmiao_ep17_m001_u001",
+            "episode_id": "yunmiao_ep17",
+            "start_ms": 40000,
+            "end_ms": 60000,
+            "text": "沈先生，您说是不是？当然。听到了吧？咱妈和你们家老爷子那不一样，咱妈生前不肯走，那不是因为有什么执念，而是因为舍不得我们这些小辈。是不是？",
+            "source": "sanitized_asr_snippet"
+          }
+        ],
+        "keyframe_refs": [],
+        "provenance_status": "publish_safe_sanitized"
+      },
+      "provenance": {
+        "candidate_id": "yunmiao_ep17_c001",
+        "reviewed_candidate_ref": "yunmiao_ep17_c001",
+        "source_artifact": "data/dramas/yunmiao/evidence/reviewed_demo_nodes.v0.1.json#yunmiao_ep17_m001"
+      },
+      "review_state": {
+        "status": "demo_candidate",
+        "reviewed_at": "2026-06-08",
+        "evidence_grade": "medium",
+        "evidence_notes": "沈先生，您说是不是？当然。听到了吧？咱妈和你们家老爷子那不一样，咱妈生前不肯走，那不是因为有什么执念，而是因为舍不得我们这些小辈。是不是？",
+        "evidence_vs_inference": "window is mined+reviewed evidence; companion content pending CAB authoring"
+      },
+      "companion_surface": {
+        "notice_marker": "!",
+        "hook": "听完心里怪不是滋味的",
+        "viewer_impulse": "要是我来，我想接一句。",
+        "scene_specificity_check": "must name an object, relation, witness, rule, or decision pressure from the source window",
+        "companion_lead": "听完心里怪不是滋味的"
+      },
+      "action_space": {
+        "action_type": "other",
+        "default_options": [
+          "长辈的惦记永远是最戳人的",
+          "接连遇上糟心事真的太耗人了",
+          "这种感觉真的太复杂了"
+        ],
+        "mouthpiece_candidates_schema_version": "mouthpiece_candidates.v0.1",
+        "mouthpiece_candidates": [
+          {
+            "candidate_id": "preset_0",
+            "display_text": "长辈的惦记永远是最戳人的",
+            "action_payload": {
+              "text": "长辈的惦记永远是最戳人的",
+              "action_type": "other",
+              "intent": "name_warmth",
+              "target_actors": [
+                "scene_focus"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "被惦记戳中",
+            "semantic_role": "name_warmth",
+            "distinctness_rationale": "coverage:core_direction_a; CAB-authored, owner-reviewed (round-5)",
+            "evidence_refs": [
+              "yunmiao_ep17_m001_u001",
+              "current_scene_window"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "no_branch_rewrite",
+              "source_window_grounding"
+            ],
+            "viewer_motivation": "想要抒发对长辈纯粹牵挂的触动感",
+            "friend_voice_seed": "太对了，哪有什么执念，全是长辈放心不下小辈的软牵挂。",
+            "selected_echo": "太对了，哪有什么执念，全是长辈放心不下小辈的软牵挂。"
+          },
+          {
+            "candidate_id": "preset_1",
+            "display_text": "接连遇上糟心事真的太耗人了",
+            "action_payload": {
+              "text": "接连遇上糟心事真的太耗人了",
+              "action_type": "other",
+              "intent": "name_weariness",
+              "target_actors": [
+                "scene_focus"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "替角色觉得累",
+            "semantic_role": "name_weariness",
+            "distinctness_rationale": "coverage:core_direction_b; CAB-authored, owner-reviewed (round-5)",
+            "evidence_refs": [
+              "yunmiao_ep17_m001_u001",
+              "current_scene_window"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "no_branch_rewrite",
+              "source_window_grounding"
+            ],
+            "viewer_motivation": "想要吐槽连续遭遇变故的疲惫感",
+            "friend_voice_seed": "可不是，攒了一堆糟心事连觉都睡不踏实啊",
+            "selected_echo": "可不是，攒了一堆糟心事连觉都睡不踏实啊"
+          },
+          {
+            "candidate_id": "preset_2",
+            "display_text": "这种感觉真的太复杂了",
+            "action_payload": {
+              "text": "这种感觉真的太复杂了",
+              "action_type": "other",
+              "intent": "catch_all",
+              "target_actors": [
+                "scene_focus"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "说不清的复杂",
+            "semantic_role": "catch_all",
+            "distinctness_rationale": "coverage:fallback; CAB-authored, owner-reviewed (round-5)",
+            "evidence_refs": [
+              "yunmiao_ep17_m001_u001",
+              "current_scene_window"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "no_branch_rewrite",
+              "source_window_grounding"
+            ],
+            "viewer_motivation": "没有明确的单一情绪，只想笼统表达当下的复杂感受",
+            "friend_voice_seed": "确实，暖得发烫又酸得发堵，全是长辈藏在心底的软牵挂",
+            "selected_echo": "确实，暖得发烫又酸得发堵，全是长辈藏在心底的软牵挂"
+          }
+        ]
+      },
+      "original_plot_note": "原剧情按当前场景推进；互动只接当下这一口气。",
+      "evidence": {
+        "grade": "medium",
+        "notes": "沈先生，您说是不是？当然。听到了吧？咱妈和你们家老爷子那不一样，咱妈生前不肯走，那不是因为有什么执念，而是因为舍不得我们这些小辈。是不是？",
+        "excerpt": "沈先生，您说是不是？当然。听到了吧？咱妈和你们家老爷子那不一样，咱妈生前不肯走，那不是因为有什么执念，而是因为舍不得我们这些小辈。是不是？"
+      },
+      "source_refs": {
+        "reviewed_demo_node": "data/dramas/yunmiao/evidence/reviewed_demo_nodes.v0.1.json#yunmiao_ep17_m001",
+        "transcript_snippets": [
+          {
+            "id": "yunmiao_ep17_m001_u001",
+            "episode_id": "yunmiao_ep17",
+            "start_ms": 40000,
+            "end_ms": 60000,
+            "text": "沈先生，您说是不是？当然。听到了吧？咱妈和你们家老爷子那不一样，咱妈生前不肯走，那不是因为有什么执念，而是因为舍不得我们这些小辈。是不是？",
+            "source": "sanitized_asr_snippet"
+          }
+        ],
+        "keyframe_refs": []
+      },
+      "interaction_window": {
+        "notice_at_seconds": 40,
+        "start_seconds": 40,
+        "end_seconds": 60,
+        "source": "reviewed_ars",
+        "confidence": "medium",
+        "pause_policy": "pause_on_invite",
+        "expire_behavior": "return_to_idle"
+      },
+      "producer_refs": {
+        "policy": "light promote; producer evidence under ignored tmp/ars_<drama>_analysis; runtime refs sanitized"
+      },
+      "companion_exchange": {
+        "schema_version": "companion_exchange_pack.v0.1",
+        "scene_signal": "长辈临走前放心不下小辈",
+        "window_rationale": "沈先生，您说是不是？当然。听到了吧？咱妈和你们家老爷子那不一样，咱妈生前不肯走，那不是因为有什么执念，而是因为舍不得我们这些小辈。是不是？",
+        "notice_marker": "!",
+        "companion_lead": "听完心里怪不是滋味的",
+        "reply_candidates": [
+          {
+            "candidate_id": "preset_0",
+            "display_text": "长辈的惦记永远是最戳人的",
+            "action_payload": {
+              "text": "长辈的惦记永远是最戳人的",
+              "action_type": "other",
+              "intent": "name_warmth",
+              "target_actors": [
+                "scene_focus"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "被惦记戳中",
+            "semantic_role": "name_warmth",
+            "distinctness_rationale": "coverage:core_direction_a; CAB-authored, owner-reviewed (round-5)",
+            "evidence_refs": [
+              "yunmiao_ep17_m001_u001",
+              "current_scene_window"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "no_branch_rewrite",
+              "source_window_grounding"
+            ],
+            "viewer_motivation": "想要抒发对长辈纯粹牵挂的触动感",
+            "friend_voice_seed": "太对了，哪有什么执念，全是长辈放心不下小辈的软牵挂。",
+            "selected_echo": "太对了，哪有什么执念，全是长辈放心不下小辈的软牵挂。"
+          },
+          {
+            "candidate_id": "preset_1",
+            "display_text": "接连遇上糟心事真的太耗人了",
+            "action_payload": {
+              "text": "接连遇上糟心事真的太耗人了",
+              "action_type": "other",
+              "intent": "name_weariness",
+              "target_actors": [
+                "scene_focus"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "替角色觉得累",
+            "semantic_role": "name_weariness",
+            "distinctness_rationale": "coverage:core_direction_b; CAB-authored, owner-reviewed (round-5)",
+            "evidence_refs": [
+              "yunmiao_ep17_m001_u001",
+              "current_scene_window"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "no_branch_rewrite",
+              "source_window_grounding"
+            ],
+            "viewer_motivation": "想要吐槽连续遭遇变故的疲惫感",
+            "friend_voice_seed": "可不是，攒了一堆糟心事连觉都睡不踏实啊",
+            "selected_echo": "可不是，攒了一堆糟心事连觉都睡不踏实啊"
+          },
+          {
+            "candidate_id": "preset_2",
+            "display_text": "这种感觉真的太复杂了",
+            "action_payload": {
+              "text": "这种感觉真的太复杂了",
+              "action_type": "other",
+              "intent": "catch_all",
+              "target_actors": [
+                "scene_focus"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "说不清的复杂",
+            "semantic_role": "catch_all",
+            "distinctness_rationale": "coverage:fallback; CAB-authored, owner-reviewed (round-5)",
+            "evidence_refs": [
+              "yunmiao_ep17_m001_u001",
+              "current_scene_window"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "no_branch_rewrite",
+              "source_window_grounding"
+            ],
+            "viewer_motivation": "没有明确的单一情绪，只想笼统表达当下的复杂感受",
+            "friend_voice_seed": "确实，暖得发烫又酸得发堵，全是长辈藏在心底的软牵挂",
+            "selected_echo": "确实，暖得发烫又酸得发堵，全是长辈藏在心底的软牵挂"
+          }
+        ],
+        "custom_reply_policy": {
+          "allowed": true,
+          "scope": "local credible consequence only",
+          "reject_or_soften": [
+            "continuous branch rewrite",
+            "unbounded system/power escalation",
+            "claims not grounded in source window"
+          ],
+          "runtime_personalization": "bounded"
+        },
+        "evidence_refs": [
+          "yunmiao_ep17_m001_u001",
+          "current_scene_window"
+        ],
+        "constraint_refs": [
+          "current_scene_only",
+          "no_branch_rewrite",
+          "source_window_grounding",
+          "no_future_episode_claim"
+        ],
+        "blocked_claims": [
+          "Do not claim what happens in later episodes.",
+          "Do not infer hidden motives from visual context alone.",
+          "Do not turn the reply into a new story branch."
+        ],
+        "review_status": "reviewed",
+        "content_status": "cab_authored_owner_reviewed"
+      },
+      "title": "云渺1：我修仙多年强亿点怎么了"
+    },
+    {
+      "pack_id": "yunmiao_ep03_m001",
+      "moment_id": "yunmiao_ep03_m001",
+      "schema_version": "moment_causality_pack.v0.1",
+      "drama_id": "yunmiao",
+      "drama_context_ref": "context.v0.1.json",
+      "source_drama": {
+        "title": "云渺1：我修仙多年强亿点怎么了",
+        "episode_id": "yunmiao_ep03",
+        "source_policy": "reviewed mined candidate (light promote); companion content pending CAB authoring",
+        "time_range_seconds": [
+          60,
+          80
+        ],
+        "runtime_video_url": "/api/deadman/media/yunmiao/yunmiao_ep03.mp4",
+        "media_registry_ref": "data/dramas/yunmiao/media_registry.v0.1.json#yunmiao_ep03"
+      },
+      "source_window": {
+        "start_ms": 60000,
+        "end_ms": 80000,
+        "transcript_refs": [
+          {
+            "id": "yunmiao_ep03_m001_u001",
+            "episode_id": "yunmiao_ep03",
+            "start_ms": 60000,
+            "end_ms": 80000,
+            "text": "我知道，云小姐，不是我不信任你，我家请了大师，大师说我父亲心中想见的人是解放前的人，可是你这个年纪。于小姐，您去哪啊？我不和蠢货打交道。周康山生了个蠢货，也是他的一",
+            "source": "sanitized_asr_snippet"
+          }
+        ],
+        "keyframe_refs": [],
+        "provenance_status": "publish_safe_sanitized"
+      },
+      "provenance": {
+        "candidate_id": "yunmiao_ep03_c001",
+        "reviewed_candidate_ref": "yunmiao_ep03_c001",
+        "source_artifact": "data/dramas/yunmiao/evidence/reviewed_demo_nodes.v0.1.json#yunmiao_ep03_m001"
+      },
+      "review_state": {
+        "status": "demo_candidate",
+        "reviewed_at": "2026-06-08",
+        "evidence_grade": "medium",
+        "evidence_notes": "我知道，云小姐，不是我不信任你，我家请了大师，大师说我父亲心中想见的人是解放前的人，可是你这个年纪。于小姐，您去哪啊？我不和蠢货打交道。周康山生了个蠢货，也是他的一",
+        "evidence_vs_inference": "window is mined+reviewed evidence; companion content pending CAB authoring"
+      },
+      "companion_surface": {
+        "notice_marker": "!",
+        "hook": "这一下我有点想替他说一句。",
+        "viewer_impulse": "要是我来，我想接一句。",
+        "scene_specificity_check": "must name an object, relation, witness, rule, or decision pressure from the source window",
+        "companion_lead": "这一下我有点想替他说一句。"
+      },
+      "action_space": {
+        "action_type": "identity_reveal",
+        "default_options": [
+          "接住眼前这个人此刻的情绪",
+          "为眼前这件事说一句公道话",
+          "先把火气压一压，看眼前怎么落地"
+        ],
+        "mouthpiece_candidates_schema_version": "mouthpiece_candidates.v0.1",
+        "mouthpiece_candidates": [
+          {
+            "candidate_id": "preset_0",
+            "display_text": "想替他接一句",
+            "action_payload": {
+              "text": "接住眼前这个人此刻的情绪",
+              "action_type": "identity_reveal",
+              "intent": "stand_with_person",
+              "target_actors": [
+                "scene_focus"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "替他着急",
+            "semantic_role": "stand_with_person",
+            "distinctness_rationale": "placeholder pending CAB authoring (Step 3)",
+            "evidence_refs": [
+              "yunmiao_ep03_m001_u001",
+              "current_scene_window"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "no_branch_rewrite",
+              "source_window_grounding"
+            ],
+            "friend_voice_seed": "嗯，这一下我也想替他说一句。",
+            "selected_echo": "嗯，这一下我也想替他说一句。"
+          },
+          {
+            "candidate_id": "preset_1",
+            "display_text": "这事得有人吭声",
+            "action_payload": {
+              "text": "为眼前这件事说一句公道话",
+              "action_type": "identity_reveal",
+              "intent": "name_the_issue",
+              "target_actors": [
+                "scene_focus"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "替场面发声",
+            "semantic_role": "name_the_issue",
+            "distinctness_rationale": "placeholder pending CAB authoring (Step 3)",
+            "evidence_refs": [
+              "yunmiao_ep03_m001_u001",
+              "current_scene_window"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "no_branch_rewrite",
+              "source_window_grounding"
+            ],
+            "friend_voice_seed": "对，这场面不能没人吭声。",
+            "selected_echo": "对，这场面不能没人吭声。"
+          },
+          {
+            "candidate_id": "preset_2",
+            "display_text": "先稳一下别急",
+            "action_payload": {
+              "text": "先把火气压一压，看眼前怎么落地",
+              "action_type": "identity_reveal",
+              "intent": "soften_first",
+              "target_actors": [
+                "scene_focus"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "先稳住",
+            "semantic_role": "soften_first",
+            "distinctness_rationale": "placeholder pending CAB authoring (Step 3)",
+            "evidence_refs": [
+              "yunmiao_ep03_m001_u001",
+              "current_scene_window"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "no_branch_rewrite",
+              "source_window_grounding"
+            ],
+            "friend_voice_seed": "我懂，这一下先别急着把话说满。",
+            "selected_echo": "我懂，这一下先别急着把话说满。"
+          }
+        ]
+      },
+      "original_plot_note": "原剧情按当前场景推进；互动只接当下这一口气。",
+      "evidence": {
+        "grade": "medium",
+        "notes": "我知道，云小姐，不是我不信任你，我家请了大师，大师说我父亲心中想见的人是解放前的人，可是你这个年纪。于小姐，您去哪啊？我不和蠢货打交道。周康山生了个蠢货，也是他的一",
+        "excerpt": "我知道，云小姐，不是我不信任你，我家请了大师，大师说我父亲心中想见的人是解放前的人，可是你这个年纪。于小姐，您去哪啊？我不和蠢货打交道。周康山生了个蠢货，也是他的一"
+      },
+      "source_refs": {
+        "reviewed_demo_node": "data/dramas/yunmiao/evidence/reviewed_demo_nodes.v0.1.json#yunmiao_ep03_m001",
+        "transcript_snippets": [
+          {
+            "id": "yunmiao_ep03_m001_u001",
+            "episode_id": "yunmiao_ep03",
+            "start_ms": 60000,
+            "end_ms": 80000,
+            "text": "我知道，云小姐，不是我不信任你，我家请了大师，大师说我父亲心中想见的人是解放前的人，可是你这个年纪。于小姐，您去哪啊？我不和蠢货打交道。周康山生了个蠢货，也是他的一",
+            "source": "sanitized_asr_snippet"
+          }
+        ],
+        "keyframe_refs": []
+      },
+      "interaction_window": {
+        "notice_at_seconds": 60,
+        "start_seconds": 60,
+        "end_seconds": 80,
+        "source": "reviewed_ars",
+        "confidence": "medium",
+        "pause_policy": "pause_on_invite",
+        "expire_behavior": "return_to_idle"
+      },
+      "producer_refs": {
+        "policy": "light promote; producer evidence under ignored tmp/ars_<drama>_analysis; runtime refs sanitized"
+      },
+      "companion_exchange": {
+        "schema_version": "companion_exchange_pack.v0.1",
+        "scene_signal": "真实身份要不要现在摊牌？",
+        "window_rationale": "我知道，云小姐，不是我不信任你，我家请了大师，大师说我父亲心中想见的人是解放前的人，可是你这个年纪。于小姐，您去哪啊？我不和蠢货打交道。周康山生了个蠢货，也是他的一",
+        "notice_marker": "!",
+        "companion_lead": "这一下我有点想替他说一句。",
+        "reply_candidates": [
+          {
+            "candidate_id": "preset_0",
+            "display_text": "想替他接一句",
+            "action_payload": {
+              "text": "接住眼前这个人此刻的情绪",
+              "action_type": "identity_reveal",
+              "intent": "stand_with_person",
+              "target_actors": [
+                "scene_focus"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "替他着急",
+            "semantic_role": "stand_with_person",
+            "distinctness_rationale": "placeholder pending CAB authoring (Step 3)",
+            "evidence_refs": [
+              "yunmiao_ep03_m001_u001",
+              "current_scene_window"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "no_branch_rewrite",
+              "source_window_grounding"
+            ],
+            "friend_voice_seed": "嗯，这一下我也想替他说一句。",
+            "selected_echo": "嗯，这一下我也想替他说一句。"
+          },
+          {
+            "candidate_id": "preset_1",
+            "display_text": "这事得有人吭声",
+            "action_payload": {
+              "text": "为眼前这件事说一句公道话",
+              "action_type": "identity_reveal",
+              "intent": "name_the_issue",
+              "target_actors": [
+                "scene_focus"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "替场面发声",
+            "semantic_role": "name_the_issue",
+            "distinctness_rationale": "placeholder pending CAB authoring (Step 3)",
+            "evidence_refs": [
+              "yunmiao_ep03_m001_u001",
+              "current_scene_window"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "no_branch_rewrite",
+              "source_window_grounding"
+            ],
+            "friend_voice_seed": "对，这场面不能没人吭声。",
+            "selected_echo": "对，这场面不能没人吭声。"
+          },
+          {
+            "candidate_id": "preset_2",
+            "display_text": "先稳一下别急",
+            "action_payload": {
+              "text": "先把火气压一压，看眼前怎么落地",
+              "action_type": "identity_reveal",
+              "intent": "soften_first",
+              "target_actors": [
+                "scene_focus"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "先稳住",
+            "semantic_role": "soften_first",
+            "distinctness_rationale": "placeholder pending CAB authoring (Step 3)",
+            "evidence_refs": [
+              "yunmiao_ep03_m001_u001",
+              "current_scene_window"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "no_branch_rewrite",
+              "source_window_grounding"
+            ],
+            "friend_voice_seed": "我懂，这一下先别急着把话说满。",
+            "selected_echo": "我懂，这一下先别急着把话说满。"
+          }
+        ],
+        "custom_reply_policy": {
+          "allowed": true,
+          "scope": "local credible consequence only",
+          "reject_or_soften": [
+            "continuous branch rewrite",
+            "unbounded system/power escalation",
+            "claims not grounded in source window"
+          ],
+          "runtime_personalization": "bounded"
+        },
+        "evidence_refs": [
+          "yunmiao_ep03_m001_u001",
+          "current_scene_window"
+        ],
+        "constraint_refs": [
+          "current_scene_only",
+          "no_branch_rewrite",
+          "source_window_grounding",
+          "no_future_episode_claim"
+        ],
+        "blocked_claims": [
+          "Do not claim what happens in later episodes.",
+          "Do not infer hidden motives from visual context alone.",
+          "Do not turn the reply into a new story branch."
+        ],
+        "review_status": "reviewed",
+        "content_status": "placeholder_pending_cab"
+      },
+      "title": "云渺1：我修仙多年强亿点怎么了"
+    },
+    {
+      "pack_id": "yunmiao_ep18_m001",
+      "moment_id": "yunmiao_ep18_m001",
+      "schema_version": "moment_causality_pack.v0.1",
+      "drama_id": "yunmiao",
+      "drama_context_ref": "context.v0.1.json",
+      "source_drama": {
+        "title": "云渺1：我修仙多年强亿点怎么了",
+        "episode_id": "yunmiao_ep18",
+        "source_policy": "reviewed mined candidate (light promote); companion content pending CAB authoring",
+        "time_range_seconds": [
+          20,
+          40
+        ],
+        "runtime_video_url": "/api/deadman/media/yunmiao/yunmiao_ep18.mp4",
+        "media_registry_ref": "data/dramas/yunmiao/media_registry.v0.1.json#yunmiao_ep18"
+      },
+      "source_window": {
+        "start_ms": 20000,
+        "end_ms": 40000,
+        "transcript_refs": [
+          {
+            "id": "yunmiao_ep18_m001_u001",
+            "episode_id": "yunmiao_ep18",
+            "start_ms": 20000,
+            "end_ms": 40000,
+            "text": "你真的觉得你母亲生前幸福吗？于小姐，我们孙家和你有什么关系？啊？就算我母亲生前有什么，那也轮不到你一个小朋友来这智慧。是吗？这这眼神好冷，哪像是活人的眼神？",
+            "source": "sanitized_asr_snippet"
+          }
+        ],
+        "keyframe_refs": [],
+        "provenance_status": "publish_safe_sanitized"
+      },
+      "provenance": {
+        "candidate_id": "yunmiao_ep18_c001",
+        "reviewed_candidate_ref": "yunmiao_ep18_c001",
+        "source_artifact": "data/dramas/yunmiao/evidence/reviewed_demo_nodes.v0.1.json#yunmiao_ep18_m001"
+      },
+      "review_state": {
+        "status": "demo_candidate",
+        "reviewed_at": "2026-06-08",
+        "evidence_grade": "medium",
+        "evidence_notes": "你真的觉得你母亲生前幸福吗？于小姐，我们孙家和你有什么关系？啊？就算我母亲生前有什么，那也轮不到你一个小朋友来这智慧。是吗？这这眼神好冷，哪像是活人的眼神？",
+        "evidence_vs_inference": "window is mined+reviewed evidence; companion content pending CAB authoring"
+      },
+      "companion_surface": {
+        "notice_marker": "!",
+        "hook": "这眼神谁看了不发怵啊",
+        "viewer_impulse": "要是我来，我想接一句。",
+        "scene_specificity_check": "must name an object, relation, witness, rule, or decision pressure from the source window",
+        "companion_lead": "这眼神谁看了不发怵啊"
+      },
+      "action_space": {
+        "action_type": "other",
+        "default_options": [
+          "孙家这下要踢到铁板了",
+          "她藏的实力果然深不可测",
+          "这气场也太唬人了"
+        ],
+        "mouthpiece_candidates_schema_version": "mouthpiece_candidates.v0.1",
+        "mouthpiece_candidates": [
+          {
+            "candidate_id": "preset_0",
+            "display_text": "孙家这下要踢到铁板了",
+            "action_payload": {
+              "text": "孙家这下要踢到铁板了",
+              "action_type": "other",
+              "intent": "expect_payback",
+              "target_actors": [
+                "scene_focus"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "盼打脸",
+            "semantic_role": "expect_payback",
+            "distinctness_rationale": "coverage:core_direction_a; CAB+owner-polish (round-6)",
+            "evidence_refs": [
+              "yunmiao_ep18_m001_u001",
+              "current_scene_window"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "no_branch_rewrite",
+              "source_window_grounding"
+            ],
+            "viewer_motivation": "期待嚣张的孙家当场吃瘪",
+            "friend_voice_seed": "可不是，刚还放话的孙家这下要栽了",
+            "selected_echo": "可不是，刚还放话的孙家这下要栽了"
+          },
+          {
+            "candidate_id": "preset_1",
+            "display_text": "她藏的实力果然深不可测",
+            "action_payload": {
+              "text": "她藏的实力果然深不可测",
+              "action_type": "other",
+              "intent": "awe_power",
+              "target_actors": [
+                "scene_focus"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "嗑人设",
+            "semantic_role": "awe_power",
+            "distinctness_rationale": "coverage:core_direction_b; CAB+owner-polish (round-6)",
+            "evidence_refs": [
+              "yunmiao_ep18_m001_u001",
+              "current_scene_window"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "no_branch_rewrite",
+              "source_window_grounding"
+            ],
+            "viewer_motivation": "嗑主角扮猪吃虎的碾压人设",
+            "friend_voice_seed": "那身气场，哪是普通小辈能压得住的",
+            "selected_echo": "那身气场，哪是普通小辈能压得住的"
+          },
+          {
+            "candidate_id": "preset_2",
+            "display_text": "这气场也太唬人了",
+            "action_payload": {
+              "text": "这气场也太唬人了",
+              "action_type": "other",
+              "intent": "catch_all",
+              "target_actors": [
+                "scene_focus"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "被震到",
+            "semantic_role": "catch_all",
+            "distinctness_rationale": "coverage:fallback; CAB+owner-polish (round-6)",
+            "evidence_refs": [
+              "yunmiao_ep18_m001_u001",
+              "current_scene_window"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "no_branch_rewrite",
+              "source_window_grounding"
+            ],
+            "viewer_motivation": "单纯被主角的强大气场震到",
+            "friend_voice_seed": "确实，站她跟前的人连大气都不敢喘",
+            "selected_echo": "确实，站她跟前的人连大气都不敢喘"
+          }
+        ]
+      },
+      "original_plot_note": "原剧情按当前场景推进；互动只接当下这一口气。",
+      "evidence": {
+        "grade": "medium",
+        "notes": "你真的觉得你母亲生前幸福吗？于小姐，我们孙家和你有什么关系？啊？就算我母亲生前有什么，那也轮不到你一个小朋友来这智慧。是吗？这这眼神好冷，哪像是活人的眼神？",
+        "excerpt": "你真的觉得你母亲生前幸福吗？于小姐，我们孙家和你有什么关系？啊？就算我母亲生前有什么，那也轮不到你一个小朋友来这智慧。是吗？这这眼神好冷，哪像是活人的眼神？"
+      },
+      "source_refs": {
+        "reviewed_demo_node": "data/dramas/yunmiao/evidence/reviewed_demo_nodes.v0.1.json#yunmiao_ep18_m001",
+        "transcript_snippets": [
+          {
+            "id": "yunmiao_ep18_m001_u001",
+            "episode_id": "yunmiao_ep18",
+            "start_ms": 20000,
+            "end_ms": 40000,
+            "text": "你真的觉得你母亲生前幸福吗？于小姐，我们孙家和你有什么关系？啊？就算我母亲生前有什么，那也轮不到你一个小朋友来这智慧。是吗？这这眼神好冷，哪像是活人的眼神？",
+            "source": "sanitized_asr_snippet"
+          }
+        ],
+        "keyframe_refs": []
+      },
+      "interaction_window": {
+        "notice_at_seconds": 20,
+        "start_seconds": 20,
+        "end_seconds": 40,
+        "source": "reviewed_ars",
+        "confidence": "medium",
+        "pause_policy": "pause_on_invite",
+        "expire_behavior": "return_to_idle"
+      },
+      "producer_refs": {
+        "policy": "light promote; producer evidence under ignored tmp/ars_<drama>_analysis; runtime refs sanitized"
+      },
+      "companion_exchange": {
+        "schema_version": "companion_exchange_pack.v0.1",
+        "scene_signal": "这眼神谁看了不发怵啊",
+        "window_rationale": "你真的觉得你母亲生前幸福吗？于小姐，我们孙家和你有什么关系？啊？就算我母亲生前有什么，那也轮不到你一个小朋友来这智慧。是吗？这这眼神好冷，哪像是活人的眼神？",
+        "notice_marker": "!",
+        "companion_lead": "这眼神谁看了不发怵啊",
+        "reply_candidates": [
+          {
+            "candidate_id": "preset_0",
+            "display_text": "孙家这下要踢到铁板了",
+            "action_payload": {
+              "text": "孙家这下要踢到铁板了",
+              "action_type": "other",
+              "intent": "expect_payback",
+              "target_actors": [
+                "scene_focus"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "盼打脸",
+            "semantic_role": "expect_payback",
+            "distinctness_rationale": "coverage:core_direction_a; CAB+owner-polish (round-6)",
+            "evidence_refs": [
+              "yunmiao_ep18_m001_u001",
+              "current_scene_window"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "no_branch_rewrite",
+              "source_window_grounding"
+            ],
+            "viewer_motivation": "期待嚣张的孙家当场吃瘪",
+            "friend_voice_seed": "可不是，刚还放话的孙家这下要栽了",
+            "selected_echo": "可不是，刚还放话的孙家这下要栽了"
+          },
+          {
+            "candidate_id": "preset_1",
+            "display_text": "她藏的实力果然深不可测",
+            "action_payload": {
+              "text": "她藏的实力果然深不可测",
+              "action_type": "other",
+              "intent": "awe_power",
+              "target_actors": [
+                "scene_focus"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "嗑人设",
+            "semantic_role": "awe_power",
+            "distinctness_rationale": "coverage:core_direction_b; CAB+owner-polish (round-6)",
+            "evidence_refs": [
+              "yunmiao_ep18_m001_u001",
+              "current_scene_window"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "no_branch_rewrite",
+              "source_window_grounding"
+            ],
+            "viewer_motivation": "嗑主角扮猪吃虎的碾压人设",
+            "friend_voice_seed": "那身气场，哪是普通小辈能压得住的",
+            "selected_echo": "那身气场，哪是普通小辈能压得住的"
+          },
+          {
+            "candidate_id": "preset_2",
+            "display_text": "这气场也太唬人了",
+            "action_payload": {
+              "text": "这气场也太唬人了",
+              "action_type": "other",
+              "intent": "catch_all",
+              "target_actors": [
+                "scene_focus"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "被震到",
+            "semantic_role": "catch_all",
+            "distinctness_rationale": "coverage:fallback; CAB+owner-polish (round-6)",
+            "evidence_refs": [
+              "yunmiao_ep18_m001_u001",
+              "current_scene_window"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "no_branch_rewrite",
+              "source_window_grounding"
+            ],
+            "viewer_motivation": "单纯被主角的强大气场震到",
+            "friend_voice_seed": "确实，站她跟前的人连大气都不敢喘",
+            "selected_echo": "确实，站她跟前的人连大气都不敢喘"
+          }
+        ],
+        "custom_reply_policy": {
+          "allowed": true,
+          "scope": "local credible consequence only",
+          "reject_or_soften": [
+            "continuous branch rewrite",
+            "unbounded system/power escalation",
+            "claims not grounded in source window"
+          ],
+          "runtime_personalization": "bounded"
+        },
+        "evidence_refs": [
+          "yunmiao_ep18_m001_u001",
+          "current_scene_window"
+        ],
+        "constraint_refs": [
+          "current_scene_only",
+          "no_branch_rewrite",
+          "source_window_grounding",
+          "no_future_episode_claim"
+        ],
+        "blocked_claims": [
+          "Do not claim what happens in later episodes.",
+          "Do not infer hidden motives from visual context alone.",
+          "Do not turn the reply into a new story branch."
+        ],
+        "review_status": "reviewed",
+        "content_status": "cab_authored_owner_reviewed"
+      },
+      "title": "云渺1：我修仙多年强亿点怎么了"
+    }
+  ]
+}

@@ -22,6 +22,17 @@ if str(REPO_ROOT) not in sys.path:
 
 from fastapi.testclient import TestClient  # noqa: E402
 
+from tools.ars.deadman_validate_v04_authoring_proof import (  # noqa: E402
+    DEFAULT_OUTPUT_PATH as AUTHORING_PROOF_PATH,
+    read_json as read_authoring_json,
+    validate_authoring_proof,
+)
+from tools.ars.deadman_validate_window_taste_eval import (  # noqa: E402
+    DEFAULT_EVAL_PATH as WINDOW_TASTE_EVAL_PATH,
+    read_json as read_window_taste_json,
+    validate_window_taste_eval,
+)
+
 
 SECRET_PATTERN = re.compile(
     r"(sk-[A-Za-z0-9_-]{16,}|ark-[A-Za-z0-9-]{20,}|x-api-key\\s*[:=]\\s*[0-9a-f-]{20,})",
@@ -92,6 +103,8 @@ def main() -> int:
         check_ms_deploy(require_external_media_base=args.require_external_media_base),
         check_no_media_or_env_files(),
         check_no_secret_literals(),
+        check_v04_authoring_proof(),
+        check_window_taste_eval(),
         check_deadman_health(
             client,
             require_external_media_base=args.require_external_media_base,
@@ -180,6 +193,74 @@ def check_no_secret_literals() -> Check:
     )
 
 
+def check_v04_authoring_proof() -> Check:
+    if not AUTHORING_PROOF_PATH.exists():
+        return Check(
+            "v0.4 Studio authoring proof",
+            False,
+            f"missing {repo_relative(AUTHORING_PROOF_PATH)}",
+        )
+    proof = read_authoring_json(AUTHORING_PROOF_PATH)
+    errors = validate_authoring_proof(proof)
+    return Check(
+        "v0.4 Studio authoring proof",
+        not errors,
+        "EP03 smoke and EP04 non-gold authoring proof validate"
+        if not errors
+        else "; ".join(errors[:5]),
+    )
+
+
+def check_window_taste_eval() -> Check:
+    if not WINDOW_TASTE_EVAL_PATH.exists():
+        return Check(
+            "v0.41 window taste eval",
+            False,
+            f"missing {repo_relative(WINDOW_TASTE_EVAL_PATH)}",
+        )
+    dataset = read_window_taste_json(WINDOW_TASTE_EVAL_PATH)
+    errors = validate_window_taste_eval(dataset)
+    if errors:
+        return Check("v0.41 window taste eval", False, "; ".join(errors[:5]))
+    items = dataset.get("items", [])
+    gold_count = len([item for item in items if item.get("label") == "gold"])
+    hard_negative_count = len([item for item in items if item.get("label") == "hard_negative"])
+    owner_gold_count = len(
+        [
+            item
+            for item in items
+            if item.get("label") == "gold" and item.get("review_status") == "owner_confirmed"
+        ]
+    )
+    pending_window_review_count = len(
+        [
+            item
+            for item in items
+            if item.get("label") == "gold"
+            and item.get("window_review", {}).get("decision") == "unreviewed"
+        ]
+    )
+    owner_window_negative_count = len(
+        [
+            item
+            for item in items
+            if item.get("label") == "hard_negative"
+            and item.get("window_review", {}).get("decision_source")
+            in {"owner_context_review", "owner_episode_review"}
+        ]
+    )
+    return Check(
+        "v0.41 window taste eval",
+        True,
+        (
+            f"{owner_gold_count} owner gold, {gold_count} gold/proposed gold, "
+            f"{hard_negative_count} hard negatives validate; "
+            f"{pending_window_review_count} proposed windows pending explicit window review, "
+            f"{owner_window_negative_count} owner-reviewed window negatives/context-insufficient"
+        ),
+    )
+
+
 def check_deadman_health(
     client: TestClient,
     *,
@@ -264,13 +345,13 @@ def check_judgment_loop(client: TestClient, drama_id: str, *, expected_engine: s
     if not moments:
         return Check("viewer judgment loop", False, "no moments returned")
     moment = moments[0]
-    options = moment.get("default_options") or []
-    if not options:
-        return Check("viewer judgment loop", False, "first moment has no default options")
+    action = first_preset_action(moment)
+    if action is None:
+        return Check("viewer judgment loop", False, "first moment has no preset candidate or default option")
     payload = {
         "drama_id": drama_id,
         "moment_id": moment["moment_id"],
-        "action": {"source": "preset", "text": options[0], "option_index": 0},
+        "action": action,
     }
     response = client.post("/api/deadman/judgment", json=payload)
     if response.status_code != 200:
@@ -297,9 +378,9 @@ def check_runtime_session_loop(client: TestClient, drama_id: str, *, expected_en
     if not moments:
         return Check("resident runtime session loop", False, "no moments returned")
     moment = moments[0]
-    options = moment.get("default_options") or []
-    if not options:
-        return Check("resident runtime session loop", False, "first moment has no default options")
+    action_payload = first_preset_action(moment)
+    if action_payload is None:
+        return Check("resident runtime session loop", False, "first moment has no preset candidate or default option")
     episode_id = str(moment.get("source_drama", {}).get("episode_id") or "huangnian_ep12")
     interaction_window = moment.get("interaction_window", {})
     playback_time = float(interaction_window.get("notice_at_seconds") or interaction_window.get("start_seconds") or 0)
@@ -324,7 +405,7 @@ def check_runtime_session_loop(client: TestClient, drama_id: str, *, expected_en
             **base_payload,
             "event_id": "readiness-action",
             "event_type": "user_action",
-            "action": {"source": "preset", "text": options[0], "option_index": 0},
+            "action": action_payload,
         },
     )
     if action.status_code != 200:
@@ -342,6 +423,26 @@ def check_runtime_session_loop(client: TestClient, drama_id: str, *, expected_en
         True,
         f"{moment['moment_id']} returns companion result via {actual_engine or 'host_policy'}",
     )
+
+
+def first_preset_action(moment: dict[str, Any]) -> dict[str, Any] | None:
+    exchange = moment.get("companion_exchange") if isinstance(moment.get("companion_exchange"), dict) else {}
+    candidates = exchange.get("reply_candidates") if isinstance(exchange, dict) else []
+    if not isinstance(candidates, list) or not candidates:
+        candidates = moment.get("mouthpiece_candidates") or []
+    if isinstance(candidates, list) and candidates:
+        candidate = candidates[0]
+        if isinstance(candidate, dict):
+            return {
+                "source": "preset_candidate",
+                "candidate_id": candidate.get("candidate_id"),
+                "text": candidate.get("display_text"),
+                "action_payload": candidate.get("action_payload"),
+            }
+    options = moment.get("default_options") or []
+    if isinstance(options, list) and options:
+        return {"source": "preset", "text": options[0], "option_index": 0}
+    return None
 
 
 def should_skip(path: Path) -> bool:

@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://oseria.local/schemas/deadman/studio_cab_graph_proof.v0.1.json",
+  "title": "Deadman Studio CAB Graph Proof v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "product",
+    "created_at",
+    "status",
+    "claim_boundary",
+    "graph_identity",
+    "guidance_dataset_ref",
+    "publication_decision",
+    "proof_report"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "studio_cab_graph_proof.v0.1"
+    },
+    "product": {
+      "const": "看剧搭子"
+    },
+    "created_at": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "enum": ["completed", "completed_with_failures", "provider_blocked"]
+    },
+    "claim_boundary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "graph_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "graph_api",
+        "graph_mode",
+        "executor",
+        "node_order",
+        "core_semantic_node",
+        "echo_authoring_node",
+        "baseline_reference"
+      ],
+      "properties": {
+        "graph_api": {
+          "const": "StateGraph"
+        },
+        "graph_mode": {
+          "const": "studio_cab_guidance"
+        },
+        "executor": {
+          "const": "tools/ars/deadman_run_producer_graph.py"
+        },
+        "node_order": {
+          "type": "array",
+          "minItems": 6,
+          "maxItems": 6,
+          "prefixItems": [
+            { "const": "load_studio_guidance_dataset" },
+            { "const": "select_phase2_6_cases" },
+            { "const": "cab_author_displays_node" },
+            { "const": "cab_author_echoes_node" },
+            { "const": "validate_and_compress" },
+            { "const": "write_sanitized_graph_proof" }
+          ]
+        },
+        "core_semantic_node": {
+          "const": "cab_author_displays_node"
+        },
+        "echo_authoring_node": {
+          "const": "cab_author_echoes_node"
+        },
+        "baseline_reference": {
+          "const": "data/evals/studio_cab_real_provider_proof.v0.1.json"
+        }
+      }
+    },
+    "guidance_dataset_ref": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["path", "sha256", "schema_version", "created_at"]
+    },
+    "publication_decision": {
+      "const": "no_runtime_promotion"
+    },
+    "proof_report": {
+      "type": "object"
+    }
+  }
+}

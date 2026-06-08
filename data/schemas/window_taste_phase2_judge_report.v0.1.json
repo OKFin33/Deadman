@@ -1,0 +1,161 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://oseria.local/schemas/deadman/window_taste_phase2_judge_report.v0.1.json",
+  "title": "Deadman Phase2 Window Taste Judge Report v0.1",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema_version",
+    "product",
+    "created_at",
+    "run_id",
+    "input_fixture",
+    "claim_boundary",
+    "judge_configuration",
+    "baseline_summary",
+    "items",
+    "episode_rankings",
+    "acceptance_gate",
+    "review_gate_a"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "window_taste_phase2_judge_report.v0.1"
+    },
+    "product": {
+      "const": "看剧搭子"
+    },
+    "created_at": {
+      "type": "string",
+      "minLength": 1
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "input_fixture": {
+      "$ref": "#/$defs/input_fixture"
+    },
+    "items": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": [
+          "item_id",
+          "episode_id",
+          "label",
+          "score",
+          "decision",
+          "opening_hypothesis",
+          "positive_axis_evidence",
+          "penalty_axis_evidence",
+          "failure_flags"
+        ]
+      }
+    },
+    "episode_rankings": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": ["episode_id", "top_candidates"]
+      }
+    },
+    "acceptance_gate": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "status",
+        "gold_top3_count",
+        "gold_total",
+        "owner_reviewed_rejects_rejected_count",
+        "owner_reviewed_rejects_total",
+        "action_menu_publishable_top1_count",
+        "publishable_without_opening_count",
+        "failure_cases"
+      ],
+      "properties": {
+        "status": {
+          "enum": ["pass", "fail"]
+        },
+        "gold_top3_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "gold_total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "owner_reviewed_rejects_rejected_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "owner_reviewed_rejects_total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "action_menu_publishable_top1_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "publishable_without_opening_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "failure_cases": {
+          "type": "array"
+        }
+      }
+    },
+    "review_gate_a": {
+      "$ref": "#/$defs/review_gate"
+    }
+  },
+  "$defs": {
+    "input_fixture": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["path", "sha256", "schema_version"],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "minLength": 64,
+          "maxLength": 64
+        },
+        "schema_version": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "review_gate": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["gate", "needed", "reason", "owner_review_target"],
+      "properties": {
+        "gate": {
+          "type": "string",
+          "minLength": 1
+        },
+        "needed": {
+          "type": "boolean"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "owner_review_target": {
+          "type": "array",
+          "maxItems": 10
+        }
+      }
+    }
+  }
+}

@@ -108,9 +108,10 @@
       },
       "companion_surface": {
         "notice_marker": "!",
-        "hook": "四蛋抓到兔子，兔子肉今晚要不要真的下锅？",
+        "hook": "四蛋抓到兔子那一眼，懂事得让人难受。",
         "viewer_impulse": "要是我来，先让眼前的人吃上东西。",
-        "scene_specificity_check": "must name an object, relation, witness, rule, or decision pressure from the source window"
+        "scene_specificity_check": "must name an object, relation, witness, rule, or decision pressure from the source window",
+        "companion_lead": "我刚刚真想替四蛋说一句。"
       },
       "actor_context": {
         "pov_actor": "程弯弯",
@@ -157,6 +158,96 @@
           "今晚分兔肉，先让四蛋确认自己也有份",
           "先留下兔子和皮毛，改用别的食物补这一顿",
           "把兔子当成四蛋的功劳，只少量处理给全家尝味"
+        ],
+        "mouthpiece_candidates_schema_version": "mouthpiece_candidates.v0.1",
+        "mouthpiece_candidates": [
+          {
+            "candidate_id": "preset_0",
+            "display_text": "四蛋该吃肉",
+            "action_payload": {
+              "text": "今晚分兔肉，先让四蛋确认自己也有份",
+              "action_type": "resource",
+              "intent": "include_child_in_food_distribution",
+              "target_actors": [
+                "四蛋"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "心疼孩子",
+            "semantic_role": "include_child_first",
+            "distinctness_rationale": "区别于暂缓处理兔子或只算功劳，重点是让四蛋马上确认自己没有被排除。",
+            "evidence_refs": [
+              "huangnian_ep12_u002",
+              "huangnian_ep12_u004",
+              "resource_visibility.rabbit",
+              "family_trust.fourdan"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "no_branch_rewrite",
+              "source_window_grounding"
+            ],
+            "friend_voice_seed": "对，这孩子都懂事到先把自己排除出去了，这口肉不能再让他干闻着。",
+            "selected_echo": "对，这孩子都懂事到先把自己排除出去了，这口肉不能再让他干闻着。"
+          },
+          {
+            "candidate_id": "preset_1",
+            "display_text": "别让娃白懂事",
+            "action_payload": {
+              "text": "先留下兔子和皮毛，改用别的食物补这一顿",
+              "action_type": "resource",
+              "intent": "protect_child_contribution",
+              "target_actors": [
+                "四蛋",
+                "程弯弯一家"
+              ],
+              "risk_posture": "cautious"
+            },
+            "emotion_role": "不忍亏待",
+            "semantic_role": "preserve_child_contribution",
+            "distinctness_rationale": "区别于立刻分肉，重点是先保住四蛋这份贡献和心意。",
+            "evidence_refs": [
+              "huangnian_ep12_u004",
+              "huangnian_ep12_u005",
+              "distribution_target.child"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "resource_exposure_control",
+              "source_window_grounding"
+            ],
+            "friend_voice_seed": "嗯，孩子不是来交差的，他这点心意得被看见。",
+            "selected_echo": "嗯，孩子不是来交差的，他这点心意得被看见。"
+          },
+          {
+            "candidate_id": "preset_2",
+            "display_text": "功劳算孩子的",
+            "action_payload": {
+              "text": "把兔子当成四蛋的功劳，只少量处理给全家尝味",
+              "action_type": "resource",
+              "intent": "credit_child_publicly",
+              "target_actors": [
+                "四蛋",
+                "程弯弯一家"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "给孩子撑腰",
+            "semantic_role": "name_child_contribution",
+            "distinctness_rationale": "区别于食物分配本身，重点是让家里人承认兔子是四蛋的功劳。",
+            "evidence_refs": [
+              "huangnian_ep12_u002",
+              "huangnian_ep12_u005",
+              "family_trust.fourdan"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "family_trust_gradual",
+              "source_window_grounding"
+            ],
+            "friend_voice_seed": "这句我懂，孩子出力了，就该让他被家里人认真看见一次。",
+            "selected_echo": "这句我懂，孩子出力了，就该让他被家里人认真看见一次。"
+          }
         ],
         "custom_action_policy": {
           "allowed": true,
@@ -359,6 +450,136 @@
           "mode": "realtime_generate_or_text_only_fallback",
           "timeout_ms": 8000
         }
+      },
+      "companion_exchange": {
+        "schema_version": "companion_exchange_pack.v0.1",
+        "scene_signal": "四蛋把兔子交出来时，先把自己排除在肉外面",
+        "window_rationale": "ASR 有兔子、兔肉、四蛋和一年没吃肉；contact sheet 00:00 明确可见兔子，00:20-00:50 可见四蛋/女主对话。视觉证据支持对象和人物，不证明全部心理动机。",
+        "notice_marker": "!",
+        "companion_lead": "我刚刚真想替四蛋说一句。",
+        "reply_candidates": [
+          {
+            "candidate_id": "preset_0",
+            "display_text": "四蛋该吃肉",
+            "action_payload": {
+              "text": "今晚分兔肉，先让四蛋确认自己也有份",
+              "action_type": "resource",
+              "intent": "include_child_in_food_distribution",
+              "target_actors": [
+                "四蛋"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "心疼孩子",
+            "semantic_role": "include_child_first",
+            "distinctness_rationale": "区别于暂缓处理兔子或只算功劳，重点是让四蛋马上确认自己没有被排除。",
+            "evidence_refs": [
+              "huangnian_ep12_u002",
+              "huangnian_ep12_u004",
+              "resource_visibility.rabbit",
+              "family_trust.fourdan"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "no_branch_rewrite",
+              "source_window_grounding"
+            ],
+            "friend_voice_seed": "对，这孩子都懂事到先把自己排除出去了，这口肉不能再让他干闻着。",
+            "selected_echo": "对，这孩子都懂事到先把自己排除出去了，这口肉不能再让他干闻着。"
+          },
+          {
+            "candidate_id": "preset_1",
+            "display_text": "别让娃白懂事",
+            "action_payload": {
+              "text": "先留下兔子和皮毛，改用别的食物补这一顿",
+              "action_type": "resource",
+              "intent": "protect_child_contribution",
+              "target_actors": [
+                "四蛋",
+                "程弯弯一家"
+              ],
+              "risk_posture": "cautious"
+            },
+            "emotion_role": "不忍亏待",
+            "semantic_role": "preserve_child_contribution",
+            "distinctness_rationale": "区别于立刻分肉，重点是先保住四蛋这份贡献和心意。",
+            "evidence_refs": [
+              "huangnian_ep12_u004",
+              "huangnian_ep12_u005",
+              "distribution_target.child"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "resource_exposure_control",
+              "source_window_grounding"
+            ],
+            "friend_voice_seed": "嗯，孩子不是来交差的，他这点心意得被看见。",
+            "selected_echo": "嗯，孩子不是来交差的，他这点心意得被看见。"
+          },
+          {
+            "candidate_id": "preset_2",
+            "display_text": "功劳算孩子的",
+            "action_payload": {
+              "text": "把兔子当成四蛋的功劳，只少量处理给全家尝味",
+              "action_type": "resource",
+              "intent": "credit_child_publicly",
+              "target_actors": [
+                "四蛋",
+                "程弯弯一家"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "给孩子撑腰",
+            "semantic_role": "name_child_contribution",
+            "distinctness_rationale": "区别于食物分配本身，重点是让家里人承认兔子是四蛋的功劳。",
+            "evidence_refs": [
+              "huangnian_ep12_u002",
+              "huangnian_ep12_u005",
+              "family_trust.fourdan"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "family_trust_gradual",
+              "source_window_grounding"
+            ],
+            "friend_voice_seed": "这句我懂，孩子出力了，就该让他被家里人认真看见一次。",
+            "selected_echo": "这句我懂，孩子出力了，就该让他被家里人认真看见一次。"
+          }
+        ],
+        "custom_reply_policy": {
+          "allowed": true,
+          "scope": "local credible consequence only",
+          "reject_or_soften": [
+            "continuous branch rewrite",
+            "unbounded system/power escalation",
+            "claims not grounded in source window"
+          ],
+          "runtime_personalization": "bounded"
+        },
+        "evidence_refs": [
+          "huangnian_ep12_u001",
+          "huangnian_ep12_u002",
+          "huangnian_ep12_u003",
+          "huangnian_ep12_u004",
+          "huangnian_ep12_u005",
+          "resource_visibility.rabbit",
+          "family_trust.fourdan",
+          "distribution_target.child"
+        ],
+        "constraint_refs": [
+          "current_scene_only",
+          "no_branch_rewrite",
+          "source_window_grounding",
+          "resource_exposure_control",
+          "family_trust_gradual",
+          "no_future_episode_claim"
+        ],
+        "blocked_claims": [
+          "Do not claim what happens in later episodes.",
+          "Do not infer hidden motives from visual context alone.",
+          "Do not turn the reply into a new story branch."
+        ],
+        "review_status": "reviewed"
       }
     },
     {
@@ -462,9 +683,10 @@
       },
       "companion_surface": {
         "notice_marker": "!",
-        "hook": "儿媳被逼吃最脏的东西，要不要当场改桌规？",
+        "hook": "儿媳被逼吃脏饭那一下，桌上没人站出来。",
         "viewer_impulse": "要是我来，先让眼前的人吃上东西。",
-        "scene_specificity_check": "must name an object, relation, witness, rule, or decision pressure from the source window"
+        "scene_specificity_check": "must name an object, relation, witness, rule, or decision pressure from the source window",
+        "companion_lead": "这桌饭看得人火气上来了。"
       },
       "actor_context": {
         "pov_actor": "程弯弯",
@@ -512,6 +734,94 @@
           "当场让儿媳上桌，直接推翻旧规矩",
           "先把饭换掉，再私下处理婆媳权力",
           "不当众翻脸，只让儿媳先吃一口干净的"
+        ],
+        "mouthpiece_candidates_schema_version": "mouthpiece_candidates.v0.1",
+        "mouthpiece_candidates": [
+          {
+            "candidate_id": "preset_0",
+            "display_text": "凭什么啊",
+            "action_payload": {
+              "text": "当场让儿媳上桌，直接推翻旧规矩",
+              "action_type": "humiliation",
+              "intent": "challenge_humiliating_rule",
+              "target_actors": [
+                "儿媳"
+              ],
+              "risk_posture": "bold"
+            },
+            "emotion_role": "直接不服",
+            "semantic_role": "challenge_table_rule",
+            "distinctness_rationale": "区别于先换饭或私下处理，重点是当场挑战羞辱人的桌规。",
+            "evidence_refs": [
+              "huangnian_ep07_u003",
+              "huangnian_ep07_u004",
+              "humiliation.table_rule"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "no_branch_rewrite",
+              "public_humiliation_risk"
+            ],
+            "friend_voice_seed": "就是啊，这不是讲规矩，是把人按在桌边羞辱。",
+            "selected_echo": "就是啊，这不是讲规矩，是把人按在桌边羞辱。"
+          },
+          {
+            "candidate_id": "preset_1",
+            "display_text": "先护住她",
+            "action_payload": {
+              "text": "先把饭换掉，再私下处理婆媳权力",
+              "action_type": "humiliation",
+              "intent": "protect_dignity",
+              "target_actors": [
+                "儿媳"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "心疼护住",
+            "semantic_role": "protect_dignity_first",
+            "distinctness_rationale": "区别于当场掀桌，重点是先把儿媳从被羞辱的位置里护出来。",
+            "evidence_refs": [
+              "huangnian_ep07_u003",
+              "huangnian_ep07_u004",
+              "relationship_pressure.table"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "public_humiliation_risk",
+              "source_window_grounding"
+            ],
+            "friend_voice_seed": "对，先别让她一个人被晾在那，后面的账再慢慢算。",
+            "selected_echo": "对，先别让她一个人被晾在那，后面的账再慢慢算。"
+          },
+          {
+            "candidate_id": "preset_2",
+            "display_text": "别让她白挨",
+            "action_payload": {
+              "text": "不当众翻脸，只让儿媳先吃一口干净的",
+              "action_type": "humiliation",
+              "intent": "restore_dignity_without_escalation",
+              "target_actors": [
+                "儿媳",
+                "程弯弯家人"
+              ],
+              "risk_posture": "cautious"
+            },
+            "emotion_role": "替她不甘",
+            "semantic_role": "restore_dignity_with_control",
+            "distinctness_rationale": "区别于直接推翻旧规矩，重点是先让这口气有个被看见的交代。",
+            "evidence_refs": [
+              "huangnian_ep07_u003",
+              "huangnian_ep07_u004",
+              "humiliation.table_rule"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "family_power_order",
+              "source_window_grounding"
+            ],
+            "friend_voice_seed": "这句接住了，她受的不是一碗饭的委屈，得有人替她立住底线。",
+            "selected_echo": "这句接住了，她受的不是一碗饭的委屈，得有人替她立住底线。"
+          }
         ],
         "custom_action_policy": {
           "allowed": true,
@@ -714,6 +1024,133 @@
           "mode": "realtime_generate_or_text_only_fallback",
           "timeout_ms": 8000
         }
+      },
+      "companion_exchange": {
+        "schema_version": "companion_exchange_pack.v0.1",
+        "scene_signal": "儿媳被按在桌边吃最脏的东西",
+        "window_rationale": "ASR 明确桌上羞辱；contact sheet ep07 00:20-01:10 可见餐桌、碗饭和人物互动。视觉证据支持吃饭场景，不证明“最脏”这一评价。",
+        "notice_marker": "!",
+        "companion_lead": "这桌饭看得人火气上来了。",
+        "reply_candidates": [
+          {
+            "candidate_id": "preset_0",
+            "display_text": "凭什么啊",
+            "action_payload": {
+              "text": "当场让儿媳上桌，直接推翻旧规矩",
+              "action_type": "humiliation",
+              "intent": "challenge_humiliating_rule",
+              "target_actors": [
+                "儿媳"
+              ],
+              "risk_posture": "bold"
+            },
+            "emotion_role": "直接不服",
+            "semantic_role": "challenge_table_rule",
+            "distinctness_rationale": "区别于先换饭或私下处理，重点是当场挑战羞辱人的桌规。",
+            "evidence_refs": [
+              "huangnian_ep07_u003",
+              "huangnian_ep07_u004",
+              "humiliation.table_rule"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "no_branch_rewrite",
+              "public_humiliation_risk"
+            ],
+            "friend_voice_seed": "就是啊，这不是讲规矩，是把人按在桌边羞辱。",
+            "selected_echo": "就是啊，这不是讲规矩，是把人按在桌边羞辱。"
+          },
+          {
+            "candidate_id": "preset_1",
+            "display_text": "先护住她",
+            "action_payload": {
+              "text": "先把饭换掉，再私下处理婆媳权力",
+              "action_type": "humiliation",
+              "intent": "protect_dignity",
+              "target_actors": [
+                "儿媳"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "心疼护住",
+            "semantic_role": "protect_dignity_first",
+            "distinctness_rationale": "区别于当场掀桌，重点是先把儿媳从被羞辱的位置里护出来。",
+            "evidence_refs": [
+              "huangnian_ep07_u003",
+              "huangnian_ep07_u004",
+              "relationship_pressure.table"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "public_humiliation_risk",
+              "source_window_grounding"
+            ],
+            "friend_voice_seed": "对，先别让她一个人被晾在那，后面的账再慢慢算。",
+            "selected_echo": "对，先别让她一个人被晾在那，后面的账再慢慢算。"
+          },
+          {
+            "candidate_id": "preset_2",
+            "display_text": "别让她白挨",
+            "action_payload": {
+              "text": "不当众翻脸，只让儿媳先吃一口干净的",
+              "action_type": "humiliation",
+              "intent": "restore_dignity_without_escalation",
+              "target_actors": [
+                "儿媳",
+                "程弯弯家人"
+              ],
+              "risk_posture": "cautious"
+            },
+            "emotion_role": "替她不甘",
+            "semantic_role": "restore_dignity_with_control",
+            "distinctness_rationale": "区别于直接推翻旧规矩，重点是先让这口气有个被看见的交代。",
+            "evidence_refs": [
+              "huangnian_ep07_u003",
+              "huangnian_ep07_u004",
+              "humiliation.table_rule"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "family_power_order",
+              "source_window_grounding"
+            ],
+            "friend_voice_seed": "这句接住了，她受的不是一碗饭的委屈，得有人替她立住底线。",
+            "selected_echo": "这句接住了，她受的不是一碗饭的委屈，得有人替她立住底线。"
+          }
+        ],
+        "custom_reply_policy": {
+          "allowed": true,
+          "scope": "local credible consequence only",
+          "reject_or_soften": [
+            "continuous branch rewrite",
+            "unbounded system/power escalation",
+            "claims not grounded in source window"
+          ],
+          "runtime_personalization": "bounded"
+        },
+        "evidence_refs": [
+          "huangnian_ep07_u001",
+          "huangnian_ep07_u002",
+          "huangnian_ep07_u003",
+          "huangnian_ep07_u004",
+          "huangnian_ep07_u005",
+          "humiliation.table_rule",
+          "relationship_pressure.table"
+        ],
+        "constraint_refs": [
+          "current_scene_only",
+          "no_branch_rewrite",
+          "public_humiliation_risk",
+          "source_window_grounding",
+          "family_power_order",
+          "no_future_episode_claim"
+        ],
+        "blocked_claims": [
+          "Do not claim what happens in later episodes.",
+          "Do not infer hidden motives from visual context alone.",
+          "Do not turn the reply into a new story branch."
+        ],
+        "review_status": "reviewed"
       }
     },
     {
@@ -727,53 +1164,77 @@
         "episode_id": "huangnian_ep03",
         "source_policy": "reviewed demo node + local ASR/keyframe refs; no v0.2 automatic candidate ingestion",
         "time_range_seconds": [
-          0,
-          20
+          20,
+          40
         ],
         "runtime_video_url": "/api/deadman/media/huangnian/huangnian_ep03.mp4",
         "media_registry_ref": "data/dramas/huangnian/media_registry.v0.1.json#huangnian_ep03"
       },
       "source_window": {
-        "start_ms": 0,
-        "end_ms": 20000,
+        "start_ms": 20000,
+        "end_ms": 40000,
         "transcript_refs": [
           {
             "id": "huangnian_ep03_u001",
             "episode_id": "huangnian_ep03",
-            "start_ms": 230,
-            "end_ms": 6830,
-            "text": "天然无污染野蕨菜一斤价值十文钱，是否售卖？呵，这是系统？",
+            "start_ms": 19270,
+            "end_ms": 21750,
+            "text": "啊，这野菜坏了，我拿出去扔了。娘！",
             "source": "sanitized_asr_snippet"
           },
           {
             "id": "huangnian_ep03_u002",
             "episode_id": "huangnian_ep03",
-            "start_ms": 11710,
-            "end_ms": 13750,
-            "text": "娘，您在灶台干什么？",
+            "start_ms": 22740,
+            "end_ms": 24060,
+            "text": "你是不是又要去大舅家？",
             "source": "sanitized_asr_snippet"
           },
           {
             "id": "huangnian_ep03_u003",
             "episode_id": "huangnian_ep03",
-            "start_ms": 14150,
-            "end_ms": 18830,
-            "text": "这个面板只有我能看见，我得找个地方试验一下系统的功能。",
+            "start_ms": 24660,
+            "end_ms": 33420,
+            "text": "这些野菜是我跟弟弟们挖了一天才挖来的，这已经是家里最后一点吃的了，再把这些送走，我们我们真的会饿死的。",
+            "source": "sanitized_asr_snippet"
+          },
+          {
+            "id": "huangnian_ep03_u004",
+            "episode_id": "huangnian_ep03",
+            "start_ms": 34890,
+            "end_ms": 35010,
+            "text": "娘！",
+            "source": "sanitized_asr_snippet"
+          },
+          {
+            "id": "huangnian_ep03_u005",
+            "episode_id": "huangnian_ep03",
+            "start_ms": 35170,
+            "end_ms": 35250,
+            "text": "娘！",
+            "source": "sanitized_asr_snippet"
+          },
+          {
+            "id": "huangnian_ep03_u006",
+            "episode_id": "huangnian_ep03",
+            "start_ms": 35570,
+            "end_ms": 39570,
+            "text": "这程弯弯的人设，未免也太深入人心了。",
             "source": "sanitized_asr_snippet"
           }
         ],
         "keyframe_refs": [
           {
-            "id": "huangnian_ep03_k001",
+            "id": "huangnian_ep03_k003",
             "episode_id": "huangnian_ep03",
-            "time_seconds": 0,
+            "time_seconds": 30,
             "description": "keyframe reference only; not psychological proof",
             "source": "sanitized_keyframe_ref"
           },
           {
-            "id": "huangnian_ep03_k002",
+            "id": "huangnian_ep03_k004",
             "episode_id": "huangnian_ep03",
-            "time_seconds": 10,
+            "time_seconds": 40,
             "description": "keyframe reference only; not psychological proof",
             "source": "sanitized_keyframe_ref"
           }
@@ -787,75 +1248,165 @@
         "provenance_status": "publish_safe_sanitized"
       },
       "provenance": {
-        "candidate_id": "huangnian_ep03_c001",
-        "reviewed_candidate_ref": "huangnian_ep03_c001",
+        "candidate_id": "huangnian_ep03_c003",
+        "reviewed_candidate_ref": "huangnian_ep03_c003",
         "candidate_id_stability": "provenance_only_not_runtime_identity",
-        "source_artifact": "data/dramas/huangnian/evidence/reviewed_demo_nodes.v0.1.json#huangnian_ep03_m001"
+        "source_artifact": "producer_refs.reviewed_candidates#huangnian_ep03_c003"
       },
       "review_state": {
         "status": "demo_candidate",
-        "reviewed_at": "2026-05-24",
-        "evidence_grade": "high",
-        "evidence_notes": "ASR 明确系统售卖和面板；contact sheet ep03 00:10-00:20 有系统商城/面板视觉。视觉证据支持系统 UI 出现。",
-        "evidence_vs_inference": "source_window and excerpt are evidence; hook/options/local consequences are reviewed product inference constrained by evidence."
+        "reviewed_at": "2026-06-06",
+        "evidence_grade": "medium",
+        "evidence_notes": "ASR 明确孩子拦住野菜、点出又要送大舅家，并说这是家里最后一点吃的；38 秒旁白点明程弯弯人设深入人心。视觉证据只做时间上下文，不当心理证明。",
+        "evidence_vs_inference": "source_window and excerpt are evidence; companion_lead/replies/local consequences are reviewed product inference constrained by evidence."
       },
       "companion_surface": {
-        "notice_marker": "?",
-        "hook": "野蕨菜能卖钱，系统面板要不要现在试？",
-        "viewer_impulse": "要是我来，想用系统能力快速改局面。",
+        "notice_marker": "!",
+        "hook": "最后一点野菜又要送出去，孩子急了。",
+        "companion_lead": "原主的人设有点离谱😂",
+        "viewer_impulse": "要是我来，想替孩子把“别再把最后一口送走”说出来。",
         "scene_specificity_check": "must name an object, relation, witness, rule, or decision pressure from the source window"
       },
       "actor_context": {
         "pov_actor": "程弯弯",
         "directly_affected_actors": [
           "程弯弯",
-          "程弯弯家人"
+          "程弯弯的孩子们"
         ],
-        "relationship_context": "系统能力第一次进入生存决策，既能救急，也会带来解释成本。",
-        "local_emotional_pressure": "观众会想马上用系统变现，但不能让公开面板破坏世界约束。"
+        "relationship_context": "孩子以为她又要把家里最后一点野菜送去大舅家，说明旧人设已经让家里人形成恐惧预期。",
+        "local_emotional_pressure": "孩子把最后一点吃的和会不会饿死直接说出口，观众会想立刻拦住这次外送。"
       },
       "local_constraints": {
         "known_facts": [
-          "ASR: 天然无污染野蕨菜一斤价值十文钱，是否售卖？呵，这是系统？",
-          "ASR: 娘，您在灶台干什么？",
-          "ASR: 这个面板只有我能看见，我得找个地方试验一下系统的功能。",
-          "reviewed evidence note: ASR 明确系统售卖和面板；contact sheet ep03 00:10-00:20 有系统商城/面板视觉。视觉证据支持系统 UI 出现。"
+          "ASR: 啊，这野菜坏了，我拿出去扔了。娘！",
+          "ASR: 你是不是又要去大舅家？",
+          "ASR: 这些野菜是我跟弟弟们挖了一天才挖来的，这已经是家里最后一点吃的了，再把这些送走，我们我们真的会饿死的。",
+          "ASR: 这程弯弯的人设，未免也太深入人心了。"
         ],
         "unknown_or_hidden_facts": [
           "later-episode branch outcome",
-          "full motive state beyond reviewed notes",
-          "system limits not present in the source window"
+          "大舅家完整动机和后续反应",
+          "程弯弯此刻是否已准备改用系统处理野菜"
         ],
         "hard_constraints": [
           "answer only current scene or immediate aftermath",
           "do not claim continuous branch rewrite",
-          "do not expose system or hidden resource details unless local pack evidence allows it",
+          "do not turn mouthpiece replies into RPG choices",
           "do not treat keyframe refs as psychological proof"
         ],
         "risk_notes": [
-          "resource exposure can create suspicion or争抢",
-          "family/village trust deltas should stay gradual"
+          "公开指责大舅家可能引发亲戚关系反扑",
+          "孩子对口粮外流的恐惧需要先被安住"
         ]
       },
       "canon_baseline": {
-        "original_action": "原剧情先试探系统规则，再逐步使用。",
-        "original_rationale": "系统收益高，但解释成本和暴露风险也高。",
-        "audience_tension": "观众会想马上用系统开挂。",
-        "original_plot_note": "原剧情先试探系统功能，保住系统只对主角可见的规则。"
+        "original_action": "孩子拦住程弯弯处理野菜，点破她是不是又要去大舅家。",
+        "original_rationale": "这段先建立旧人设给家里留下的资源外流预期，让主角意识到孩子为什么害怕。",
+        "audience_tension": "观众会想替孩子喊停，不让最后一点吃的继续被送走。",
+        "original_plot_note": "原剧情通过孩子拦野菜和旁白，说明程弯弯旧人设让家里人默认她会优先补贴大舅家。"
       },
       "action_space": {
-        "action_type": "system_rule",
+        "action_type": "resource",
         "default_options": [
-          "立刻售卖野蕨菜，先验证系统能不能救命",
-          "只卖一小部分，确认别人看不见面板",
-          "先不卖，离开灶台再单独测试系统"
+          "直接告诉孩子，这点野菜先留在家里",
+          "先安孩子，别让他们再怕这口吃的",
+          "大舅那边先停，家里这顿饭要保住"
+        ],
+        "mouthpiece_candidates_schema_version": "mouthpiece_candidates.v0.1",
+        "mouthpiece_candidates": [
+          {
+            "candidate_id": "preset_0",
+            "display_text": "这妈当得离谱",
+            "action_payload": {
+              "text": "直接告诉孩子，这点野菜先留在家里",
+              "action_type": "resource",
+              "intent": "call_out_original_persona_and_keep_food_home",
+              "target_actors": [
+                "程弯弯",
+                "程弯弯的孩子们"
+              ],
+              "risk_posture": "bold"
+            },
+            "emotion_role": "替孩子吐槽原主人设",
+            "semantic_role": "call_out_original_persona",
+            "distinctness_rationale": "区别于单纯心疼孩子或处理亲戚关系，重点是把“家里最后一口还往外送”的离谱感说出来。",
+            "evidence_refs": [
+              "huangnian_ep03_u002",
+              "huangnian_ep03_u003",
+              "huangnian_ep03_u006"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "food_stays_home",
+              "no_later_branch_claim"
+            ],
+            "friend_voice_seed": "哈哈真的离谱，孩子都怕成这样了，这菜就别再往外送了。",
+            "selected_echo": "哈哈真的离谱，孩子都怕成这样了，这菜就别再往外送了。"
+          },
+          {
+            "candidate_id": "preset_1",
+            "display_text": "孩子都吓成这样",
+            "action_payload": {
+              "text": "先安孩子，别让他们再怕这口吃的",
+              "action_type": "resource",
+              "intent": "comfort_children_before_explaining_food",
+              "target_actors": [
+                "程弯弯的孩子们"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "心疼孩子被饿怕了",
+            "semantic_role": "comfort_food_anxiety",
+            "distinctness_rationale": "区别于吐槽原主或划清大舅边界，重点落在孩子已经被最后一点吃的吓住。",
+            "evidence_refs": [
+              "huangnian_ep03_u003",
+              "huangnian_ep03_u004",
+              "huangnian_ep03_u005"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "children_first",
+              "food_stays_home"
+            ],
+            "friend_voice_seed": "心疼，孩子不是闹脾气，是已经怕到要确认最后一口吃的还在不在。",
+            "selected_echo": "心疼，孩子不是闹脾气，是已经怕到要确认最后一口吃的还在不在。"
+          },
+          {
+            "candidate_id": "preset_2",
+            "display_text": "先别管大舅了",
+            "action_payload": {
+              "text": "大舅那边先停，家里这顿饭要保住",
+              "action_type": "resource",
+              "intent": "set_boundary_against_natal_family_drain",
+              "target_actors": [
+                "程弯弯",
+                "大舅家",
+                "程弯弯的孩子们"
+              ],
+              "risk_posture": "cautious"
+            },
+            "emotion_role": "先护住自家这口饭",
+            "semantic_role": "set_natal_family_boundary",
+            "distinctness_rationale": "区别于情绪吐槽和安抚孩子，重点是把资源外流到大舅家的边界先立住。",
+            "evidence_refs": [
+              "huangnian_ep03_u002",
+              "huangnian_ep03_u003"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "natal_family_boundary",
+              "food_stays_home"
+            ],
+            "friend_voice_seed": "对，大舅那边先停一下，家里孩子都快饿怕了，先保住这一顿。",
+            "selected_echo": "对，大舅那边先停一下，家里孩子都快饿怕了，先保住这一顿。"
+          }
         ],
         "custom_action_policy": {
           "allowed": true,
           "scope": "local credible consequence only",
           "reject_or_soften": [
             "continuous branch rewrite",
-            "unbounded system/power escalation",
+            "unbounded revenge against relatives",
             "claims not grounded in source window"
           ]
         }
@@ -865,59 +1416,58 @@
           "source_window evidence",
           "drama_context_ref global constraints",
           "scene-local watch_flow_fit",
-          "resource/secrecy/family/public pressure where applicable"
+          "food scarcity and natal-family boundary pressure"
         ],
         "must_not_claim": [
           "later episodes actually follow this branch",
           "facts not present in source evidence",
-          "unbounded system or power escalation"
+          "the whole family relationship is repaired immediately"
         ]
       },
       "outcome_response_contract": {
-        "format": "short local consequence + why original plot still remains watchable",
+        "format": "short friend echo + optional light aggregate hint",
         "time_horizon": "current scene or immediate aftermath",
-        "include_original_plot_note": true
+        "include_original_plot_note": false
       },
       "visual_result_policy": {
         "allowed": "result card or still prompt only when object/person is evidenced",
         "keyframe_ref_quality": "medium",
-        "visual_evidence": "high"
+        "visual_evidence": "medium"
       },
       "score_axes": {
-        "emotion_heat": 78,
-        "choice_leverage": 84,
-        "causal_clarity": 78,
-        "world_constraint_value": 88,
-        "watch_flow_fit": 82,
-        "visual_result_fit": 63
+        "emotion_heat": 86,
+        "choice_leverage": 76,
+        "causal_clarity": 82,
+        "world_constraint_value": 74,
+        "watch_flow_fit": 84,
+        "visual_result_fit": 58
       },
       "optional_modules": {
-        "system_or_hidden_power_rule": {
-          "power_or_system_action": "first visible use of system sale/exchange logic",
-          "rule_visibility": "private to protagonist; do not expose as public UI",
-          "cost_or_cooldown": "not established in reviewed evidence",
-          "world_explanation": "use small, ordinary explanations when resources enter the scene",
-          "power_cap": "no unlimited money/resource escalation"
+        "resource_scarcity": {
+          "resource_type": "野菜/最后一点吃的",
+          "scarcity_level": "last_family_food_from_children_labor",
+          "distribution_pressure": "孩子担心最后一点吃的又被送去大舅家",
+          "care_priority": "孩子先确认这口吃的会留在家里",
+          "depletion_risk": "high"
         },
-        "exposure_and_secrecy": {
-          "visible_advantage": "system can convert ordinary goods into survival resources",
-          "source_explanation": "must remain locally plausible",
-          "witness_scope": "keep hidden from public witnesses",
-          "suspicion_risk": "medium",
-          "concealment_strategy": "small-scale trial before public benefit"
+        "relationship_pressure": {
+          "relation_conflict": "母亲旧人设长期补贴大舅家，让孩子默认家里口粮会外流",
+          "care_priority": "孩子",
+          "boundary_target": "大舅家",
+          "repair_strategy": "先把这次野菜留下，再解释她不会让孩子继续饿怕"
         }
       },
       "required_pack_fields": [
-        "system_rule.first_use",
-        "hidden_power_visibility",
-        "world_explanation_cost",
-        "custom_action_policy.no_public_panel"
+        "resource_scarcity.last_food",
+        "relationship_pressure.natal_family_boundary",
+        "children_food_anxiety",
+        "custom_action_policy.local_only"
       ],
-      "original_plot_note": "原剧情先试探系统功能，保住系统只对主角可见的规则。",
+      "original_plot_note": "原剧情通过孩子拦野菜和旁白，说明程弯弯旧人设让家里人默认她会优先补贴大舅家。",
       "evidence": {
-        "grade": "high",
-        "notes": "ASR 明确系统售卖和面板；contact sheet ep03 00:10-00:20 有系统商城/面板视觉。视觉证据支持系统 UI 出现。",
-        "excerpt": "天然无污染野蕨菜一斤价值十文钱，是否售卖？呵，这是系统？娘，您在灶台干什么？这个面板只有我能看见，我得找个地方试验一下系统的功能。"
+        "grade": "medium",
+        "notes": "ASR 明确孩子拦住野菜、点出又要送大舅家，并说这是家里最后一点吃的；38 秒旁白点明程弯弯人设深入人心。视觉证据只做时间上下文。",
+        "excerpt": "啊，这野菜坏了，我拿出去扔了。娘！你是不是又要去大舅家？这些野菜是我跟弟弟们挖了一天才挖来的，这已经是家里最后一点吃的了，再把这些送走，我们我们真的会饿死的。娘！娘！这程弯弯的人设，未免也太深入人心了。"
       },
       "source_refs": {
         "reviewed_demo_node": "data/dramas/huangnian/evidence/reviewed_demo_nodes.v0.1.json#huangnian_ep03_m001",
@@ -925,40 +1475,64 @@
           {
             "id": "huangnian_ep03_u001",
             "episode_id": "huangnian_ep03",
-            "start_ms": 230,
-            "end_ms": 6830,
-            "text": "天然无污染野蕨菜一斤价值十文钱，是否售卖？呵，这是系统？",
+            "start_ms": 19270,
+            "end_ms": 21750,
+            "text": "啊，这野菜坏了，我拿出去扔了。娘！",
             "source": "sanitized_asr_snippet"
           },
           {
             "id": "huangnian_ep03_u002",
             "episode_id": "huangnian_ep03",
-            "start_ms": 11710,
-            "end_ms": 13750,
-            "text": "娘，您在灶台干什么？",
+            "start_ms": 22740,
+            "end_ms": 24060,
+            "text": "你是不是又要去大舅家？",
             "source": "sanitized_asr_snippet"
           },
           {
             "id": "huangnian_ep03_u003",
             "episode_id": "huangnian_ep03",
-            "start_ms": 14150,
-            "end_ms": 18830,
-            "text": "这个面板只有我能看见，我得找个地方试验一下系统的功能。",
+            "start_ms": 24660,
+            "end_ms": 33420,
+            "text": "这些野菜是我跟弟弟们挖了一天才挖来的，这已经是家里最后一点吃的了，再把这些送走，我们我们真的会饿死的。",
+            "source": "sanitized_asr_snippet"
+          },
+          {
+            "id": "huangnian_ep03_u004",
+            "episode_id": "huangnian_ep03",
+            "start_ms": 34890,
+            "end_ms": 35010,
+            "text": "娘！",
+            "source": "sanitized_asr_snippet"
+          },
+          {
+            "id": "huangnian_ep03_u005",
+            "episode_id": "huangnian_ep03",
+            "start_ms": 35170,
+            "end_ms": 35250,
+            "text": "娘！",
+            "source": "sanitized_asr_snippet"
+          },
+          {
+            "id": "huangnian_ep03_u006",
+            "episode_id": "huangnian_ep03",
+            "start_ms": 35570,
+            "end_ms": 39570,
+            "text": "这程弯弯的人设，未免也太深入人心了。",
             "source": "sanitized_asr_snippet"
           }
         ],
         "keyframe_refs": [
           {
-            "id": "huangnian_ep03_k001",
+            "id": "huangnian_ep03_k003",
             "episode_id": "huangnian_ep03",
-            "time_seconds": 0,
+            "time_seconds": 30,
             "description": "keyframe reference only; not psychological proof",
             "source": "sanitized_keyframe_ref"
           },
           {
-            "id": "huangnian_ep03_k002",
+            "id": "huangnian_ep03_k004",
             "episode_id": "huangnian_ep03",
-            "time_seconds": 10,
+            "time_seconds": 40,
             "description": "keyframe reference only; not psychological proof",
             "source": "sanitized_keyframe_ref"
           }
@@ -971,34 +1545,34 @@
         }
       },
       "producer_review_fields": {
-        "reviewer_notes": "系统第一次出现，ASR 明确“是否售卖/这是系统/面板只有我能看见”；这是 P0 最干净的 hidden-power 规则边界。",
+        "reviewer_notes": "使用侧 v0.4 蓝本：在孩子点破“最后一点吃的又要送大舅家”后，用感叹号和朋友式吐槽 lead 承接用户想说一句的冲动。",
         "field_evidence_refs": [
-          "system_rule.first_use",
-          "hidden_power_visibility",
-          "world_explanation_cost",
-          "custom_action_policy.no_public_panel"
+          "resource_scarcity.last_food",
+          "relationship_pressure.natal_family_boundary",
+          "children_food_anxiety",
+          "mouthpiece_candidate.friend_echo"
         ],
         "open_questions": [],
         "do_not_promote_reasons": []
       },
       "interaction_window": {
-        "notice_at_seconds": 0,
-        "start_seconds": 0,
-        "end_seconds": 20,
+        "notice_at_seconds": 37,
+        "start_seconds": 37,
+        "end_seconds": 47,
         "source": "reviewed_ars",
-        "confidence": "high",
+        "confidence": "medium",
         "pause_policy": "pause_on_invite",
         "expire_behavior": "return_to_idle"
       },
       "producer_refs": {
         "reviewed_demo_nodes": "tmp/ars_huangnian_analysis/review/huangnian_demo_nodes.v0.1.json",
-        "reviewed_candidates": "tmp/ars_huangnian_analysis/review/huangnian_candidates.reviewed.v0.1.json",
+        "reviewed_candidates": "tmp/ars_huangnian_analysis/review/huangnian_candidates.reviewed.v0.1.json#huangnian_ep03_c003",
         "raw_transcript_paths": [
           "tmp/ars_huangnian_analysis/volc_asr/normalized/huangnian_ep03.normalized.json"
         ],
         "raw_keyframe_refs": [
-          "tmp/ars_huangnian_analysis/keyframes_10s/ep03/frame_001.jpg",
-          "tmp/ars_huangnian_analysis/keyframes_10s/ep03/frame_002.jpg"
+          "tmp/ars_huangnian_analysis/keyframes_10s/ep03/frame_003.jpg",
+          "tmp/ars_huangnian_analysis/keyframes_10s/ep03/frame_004.jpg"
         ],
         "raw_contact_sheet_ref": "tmp/ars_huangnian_analysis/contact_sheets/ep03_sheet.jpg",
         "policy": "producer-only local refs; runtime source_refs and source_window are sanitized"
@@ -1009,7 +1583,7 @@
             "option_index": 0,
             "status": "placeholder",
             "image_url": "",
-            "prompt": "huangnian_ep03_m001 option 0: 立刻售卖野蕨菜，先验证系统能不能救命",
+            "prompt": "huangnian_ep03_m001 option 0: 直接告诉孩子，这点野菜先留在家里",
             "source": "manual_placeholder",
             "fallback_text": "P0 result image slot reserved; render text consequence when no image is available."
           },
@@ -1017,7 +1591,7 @@
             "option_index": 1,
             "status": "placeholder",
             "image_url": "",
-            "prompt": "huangnian_ep03_m001 option 1: 只卖一小部分，确认别人看不见面板",
+            "prompt": "huangnian_ep03_m001 option 1: 先安孩子，别让他们再怕这口吃的",
             "source": "manual_placeholder",
             "fallback_text": "P0 result image slot reserved; render text consequence when no image is available."
           },
@@ -1025,7 +1599,7 @@
             "option_index": 2,
             "status": "placeholder",
             "image_url": "",
-            "prompt": "huangnian_ep03_m001 option 2: 先不卖，离开灶台再单独测试系统",
+            "prompt": "huangnian_ep03_m001 option 2: 大舅那边先停，家里这顿饭要保住",
             "source": "manual_placeholder",
             "fallback_text": "P0 result image slot reserved; render text consequence when no image is available."
           }
@@ -1035,6 +1609,133 @@
           "mode": "realtime_generate_or_text_only_fallback",
           "timeout_ms": 8000
         }
+      },
+      "companion_exchange": {
+        "schema_version": "companion_exchange_pack.v0.1",
+        "scene_signal": "孩子已经怕她又把最后一点吃的送走了",
+        "window_rationale": "ASR 明确孩子拦住野菜、点出又要送大舅家，并说这是家里最后一点吃的；38 秒旁白点明程弯弯人设深入人心。视觉证据只做时间上下文，不当心理证明。",
+        "notice_marker": "!",
+        "companion_lead": "原主的人设有点离谱😂",
+        "reply_candidates": [
+          {
+            "candidate_id": "preset_0",
+            "display_text": "这妈当得离谱",
+            "action_payload": {
+              "text": "直接告诉孩子，这点野菜先留在家里",
+              "action_type": "resource",
+              "intent": "call_out_original_persona_and_keep_food_home",
+              "target_actors": [
+                "程弯弯",
+                "程弯弯的孩子们"
+              ],
+              "risk_posture": "bold"
+            },
+            "emotion_role": "替孩子吐槽原主人设",
+            "semantic_role": "call_out_original_persona",
+            "distinctness_rationale": "区别于单纯心疼孩子或处理亲戚关系，重点是把“家里最后一口还往外送”的离谱感说出来。",
+            "evidence_refs": [
+              "huangnian_ep03_u002",
+              "huangnian_ep03_u003",
+              "huangnian_ep03_u006"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "food_stays_home",
+              "no_later_branch_claim"
+            ],
+            "friend_voice_seed": "哈哈真的离谱，孩子都怕成这样了，这菜就别再往外送了。",
+            "selected_echo": "哈哈真的离谱，孩子都怕成这样了，这菜就别再往外送了。"
+          },
+          {
+            "candidate_id": "preset_1",
+            "display_text": "孩子都吓成这样",
+            "action_payload": {
+              "text": "先安孩子，别让他们再怕这口吃的",
+              "action_type": "resource",
+              "intent": "comfort_children_before_explaining_food",
+              "target_actors": [
+                "程弯弯的孩子们"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "心疼孩子被饿怕了",
+            "semantic_role": "comfort_food_anxiety",
+            "distinctness_rationale": "区别于吐槽原主或划清大舅边界，重点落在孩子已经被最后一点吃的吓住。",
+            "evidence_refs": [
+              "huangnian_ep03_u003",
+              "huangnian_ep03_u004",
+              "huangnian_ep03_u005"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "children_first",
+              "food_stays_home"
+            ],
+            "friend_voice_seed": "心疼，孩子不是闹脾气，是已经怕到要确认最后一口吃的还在不在。",
+            "selected_echo": "心疼，孩子不是闹脾气，是已经怕到要确认最后一口吃的还在不在。"
+          },
+          {
+            "candidate_id": "preset_2",
+            "display_text": "先别管大舅了",
+            "action_payload": {
+              "text": "大舅那边先停，家里这顿饭要保住",
+              "action_type": "resource",
+              "intent": "set_boundary_against_natal_family_drain",
+              "target_actors": [
+                "程弯弯",
+                "大舅家",
+                "程弯弯的孩子们"
+              ],
+              "risk_posture": "cautious"
+            },
+            "emotion_role": "先护住自家这口饭",
+            "semantic_role": "set_natal_family_boundary",
+            "distinctness_rationale": "区别于情绪吐槽和安抚孩子，重点是把资源外流到大舅家的边界先立住。",
+            "evidence_refs": [
+              "huangnian_ep03_u002",
+              "huangnian_ep03_u003"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "natal_family_boundary",
+              "food_stays_home"
+            ],
+            "friend_voice_seed": "对，大舅那边先停一下，家里孩子都快饿怕了，先保住这一顿。",
+            "selected_echo": "对，大舅那边先停一下，家里孩子都快饿怕了，先保住这一顿。"
+          }
+        ],
+        "custom_reply_policy": {
+          "allowed": true,
+          "scope": "local credible consequence only",
+          "reject_or_soften": [
+            "continuous branch rewrite",
+            "unbounded revenge against relatives",
+            "claims not grounded in source window"
+          ],
+          "runtime_personalization": "bounded"
+        },
+        "evidence_refs": [
+          "huangnian_ep03_u001",
+          "huangnian_ep03_u002",
+          "huangnian_ep03_u003",
+          "huangnian_ep03_u004",
+          "huangnian_ep03_u005",
+          "huangnian_ep03_u006"
+        ],
+        "constraint_refs": [
+          "current_scene_only",
+          "food_stays_home",
+          "no_later_branch_claim",
+          "children_first",
+          "natal_family_boundary",
+          "no_future_episode_claim"
+        ],
+        "blocked_claims": [
+          "Do not claim what happens in later episodes.",
+          "Do not infer hidden motives from visual context alone.",
+          "Do not turn the reply into a new story branch."
+        ],
+        "review_status": "reviewed"
       }
     },
     {
@@ -1153,10 +1854,11 @@
         "evidence_vs_inference": "source_window and excerpt are evidence; hook/options/local consequences are reviewed product inference constrained by evidence."
       },
       "companion_surface": {
-        "notice_marker": "?",
-        "hook": "被当众诬陷偷稻子，要不要立刻摊开证据反打？",
+        "notice_marker": "!",
+        "hook": "当众扣偷粮帽子，这口气真咽不下去。",
         "viewer_impulse": "要是我来，会想抓住证据一次反打。",
-        "scene_specificity_check": "must name an object, relation, witness, rule, or decision pressure from the source window"
+        "scene_specificity_check": "must name an object, relation, witness, rule, or decision pressure from the source window",
+        "companion_lead": "这帽子扣得太随便了。"
       },
       "actor_context": {
         "pov_actor": "程弯弯",
@@ -1204,6 +1906,96 @@
           "当场让大家看清楚不是稻子，直接反打",
           "先问对方凭什么认定，再把小鹅菜拿出来",
           "不扩大骂战，只保住东西和名声底线"
+        ],
+        "mouthpiece_candidates_schema_version": "mouthpiece_candidates.v0.1",
+        "mouthpiece_candidates": [
+          {
+            "candidate_id": "preset_0",
+            "display_text": "凭什么扣帽子",
+            "action_payload": {
+              "text": "当场让大家看清楚不是稻子，直接反打",
+              "action_type": "evidence",
+              "intent": "challenge_false_accusation",
+              "target_actors": [
+                "程弯弯",
+                "诬陷方"
+              ],
+              "risk_posture": "bold"
+            },
+            "emotion_role": "不服被冤",
+            "semantic_role": "publicly_challenge_accusation",
+            "distinctness_rationale": "区别于先问或降温，重点是当众反打被扣帽子的冤气。",
+            "evidence_refs": [
+              "huangnian_ep04_u002",
+              "huangnian_ep04_u003",
+              "evidence.not_rice"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "public_reputation_risk",
+              "source_window_grounding"
+            ],
+            "friend_voice_seed": "就是这句，帽子不能她想扣就扣，证据得让大家看见。",
+            "selected_echo": "就是这句，帽子不能她想扣就扣，证据得让大家看见。"
+          },
+          {
+            "candidate_id": "preset_1",
+            "display_text": "证据先上桌",
+            "action_payload": {
+              "text": "先问对方凭什么认定，再把小鹅菜拿出来",
+              "action_type": "evidence",
+              "intent": "force_claim_then_show_evidence",
+              "target_actors": [
+                "诬陷方",
+                "村中围观者"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "压住火气反打",
+            "semantic_role": "evidence_before_argument",
+            "distinctness_rationale": "区别于直接骂回去，重点是先让对方把话说满，再拿证据反打。",
+            "evidence_refs": [
+              "huangnian_ep04_u002",
+              "huangnian_ep04_u003",
+              "public_witnesses"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "public_reputation_risk",
+              "source_window_grounding"
+            ],
+            "friend_voice_seed": "对，火气可以有，但证据先上桌，她就没那么容易倒打一耙。",
+            "selected_echo": "对，火气可以有，但证据先上桌，她就没那么容易倒打一耙。"
+          },
+          {
+            "candidate_id": "preset_2",
+            "display_text": "不陪她乱吵",
+            "action_payload": {
+              "text": "不扩大骂战，只保住东西和名声底线",
+              "action_type": "evidence",
+              "intent": "hold_reputation_boundary",
+              "target_actors": [
+                "程弯弯",
+                "村中围观者"
+              ],
+              "risk_posture": "cautious"
+            },
+            "emotion_role": "守住底线",
+            "semantic_role": "deescalate_and_protect_reputation",
+            "distinctness_rationale": "区别于公开反打，重点是守住东西和名声，不被对方拖进骂战。",
+            "evidence_refs": [
+              "huangnian_ep04_u002",
+              "huangnian_ep04_u003",
+              "reputation.boundary"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "public_reputation_risk",
+              "no_branch_rewrite"
+            ],
+            "friend_voice_seed": "这句也对，不是怕她，是别让她把你拖进更脏的场面里。",
+            "selected_echo": "这句也对，不是怕她，是别让她把你拖进更脏的场面里。"
+          }
         ],
         "custom_action_policy": {
           "allowed": true,
@@ -1422,6 +2214,137 @@
           "mode": "realtime_generate_or_text_only_fallback",
           "timeout_ms": 8000
         }
+      },
+      "companion_exchange": {
+        "schema_version": "companion_exchange_pack.v0.1",
+        "scene_signal": "偷粮帽子被当众扣到程弯弯头上",
+        "window_rationale": "ASR 强支持公开诬陷；contact sheet ep04 01:00-01:40 可见多人野外对峙和小鹅菜/稻田语境，但关键帧本身不独立证明“稻子”指控。",
+        "notice_marker": "!",
+        "companion_lead": "这帽子扣得太随便了。",
+        "reply_candidates": [
+          {
+            "candidate_id": "preset_0",
+            "display_text": "凭什么扣帽子",
+            "action_payload": {
+              "text": "当场让大家看清楚不是稻子，直接反打",
+              "action_type": "evidence",
+              "intent": "challenge_false_accusation",
+              "target_actors": [
+                "程弯弯",
+                "诬陷方"
+              ],
+              "risk_posture": "bold"
+            },
+            "emotion_role": "不服被冤",
+            "semantic_role": "publicly_challenge_accusation",
+            "distinctness_rationale": "区别于先问或降温，重点是当众反打被扣帽子的冤气。",
+            "evidence_refs": [
+              "huangnian_ep04_u002",
+              "huangnian_ep04_u003",
+              "evidence.not_rice"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "public_reputation_risk",
+              "source_window_grounding"
+            ],
+            "friend_voice_seed": "就是这句，帽子不能她想扣就扣，证据得让大家看见。",
+            "selected_echo": "就是这句，帽子不能她想扣就扣，证据得让大家看见。"
+          },
+          {
+            "candidate_id": "preset_1",
+            "display_text": "证据先上桌",
+            "action_payload": {
+              "text": "先问对方凭什么认定，再把小鹅菜拿出来",
+              "action_type": "evidence",
+              "intent": "force_claim_then_show_evidence",
+              "target_actors": [
+                "诬陷方",
+                "村中围观者"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "压住火气反打",
+            "semantic_role": "evidence_before_argument",
+            "distinctness_rationale": "区别于直接骂回去，重点是先让对方把话说满，再拿证据反打。",
+            "evidence_refs": [
+              "huangnian_ep04_u002",
+              "huangnian_ep04_u003",
+              "public_witnesses"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "public_reputation_risk",
+              "source_window_grounding"
+            ],
+            "friend_voice_seed": "对，火气可以有，但证据先上桌，她就没那么容易倒打一耙。",
+            "selected_echo": "对，火气可以有，但证据先上桌，她就没那么容易倒打一耙。"
+          },
+          {
+            "candidate_id": "preset_2",
+            "display_text": "不陪她乱吵",
+            "action_payload": {
+              "text": "不扩大骂战，只保住东西和名声底线",
+              "action_type": "evidence",
+              "intent": "hold_reputation_boundary",
+              "target_actors": [
+                "程弯弯",
+                "村中围观者"
+              ],
+              "risk_posture": "cautious"
+            },
+            "emotion_role": "守住底线",
+            "semantic_role": "deescalate_and_protect_reputation",
+            "distinctness_rationale": "区别于公开反打，重点是守住东西和名声，不被对方拖进骂战。",
+            "evidence_refs": [
+              "huangnian_ep04_u002",
+              "huangnian_ep04_u003",
+              "reputation.boundary"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "public_reputation_risk",
+              "no_branch_rewrite"
+            ],
+            "friend_voice_seed": "这句也对，不是怕她，是别让她把你拖进更脏的场面里。",
+            "selected_echo": "这句也对，不是怕她，是别让她把你拖进更脏的场面里。"
+          }
+        ],
+        "custom_reply_policy": {
+          "allowed": true,
+          "scope": "local credible consequence only",
+          "reject_or_soften": [
+            "continuous branch rewrite",
+            "unbounded system/power escalation",
+            "claims not grounded in source window"
+          ],
+          "runtime_personalization": "bounded"
+        },
+        "evidence_refs": [
+          "huangnian_ep04_u001",
+          "huangnian_ep04_u002",
+          "huangnian_ep04_u003",
+          "huangnian_ep04_u004",
+          "huangnian_ep04_u005",
+          "huangnian_ep04_u006",
+          "huangnian_ep04_u007",
+          "evidence.not_rice",
+          "public_witnesses",
+          "reputation.boundary"
+        ],
+        "constraint_refs": [
+          "current_scene_only",
+          "public_reputation_risk",
+          "source_window_grounding",
+          "no_branch_rewrite",
+          "no_future_episode_claim"
+        ],
+        "blocked_claims": [
+          "Do not claim what happens in later episodes.",
+          "Do not infer hidden motives from visual context alone.",
+          "Do not turn the reply into a new story branch."
+        ],
+        "review_status": "reviewed"
       }
     },
     {
@@ -1525,9 +2448,10 @@
       },
       "companion_surface": {
         "notice_marker": "!",
-        "hook": "白米已经露出来，来源要不要现在说破？",
+        "hook": "白米一露，全家眼神都变了。",
         "viewer_impulse": "要是我来，先把家里弱势的人护下来。",
-        "scene_specificity_check": "must name an object, relation, witness, rule, or decision pressure from the source window"
+        "scene_specificity_check": "must name an object, relation, witness, rule, or decision pressure from the source window",
+        "companion_lead": "这袋米露出来，我都替她绷住了。"
       },
       "actor_context": {
         "pov_actor": "程弯弯",
@@ -1574,6 +2498,95 @@
           "直接承认有白米，先让全家安心",
           "只说捡到/换到少量白米，压住追问",
           "先把米收回去，改成更不显眼的吃法"
+        ],
+        "mouthpiece_candidates_schema_version": "mouthpiece_candidates.v0.1",
+        "mouthpiece_candidates": [
+          {
+            "candidate_id": "preset_0",
+            "display_text": "先安人心",
+            "action_payload": {
+              "text": "直接承认有白米，先让全家安心",
+              "action_type": "exposure",
+              "intent": "reassure_family_with_visible_food",
+              "target_actors": [
+                "程弯弯家人"
+              ],
+              "risk_posture": "bold"
+            },
+            "emotion_role": "想让家人安心",
+            "semantic_role": "reassure_family_first",
+            "distinctness_rationale": "区别于遮掩来源，重点是先用白米安住家里人的心。",
+            "evidence_refs": [
+              "huangnian_ep06_u002",
+              "huangnian_ep06_u003",
+              "white_rice.visibility"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "resource_exposure_control",
+              "family_trust_gradual"
+            ],
+            "friend_voice_seed": "懂，饿到这个份上，先让家里人知道有饭吃，这口气能松下来。",
+            "selected_echo": "懂，饿到这个份上，先让家里人知道有饭吃，这口气能松下来。"
+          },
+          {
+            "candidate_id": "preset_1",
+            "display_text": "别把底露光",
+            "action_payload": {
+              "text": "只说捡到/换到少量白米，压住追问",
+              "action_type": "exposure",
+              "intent": "limit_visible_resource_explanation",
+              "target_actors": [
+                "程弯弯",
+                "程弯弯家人"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "护住秘密",
+            "semantic_role": "partial_explanation_only",
+            "distinctness_rationale": "区别于直接承认，重点是给家人一个能接受的解释，不把系统底牌露光。",
+            "evidence_refs": [
+              "huangnian_ep06_u002",
+              "huangnian_ep06_u003",
+              "resource_exposure.rice"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "system_visibility_control",
+              "source_window_grounding"
+            ],
+            "friend_voice_seed": "这句稳，米可以拿出来，但底牌不能跟着一起摊开。",
+            "selected_echo": "这句稳，米可以拿出来，但底牌不能跟着一起摊开。"
+          },
+          {
+            "candidate_id": "preset_2",
+            "display_text": "别让他们顺着问",
+            "action_payload": {
+              "text": "先把米收回去，改成更不显眼的吃法",
+              "action_type": "exposure",
+              "intent": "reduce_resource_visibility",
+              "target_actors": [
+                "程弯弯",
+                "程弯弯家人"
+              ],
+              "risk_posture": "cautious"
+            },
+            "emotion_role": "先把风险压住",
+            "semantic_role": "hide_resource_signal",
+            "distinctness_rationale": "区别于解释白米来源，重点是先降低白米本身的可见度。",
+            "evidence_refs": [
+              "huangnian_ep06_u002",
+              "huangnian_ep06_u003",
+              "white_rice.visibility"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "resource_exposure_control",
+              "no_branch_rewrite"
+            ],
+            "friend_voice_seed": "我懂，饭要吃，但这一眼太扎了，先别让所有人顺着米追到底。",
+            "selected_echo": "我懂，饭要吃，但这一眼太扎了，先别让所有人顺着米追到底。"
+          }
         ],
         "custom_action_policy": {
           "allowed": true,
@@ -1776,6 +2789,135 @@
           "mode": "realtime_generate_or_text_only_fallback",
           "timeout_ms": 8000
         }
+      },
+      "companion_exchange": {
+        "schema_version": "companion_exchange_pack.v0.1",
+        "scene_signal": "白米露出来后，全家人的追问快压上来",
+        "window_rationale": "ASR 强支持白米来源追问；contact sheet ep06 00:00 显示袋中白米，01:10 后可见一家围桌。视觉证据支持白米已被看到。",
+        "notice_marker": "!",
+        "companion_lead": "这袋米露出来，我都替她绷住了。",
+        "reply_candidates": [
+          {
+            "candidate_id": "preset_0",
+            "display_text": "先安人心",
+            "action_payload": {
+              "text": "直接承认有白米，先让全家安心",
+              "action_type": "exposure",
+              "intent": "reassure_family_with_visible_food",
+              "target_actors": [
+                "程弯弯家人"
+              ],
+              "risk_posture": "bold"
+            },
+            "emotion_role": "想让家人安心",
+            "semantic_role": "reassure_family_first",
+            "distinctness_rationale": "区别于遮掩来源，重点是先用白米安住家里人的心。",
+            "evidence_refs": [
+              "huangnian_ep06_u002",
+              "huangnian_ep06_u003",
+              "white_rice.visibility"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "resource_exposure_control",
+              "family_trust_gradual"
+            ],
+            "friend_voice_seed": "懂，饿到这个份上，先让家里人知道有饭吃，这口气能松下来。",
+            "selected_echo": "懂，饿到这个份上，先让家里人知道有饭吃，这口气能松下来。"
+          },
+          {
+            "candidate_id": "preset_1",
+            "display_text": "别把底露光",
+            "action_payload": {
+              "text": "只说捡到/换到少量白米，压住追问",
+              "action_type": "exposure",
+              "intent": "limit_visible_resource_explanation",
+              "target_actors": [
+                "程弯弯",
+                "程弯弯家人"
+              ],
+              "risk_posture": "balanced"
+            },
+            "emotion_role": "护住秘密",
+            "semantic_role": "partial_explanation_only",
+            "distinctness_rationale": "区别于直接承认，重点是给家人一个能接受的解释，不把系统底牌露光。",
+            "evidence_refs": [
+              "huangnian_ep06_u002",
+              "huangnian_ep06_u003",
+              "resource_exposure.rice"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "system_visibility_control",
+              "source_window_grounding"
+            ],
+            "friend_voice_seed": "这句稳，米可以拿出来，但底牌不能跟着一起摊开。",
+            "selected_echo": "这句稳，米可以拿出来，但底牌不能跟着一起摊开。"
+          },
+          {
+            "candidate_id": "preset_2",
+            "display_text": "别让他们顺着问",
+            "action_payload": {
+              "text": "先把米收回去，改成更不显眼的吃法",
+              "action_type": "exposure",
+              "intent": "reduce_resource_visibility",
+              "target_actors": [
+                "程弯弯",
+                "程弯弯家人"
+              ],
+              "risk_posture": "cautious"
+            },
+            "emotion_role": "先把风险压住",
+            "semantic_role": "hide_resource_signal",
+            "distinctness_rationale": "区别于解释白米来源，重点是先降低白米本身的可见度。",
+            "evidence_refs": [
+              "huangnian_ep06_u002",
+              "huangnian_ep06_u003",
+              "white_rice.visibility"
+            ],
+            "constraint_refs": [
+              "current_scene_only",
+              "resource_exposure_control",
+              "no_branch_rewrite"
+            ],
+            "friend_voice_seed": "我懂，饭要吃，但这一眼太扎了，先别让所有人顺着米追到底。",
+            "selected_echo": "我懂，饭要吃，但这一眼太扎了，先别让所有人顺着米追到底。"
+          }
+        ],
+        "custom_reply_policy": {
+          "allowed": true,
+          "scope": "local credible consequence only",
+          "reject_or_soften": [
+            "continuous branch rewrite",
+            "unbounded system/power escalation",
+            "claims not grounded in source window"
+          ],
+          "runtime_personalization": "bounded"
+        },
+        "evidence_refs": [
+          "huangnian_ep06_u001",
+          "huangnian_ep06_u002",
+          "huangnian_ep06_u003",
+          "huangnian_ep06_u004",
+          "huangnian_ep06_u005",
+          "white_rice.visibility",
+          "resource_exposure.rice"
+        ],
+        "constraint_refs": [
+          "current_scene_only",
+          "resource_exposure_control",
+          "family_trust_gradual",
+          "system_visibility_control",
+          "source_window_grounding",
+          "no_branch_rewrite",
+          "no_future_episode_claim"
+        ],
+        "blocked_claims": [
+          "Do not claim what happens in later episodes.",
+          "Do not infer hidden motives from visual context alone.",
+          "Do not turn the reply into a new story branch."
+        ],
+        "review_status": "reviewed"
       }
     }
   ]

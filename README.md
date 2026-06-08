@@ -1,102 +1,50 @@
-# Deadman
+# Deadman · 看剧搭子
 
-Deadman is the internal codename for OSeria Branch 3 / `要是我来`: a
-short-drama watching companion prototype.
-
-The current UX core is:
+A short-drama watching **companion**. While you watch, the moment a scene makes
+you want to say something, the companion catches that beat: one friend-style
+opener, three "things I want to say", and a reply that catches your feeling back.
 
 ```text
 我想说一句。
 ```
 
-The viewer is not choosing a story branch. The viewer is saying the line that
-the scene made them want to say. The system stays light on the surface and
-heavier underneath: reviewed scene packs, a resident companion runtime, and a
-CABRuntime-backed formal judgment path with environment-specific readiness
-gates.
+The viewer is not choosing a story branch — they are saying the line the scene
+made them want to say. **No typing required, and it never interrupts playback.**
 
-## Repository Status
+## Architecture
 
-This standalone repo is the public-source candidate for the Deadman v0.3
-baseline before the v0.4 UX-core iteration. It excludes local media files,
-provider secrets, agent logs, and generated build artifacts.
+```text
+agentic authoring backstage · deterministic frontstage · bounded runtime adaptation
+```
 
-Publication boundary docs start from:
+- **Studio (backstage)** — agentic authoring (LangGraph + CAB) turns reviewed
+  drama moments into audited companion-exchange packs.
+- **Stage (frontstage)** — a light, deterministic mobile-first player renders the
+  reviewed packs; runtime model use is bounded and only after the viewer opts in.
 
-- `PUBLICATION_REVIEW.md`
-- `REPO_STRUCTURE.md`
-- `docs/README.md`
-- `docs/Publicization_Decision_Log_v0.1.md`
-- `docs/Local_Development_Artifact_Policy_v0.1.md`
-- `docs/V0_3_Completeness_Review_v0.1.md`
-- `docs/Branch3_UX_Core_Pivot_Log_v0.1.md`
-- `docs/Branch3_要是我来_PRD_v0.4_UX_Core.md`
-- `docs/Submission_Material_Map_v0.1.md`
+The primary runtime contract is `companion_exchange.reply_candidates`: a
+friend-style lead, three reviewed reply candidates, and a selected echo.
 
 ## Layout
 
 | Path | Purpose |
 | --- | --- |
-| `REPO_STRUCTURE.md` | Repo-wide public/local file boundary and publication blockers |
-| `Deadman/` | Compatibility namespace for historical `Deadman.*` imports |
-| `frontend/` | Mobile-first React/Vite player and tomato companion UI |
-| `backend/` | FastAPI Deadman APIs, viewer runtime, judgment adapter, CAB client |
-| `data/` | Reviewed drama context, moment packs, schemas, and fixtures |
-| `tools/` | Producer-side ARS scripts, graph tooling, validation, publication checks |
-| `studio/` | Static producer-side Studio prototype |
-| `assets/` | Static companion assets and public art |
-| `docs/` | PRD, tech plans, producer contracts, reviews, and submission docs |
-| `server.py` | Deployable FastAPI entrypoint that mounts Deadman routes |
-| `ms_deploy.json` | ModelScope-style deployment env template, with secrets omitted |
+| `frontend/` | Mobile-first React/Vite player + tomato companion |
+| `backend/` | FastAPI APIs, viewer runtime, judgment adapter, CAB client |
+| `studio/` | Producer-side Studio prototype |
+| `tools/` | Producer/authoring pipeline, validation, publication checks |
+| `data/` | Reviewed drama packs, schemas, and the taste dataset |
+| `assets/` | Static companion assets |
+| `server.py` | Deployable FastAPI entrypoint |
+| `ms_deploy.json` | Deployment env template (secrets omitted) |
 
-## Documentation
-
-Start from `docs/README.md`. It separates current entry points from historical
-goal specs and local-only artifact references.
-
-The short rule:
-
-- current product/runtime contracts stay tracked;
-- historical specs may stay tracked only with archive context;
-- raw producer artifacts, local agent logs, media files, provider caches, and
-  copied source-context folders stay ignored.
-
-## Current Product Direction
-
-The latest complete baseline before the UX-core pivot is:
-
-```text
-docs/Branch3_要是我来_PRD_v0.3.md
-```
-
-The standalone extraction has been checked against that baseline in:
-
-```text
-docs/V0_3_Completeness_Review_v0.1.md
-```
-
-The current source PRD is:
-
-```text
-docs/Branch3_要是我来_PRD_v0.4_UX_Core.md
-```
-
-Key direction:
-
-- user-side UI stays one-level and lightweight;
-- three preset strips become reviewed `mouthpiece_candidates`, not branch
-  choices;
-- Deadman runtime turns user choice into a governed runtime event;
-- CABRuntime executes/checks the formal semantic event path;
-- Deadman Studio produces and validates scene-grounded mouthpiece candidates.
-
-## Local Development
+## Run locally
 
 Backend:
 
 ```bash
 python3 -m pip install -r requirements.txt
-uvicorn server:app --host 127.0.0.1 --port 7860
+uvicorn server:app --host 127.0.0.1 --port 7861
 ```
 
 Frontend:
@@ -104,68 +52,33 @@ Frontend:
 ```bash
 cd frontend
 npm install
-npm run dev -- --host 127.0.0.1 --port 5177
+VITE_DEADMAN_API_PROXY_TARGET=http://127.0.0.1:7861 npm run dev -- --host 127.0.0.1 --port 5175
 ```
 
-Open:
+Open `http://127.0.0.1:5175/?branch3_player=1`.
 
-```text
-http://127.0.0.1:5177/?branch3_player=1
-```
-
-## Runtime Modes
-
-Formal mode uses CABRuntime:
+## Runtime modes
 
 ```bash
-DEADMAN_JUDGMENT_ENGINE=cab_runtime
+DEADMAN_JUDGMENT_ENGINE=cab_runtime         # formal judgment via sibling CABRuntime
+DEADMAN_JUDGMENT_ENGINE=demo_deterministic  # tests / demo fallback only
 ```
 
-The demo deterministic engine exists only for tests/demo fallback and must not
-be claimed as formal judgment:
+Formal runtime failure fails closed with a structured error — it never silently
+returns deterministic/template judgment as formal judgment.
+
+## Media & secrets
+
+Raw media (`*.mp4`), provider keys, `.env`, caches and build outputs are never
+committed. Public deployment either configures an external media base URL
+(`DEADMAN_MEDIA_BASE_URL`) or serves registered local media outside git.
+**Provider credentials are environment variables only** (`ARK_API_KEY`, …).
+
+## Checks
 
 ```bash
-DEADMAN_JUDGMENT_ENGINE=demo_deterministic
-```
-
-Formal runtime failure must fail closed with a structured error. It must not
-silently return deterministic/template judgment.
-
-Do not claim formal CABRuntime judgment for a deployment unless the CABRuntime
-readiness gate passes in that same environment.
-
-## Media Boundary
-
-This repository does not include local MP4/MOV media files. Public deployment
-must either:
-
-- configure an external media base URL, or
-- provide registered local media files on the server outside git.
-
-Do not commit:
-
-- `.env`;
-- provider keys;
-- `tmp/`;
-- `.agent/`;
-- `local_artifacts/`;
-- MP4/MOV/M4V files;
-- raw provider traces;
-- local cache/checkpoint outputs;
-- `node_modules`;
-- frontend/backend build outputs.
-
-## Verification Pointers
-
-Useful checks before publication:
-
-```bash
-python3 -m py_compile backend/*.py
-python3 -m unittest discover -s backend/tests -v
-python3 tools/ars/deadman_validate_producer_bridge.py
-cd frontend && npm test && npm run build
+python3 -m unittest discover -s backend/tests
+python3 tools/ars/deadman_validate_producer_bridge.py --drama-dir data/dramas/huangnian
 python3 tools/check_publication_safety.py
+cd frontend && npm test && npm run build
 ```
-
-Some checks require sibling CABRuntime or local media files and should be
-reported honestly if unavailable in a clean public checkout.

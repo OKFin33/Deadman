@@ -9,6 +9,7 @@ import {
   type DeadmanJudgmentAction,
   type DeadmanJudgmentResponse,
   type DeadmanMediaSlot,
+  type DeadmanMouthpieceCandidate,
   type DeadmanResultMedia,
   listDramaMoments,
   type DeadmanMomentSummary,
@@ -26,6 +27,7 @@ const FALLBACK_DURATION_SECONDS = 90;
 const FALLBACK_WINDOW_SECONDS = 8;
 const DRAMA_ID = "huangnian";
 const DRAMA_TITLE = "荒年全村啃树皮，我有系统满仓肉";
+const DEFAULT_EPISODE_ID = "huangnian_ep03";
 const FALLBACK_MARKER_TIMES = [12, 24, 36, 48, 60];
 
 type HighlightOption = {
@@ -33,6 +35,11 @@ type HighlightOption = {
   text: string;
   displayText?: string;
   stampText?: string;
+  candidateId?: string;
+  actionPayload?: Record<string, unknown>;
+  emotionRole?: string;
+  semanticRole?: string;
+  requiresReview?: boolean;
 };
 
 type HighlightMarker = {
@@ -49,6 +56,7 @@ type HighlightMarker = {
   type: string;
   marker: "!" | "?";
   hook: string;
+  companionLead?: string;
   options: HighlightOption[];
   resultMedia?: DeadmanResultMedia;
 };
@@ -95,9 +103,9 @@ const STATIC_HIGHLIGHT_MARKERS: HighlightMarker[] = [
     marker: "!",
     hook: "四蛋抓到兔子那一眼，懂事得让人难受。",
     options: [
-      { label: "A", text: "今晚分兔肉，先让四蛋确认自己也有份", displayText: "这肉必须有四蛋一口", stampText: "懂你❤" },
+      { label: "A", text: "今晚分兔肉，先让四蛋确认自己也有份", displayText: "四蛋该吃肉", stampText: "懂你❤" },
       { label: "B", text: "先留下兔子和皮毛，改用别的食物补这一顿", displayText: "别让娃白懂事", stampText: "就是啊" },
-      { label: "C", text: "把兔子当成四蛋的功劳，只少量处理给全家尝味", displayText: "大人先别动筷子", stampText: "我懂" },
+      { label: "C", text: "把兔子当成四蛋的功劳，只少量处理给全家尝味", displayText: "功劳算孩子的", stampText: "我懂" },
     ],
   },
   {
@@ -113,27 +121,28 @@ const STATIC_HIGHLIGHT_MARKERS: HighlightMarker[] = [
     marker: "!",
     hook: "儿媳被逼吃脏饭那一下，桌上没人站出来。",
     options: [
-      { label: "A", text: "当场让儿媳上桌，直接推翻旧规矩", displayText: "这碗饭必须换", stampText: "就是啊" },
-      { label: "B", text: "先把饭换掉，再私下处理婆媳权力", displayText: "别让她白挨", stampText: "懂你❤" },
-      { label: "C", text: "不当众翻脸，只让儿媳先吃一口干净的", displayText: "规矩先停一停", stampText: "我懂" },
+      { label: "A", text: "当场让儿媳上桌，直接推翻旧规矩", displayText: "凭什么啊", stampText: "就是啊" },
+      { label: "B", text: "先把饭换掉，再私下处理婆媳权力", displayText: "先护住她", stampText: "懂你❤" },
+      { label: "C", text: "不当众翻脸，只让儿媳先吃一口干净的", displayText: "别让她白挨", stampText: "我懂" },
     ],
   },
   {
     id: "huangnian_ep03_m001",
     momentId: "huangnian_ep03_m001",
     episodeId: "huangnian_ep03",
-    timeSeconds: 36,
-    noticeAtSeconds: 36,
-    startSeconds: 36,
-    endSeconds: 44,
+    timeSeconds: 37,
+    noticeAtSeconds: 37,
+    startSeconds: 37,
+    endSeconds: 47,
     timingSource: "local_fallback",
-    type: "system",
-    marker: "?",
-    hook: "系统面板亮出来了，这种救命外挂谁忍得住。",
+    type: "resource",
+    marker: "!",
+    hook: "最后一点野菜又要送出去，孩子急了。",
+    companionLead: "原主的人设有点离谱😂",
     options: [
-      { label: "A", text: "立刻售卖野蕨菜，先验证系统能不能救命", displayText: "先试，饿肚子不等人", stampText: "就是啊" },
-      { label: "B", text: "只卖一小部分，确认别人看不见面板", displayText: "只试一点，别露底", stampText: "我懂" },
-      { label: "C", text: "先不卖，离开灶台再单独测试系统", displayText: "换没人处再点", stampText: "懂你❤" },
+      { label: "A", text: "直接告诉孩子，这点野菜先留在家里", displayText: "这妈当得离谱", stampText: "就是啊" },
+      { label: "B", text: "先安孩子，别让他们再怕这口吃的", displayText: "孩子都吓成这样", stampText: "抱一下" },
+      { label: "C", text: "大舅那边先停，家里这顿饭要保住", displayText: "先别管大舅了", stampText: "懂你❤" },
     ],
   },
   {
@@ -149,9 +158,9 @@ const STATIC_HIGHLIGHT_MARKERS: HighlightMarker[] = [
     marker: "?",
     hook: "当众扣偷粮帽子，这口气真咽不下去。",
     options: [
-      { label: "A", text: "当场让大家看清楚不是稻子，直接反打", displayText: "证据摊开，让她收声", stampText: "就是啊" },
-      { label: "B", text: "先问对方凭什么认定，再把小鹅菜拿出来", displayText: "先问凭什么", stampText: "我懂" },
-      { label: "C", text: "不扩大骂战，只保住东西和名声底线", displayText: "不陪吵，守住名声", stampText: "懂你❤" },
+      { label: "A", text: "当场让大家看清楚不是稻子，直接反打", displayText: "凭什么扣帽子", stampText: "就是啊" },
+      { label: "B", text: "先问对方凭什么认定，再把小鹅菜拿出来", displayText: "证据先上桌", stampText: "我懂" },
+      { label: "C", text: "不扩大骂战，只保住东西和名声底线", displayText: "不陪她乱吵", stampText: "懂你❤" },
     ],
   },
   {
@@ -167,9 +176,9 @@ const STATIC_HIGHLIGHT_MARKERS: HighlightMarker[] = [
     marker: "!",
     hook: "白米一露，全家眼神都变了。",
     options: [
-      { label: "A", text: "直接承认有白米，先让全家安心", displayText: "先安人心，别炸锅", stampText: "就是啊" },
-      { label: "B", text: "只说捡到/换到少量白米，压住追问", displayText: "只认一点，压住追问", stampText: "我懂" },
-      { label: "C", text: "先把米收回去，改成更不显眼的吃法", displayText: "收回去，别摊底牌", stampText: "懂你❤" },
+      { label: "A", text: "直接承认有白米，先让全家安心", displayText: "先安人心", stampText: "就是啊" },
+      { label: "B", text: "只说捡到/换到少量白米，压住追问", displayText: "别把底露光", stampText: "我懂" },
+      { label: "C", text: "先把米收回去，改成更不显眼的吃法", displayText: "别让他们顺着问", stampText: "懂你❤" },
     ],
   },
 ];
@@ -181,7 +190,7 @@ function getConfiguredVideoUrl(): string {
 
 function getConfiguredEpisodeId(): string {
   const searchParams = new URLSearchParams(window.location.search);
-  return searchParams.get("episodeId")?.trim() || searchParams.get("branch3_episode")?.trim() || "";
+  return searchParams.get("episodeId")?.trim() || searchParams.get("branch3_episode")?.trim() || DEFAULT_EPISODE_ID;
 }
 
 export function Branch3PlayerDemo() {
@@ -501,11 +510,7 @@ export function Branch3PlayerDemo() {
         playback_time_seconds: currentTime,
         moment_id: activeMarker.momentId,
         companion_state: companionState,
-        action: {
-          source,
-          text: normalizedAction,
-          option_index: optionIndex ?? null,
-        },
+        action: buildJudgmentAction(source, normalizedAction, optionIndex, option),
       });
       applyRuntimeResponse(runtimeResponse);
     } catch (error) {
@@ -611,7 +616,7 @@ export function Branch3PlayerDemo() {
   return (
     <main className="branch3-player-app">
       <section
-        aria-label="要是我来 Branch 3 播放器"
+        aria-label="看剧搭子播放器"
         className="branch3-player__device"
         onPointerDown={handleDevicePointerDown}
         role="region"
@@ -662,7 +667,7 @@ export function Branch3PlayerDemo() {
 
         <header className="branch3-player__topbar">
           <div>
-            <p>要是我来 · 搭子在场</p>
+            <p>看剧搭子 · 在场</p>
             <strong>{activeMarker.episodeTitle || DRAMA_TITLE}</strong>
           </div>
           <button
@@ -726,7 +731,7 @@ export function Branch3PlayerDemo() {
         {showBubble ? (
           <section
             className={`branch3-player__bubble ${companionState === "verdict" ? "warm" : ""} ${companionState === "error" ? "is-error" : ""}`.trim()}
-            aria-label="要是我来互动气泡"
+            aria-label="看剧搭子互动气泡"
             data-panel-state={companionState}
             ref={bubbleRef}
           >
@@ -755,16 +760,21 @@ export function Branch3PlayerDemo() {
             ) : (
               <form className="branch3-player__quick-form" onSubmit={handleCustomSubmit}>
                 <div className="branch3-player__label branch3-player__label--hot">
-                  {activeMarker.marker === "!" ? "🔥 火气点" : "？憋住点"} · 你是不是也想说
+                  搭子凑过来
                 </div>
-                <p className="branch3-player__question branch3-player__spoken">{buildVoiceQuestion(activeMarker)}</p>
+                <p className="branch3-player__question branch3-player__spoken">{buildCompanionLead(activeMarker)}</p>
                 <div className="branch3-player__quick-replies">
                   {activeMarker.options.map((option, optionIndex) => (
                     <button
                       key={option.label}
                       onClick={() => {
-                        setCustomAction(option.text);
-                        void submitAction(option.text, "preset", optionIndex, option);
+                        setCustomAction(option.displayText || option.text);
+                        void submitAction(
+                          option.displayText || option.text,
+                          option.candidateId ? "preset_candidate" : "preset",
+                          optionIndex,
+                          option,
+                        );
                       }}
                       type="button"
                     >
@@ -877,23 +887,26 @@ function buildCompanionLine(marker: HighlightMarker): string {
   return `这段我真忍不了。${marker.hook}`;
 }
 
-function buildVoiceQuestion(marker: HighlightMarker): string {
+function buildCompanionLead(marker: HighlightMarker): string {
+  if (marker.companionLead) {
+    return marker.companionLead;
+  }
   if (marker.type === "resource") {
-    return "这口肉，你想怎么分？";
+    return "我刚刚真想替四蛋说一句。";
   }
   if (marker.type === "relationship") {
-    return "这桌饭，你想怎么拦？";
+    return "这桌饭看得人火气上来了。";
   }
   if (marker.type === "system") {
-    return "这外挂，你敢不敢点？";
+    return "这系统一亮，我也忍不住想点一下。";
   }
   if (marker.type === "evidence") {
-    return "这口锅，你想怎么掀？";
+    return "这帽子扣得太随便了。";
   }
   if (marker.type === "exposure") {
-    return "这袋米，你想怎么藏？";
+    return "这袋米露出来，我都替她绷住了。";
   }
-  return marker.marker === "!" ? "这口气，你想怎么出？" : "这一刻，你会怎么问？";
+  return "这段我也有句话卡在嘴边。";
 }
 
 function buildCompactVoiceTake(text: string): string {
@@ -915,6 +928,28 @@ function buildStampTextForAction(option: HighlightOption | undefined, source: De
     return "懂你❤";
   }
   return option?.stampText || "懂你❤";
+}
+
+function buildJudgmentAction(
+  source: DeadmanJudgmentAction["source"],
+  text: string,
+  optionIndex?: number,
+  option?: HighlightOption,
+): DeadmanJudgmentAction {
+  if (source === "preset_candidate") {
+    return {
+      source,
+      text,
+      option_index: null,
+      candidate_id: option?.candidateId || null,
+      action_payload: option?.actionPayload || null,
+    };
+  }
+  return {
+    source,
+    text,
+    option_index: source === "preset" ? optionIndex ?? null : null,
+  };
 }
 
 function buildStampTextForStance(stance: DeadmanJudgmentResponse["verdict"]["stance"] | undefined): string {
@@ -941,17 +976,20 @@ function formatTime(totalSeconds: number): string {
 
 function mapMomentSummariesToMarkers(summaries: DeadmanMomentSummary[]): HighlightMarker[] {
   return summaries
-    .filter((summary) => summary.moment_id && Array.isArray(summary.default_options) && summary.default_options.length > 0)
+    .filter((summary) => {
+      const hasExchangeCandidates =
+        Array.isArray(summary.companion_exchange?.reply_candidates) &&
+        summary.companion_exchange.reply_candidates.length > 0;
+      const hasMouthpieceCandidates =
+        Array.isArray(summary.mouthpiece_candidates) && summary.mouthpiece_candidates.length > 0;
+      const hasLegacyOptions = Array.isArray(summary.default_options) && summary.default_options.length > 0;
+      return summary.moment_id && (hasExchangeCandidates || hasMouthpieceCandidates || hasLegacyOptions);
+    })
     .map((summary, index) => {
       const fallback = STATIC_HIGHLIGHT_MARKERS[index % STATIC_HIGHLIGHT_MARKERS.length];
       const viewerTemplate = STATIC_HIGHLIGHT_MARKERS.find((marker) => marker.momentId === summary.moment_id);
       const window = readInteractionWindow(summary, index);
-      const options = summary.default_options?.slice(0, 3).map((text, optionIndex) => ({
-        label: optionLabel(optionIndex),
-        text,
-        displayText: viewerTemplate?.options[optionIndex]?.displayText || buildCompactVoiceTake(text),
-        stampText: viewerTemplate?.options[optionIndex]?.stampText,
-      }));
+      const options = buildHighlightOptions(summary, viewerTemplate);
       return {
         id: summary.moment_id,
         momentId: summary.moment_id,
@@ -964,12 +1002,48 @@ function mapMomentSummariesToMarkers(summaries: DeadmanMomentSummary[]): Highlig
         episodeTitle: summary.source_drama?.title,
         runtimeVideoUrl: summary.source_drama?.runtime_video_url,
         type: summary.action_type || fallback.type,
-        marker: summary.notice_marker === "?" ? "?" : "!",
-        hook: viewerTemplate?.hook || summary.hook || fallback.hook,
+        marker: summary.companion_exchange?.notice_marker === "?" || summary.notice_marker === "?" ? "?" : "!",
+        hook: summary.companion_exchange?.scene_signal || summary.hook || viewerTemplate?.hook || fallback.hook,
+        companionLead: summary.companion_exchange?.companion_lead || summary.companion_lead || undefined,
         options: options && options.length > 0 ? options : viewerTemplate?.options || fallback.options,
         resultMedia: summary.result_media,
       };
     });
+}
+
+function buildHighlightOptions(
+  summary: DeadmanMomentSummary,
+  viewerTemplate: HighlightMarker | undefined,
+): HighlightOption[] | undefined {
+  const exchangeCandidates =
+    summary.companion_exchange?.reply_candidates?.slice(0, 3).filter(isValidMouthpieceCandidate) || [];
+  const candidates =
+    exchangeCandidates.length > 0
+      ? exchangeCandidates
+      : summary.mouthpiece_candidates?.slice(0, 3).filter(isValidMouthpieceCandidate) || [];
+  if (candidates.length > 0) {
+    return candidates.map((candidate, optionIndex) => ({
+      label: optionLabel(optionIndex),
+      text: candidate.display_text,
+      displayText: candidate.display_text,
+      stampText: viewerTemplate?.options[optionIndex]?.stampText,
+      candidateId: candidate.candidate_id,
+      actionPayload: candidate.action_payload,
+      emotionRole: candidate.emotion_role,
+      semanticRole: candidate.semantic_role,
+      requiresReview: Boolean(candidate.requires_review),
+    }));
+  }
+  return summary.default_options?.slice(0, 3).map((text, optionIndex) => ({
+    label: optionLabel(optionIndex),
+    text,
+    displayText: viewerTemplate?.options[optionIndex]?.displayText || buildCompactVoiceTake(text),
+    stampText: viewerTemplate?.options[optionIndex]?.stampText,
+  }));
+}
+
+function isValidMouthpieceCandidate(candidate: DeadmanMouthpieceCandidate): boolean {
+  return Boolean(candidate.candidate_id && candidate.display_text && candidate.action_payload);
 }
 
 function buildEpisodeOptions(markers: HighlightMarker[]): EpisodeOption[] {
@@ -1099,7 +1173,7 @@ function buildRuntimeErrorResult(runtimeResponse: DeadmanRuntimeResponse): Error
   const code = runtimeResponse.error?.code || "runtime_error";
   return {
     kind: "error",
-    title: "判定卡住了",
+    title: "搭子卡住了",
     message: runtimeResponse.companion.utterance || "这次我卡住了，刚才那手先收一下。可以重试，或者继续看。",
     detail: `接口状态：runtime/${code}`,
     media: {
@@ -1121,7 +1195,7 @@ function buildApiFailureResult(error: unknown): ErrorResult {
         : "未知接口错误";
   return {
     kind: "error",
-    title: "判定卡住了",
+    title: "搭子卡住了",
     message: "这次我卡住了，刚才那手先收一下。可以重试，或者继续看。",
     detail: `接口状态：${message}`,
     media: {
@@ -1257,7 +1331,7 @@ function ResultMedia({ media }: { media?: ViewerResult["media"] }) {
   if (media.image_url) {
     return (
       <figure className="branch3-player__result-media">
-        <img alt="要是我来结果图" src={media.image_url} />
+        <img alt="看剧搭子结果图" src={media.image_url} />
         <figcaption>{media.prompt || "预生成结果图"}</figcaption>
       </figure>
     );

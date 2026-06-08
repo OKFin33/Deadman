@@ -1,0 +1,50 @@
+{
+  "schema_version": "deadman_drama_runtime_manifest.v0.1",
+  "drama_id": "yunmiao",
+  "title": "云渺1：我修仙多年强亿点怎么了",
+  "generated_at": "2026-06-03T09:18:17.838672+00:00",
+  "pack_type": "lightweight_drama_context_pack_not_arcforge_world_simulation",
+  "context_pack": {
+    "path": "context.v0.1.json",
+    "schema_version": "drama_context_pack.v0.1",
+    "confidence": {
+      "overall": "medium",
+      "notes": "Strong enough for the 5 reviewed P0 demo moments. It is a lightweight Drama Context Pack, not an ArcForge world simulation pack or full source-canon database."
+    }
+  },
+  "moment_packs": {
+    "path": "moments.v0.1.json",
+    "schema_version": "moment_causality_pack.v0.1",
+    "count": 3,
+    "moment_ids": [
+      "yunmiao_ep17_m001",
+      "yunmiao_ep03_m001",
+      "yunmiao_ep18_m001"
+    ]
+  },
+  "runtime_priority": [
+    "moment_pack_local_facts",
+    "drama_context_pack_global_constraints",
+    "llm_common_sense"
+  ],
+  "source_artifacts": {
+    "reviewed_demo_nodes": "data/dramas/yunmiao/evidence/reviewed_demo_nodes.v0.1.json",
+    "allowed_summary": "docs/archive/source-context/Byte_AI_Allowed_Drama_Summaries_2026-05-23.md"
+  },
+  "promoted_dir": "data/dramas/yunmiao",
+  "ingestion_status": {
+    "producer_media_registry": "implemented_local_registry_v0.1",
+    "producer_pack_publish": "implemented_reviewed_p0_publish_v0.1",
+    "backend_judgment_api": "implemented_cab_runtime_default_v0.1",
+    "frontend_ingestion": "implemented_pack_timing_and_result_media_v0.1",
+    "runtime_video_timing": "implemented_interaction_window_v0.1",
+    "source_provenance": "publish_safe_runtime_refs_with_producer_refs_for_local_tmp",
+    "image_generation": "placeholder_slots_realtime_custom_fallback_v0.1"
+  },
+  "media_registry": {
+    "path": "media_registry.v0.1.json",
+    "schema_version": "deadman_media_registry.v0.1",
+    "episode_count": 3,
+    "registered_count": 3
+  }
+}

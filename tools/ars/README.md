@@ -1,6 +1,15 @@
 # Deadman ARS Tools
 
-Provider adapters and local scripts for Branch 3 ARS node-mining dogfood.
+Provider adapters and local scripts for Deadman producer-side node mining and
+pack publication.
+
+Current v0.4 target:
+
+```text
+Studio/CAB authoring produces reviewed CompanionExchangePack artifacts.
+Legacy ARS scripts remain useful as outer producer bridge and source-window
+preparation machinery.
+```
 
 Current adapters:
 
@@ -22,18 +31,32 @@ Local deterministic bridge scripts:
 - `deadman_build_drama_context.py`
 - `deadman_publish_p0_bridge.py`
 - `deadman_validate_producer_bridge.py`
+- `deadman_build_v04_authoring_proof.py`
+- `deadman_validate_v04_authoring_proof.py`
 - `deadman_print_recording_urls.py`
 - `deadman_check_submission_readiness.py`
 
 `deadman_build_drama_context.py` promotes reviewed ARS artifacts into
-runtime-readable Drama Context Pack and Moment Causality Pack JSON. It does not
-call providers or read secrets.
+runtime-readable drama/moment JSON. The current v0.4 migration target is
+`CompanionExchangePack`; older Moment Causality Pack language in scripts and
+fixtures is compatibility history until the implementation catches up. The
+script does not call providers or read secrets.
 
 `deadman_validate_producer_bridge.py` is the post-publish gate. It checks that
 tracked manifest/context/moments/media-registry/reviewed-node files agree, that
 runtime-facing fields do not dereference ignored `tmp/` artifacts, that promoted
 moments point back to reviewed nodes, and that tracked drama data does not
 contain raw media or env files.
+
+`deadman_build_v04_authoring_proof.py` writes the tracked local v0.4 Studio
+authoring proof fixture at `data/evals/deadman_v0.4_authoring_proof.v0.1.json`.
+It uses the local mock provider contract harness and must not be described as a
+live external LLM/CAB provider run.
+
+`deadman_validate_v04_authoring_proof.py` validates that proof fixture, including
+EP03 smoke, one EP04 non-gold authoring proof run, schema/conformance results,
+human review notes, published reviewed-pack refs, and absence of local absolute
+paths.
 
 `deadman_print_recording_urls.py` prints local Vite URLs for demo recording from
 producer-only media registry metadata. It keeps the local `@fs` video URL in
@@ -73,7 +96,7 @@ python3 tools/ars/deadman_build_drama_context.py \
   --drama-id huangnian \
   --reviewed-demo-nodes tmp/ars_huangnian_analysis/review/huangnian_demo_nodes.v0.1.json \
   --reviewed-candidates tmp/ars_huangnian_analysis/review/huangnian_candidates.reviewed.v0.1.json \
-  --summaries docs/Byte_AI_Allowed_Drama_Summaries_2026-05-23.md \
+  --summaries docs/archive/source-context/Byte_AI_Allowed_Drama_Summaries_2026-05-23.md \
   --out-dir tmp/ars_huangnian_analysis/drama_context \
   --promote \
   --promote-dir data/dramas/huangnian
@@ -84,8 +107,11 @@ python3 tools/ars/deadman_validate_producer_bridge.py \
   --drama-dir data/dramas/huangnian \
   --report tmp/ars_huangnian_analysis/producer_bridge_validation_report.md
 
+python3 tools/ars/deadman_build_v04_authoring_proof.py
+python3 tools/ars/deadman_validate_v04_authoring_proof.py
+
 python3 tools/ars/deadman_print_recording_urls.py \
-  --episode-id huangnian_ep12
+  --episode-id huangnian_ep03
 ```
 
 The validator is the handoff checkpoint. If it fails, do not claim the runtime

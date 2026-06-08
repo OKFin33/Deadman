@@ -10,6 +10,7 @@
 .idea/
 __pycache__/
 *.py[cod]
+.venv/
 .pytest_cache/
 .ruff_cache/
 
@@ -65,3 +66,11 @@ frontend/android/**/build/
 frontend/android/.gradle/
 frontend/android/local.properties
 frontend/android/app/src/main/assets/public/
+
+# Internal dev docs / process — kept local, not part of the public product repo
+/CLAUDE.md
+/REPO_STRUCTURE.md
+/PUBLICATION_REVIEW.md
+/docs/
+/data/evals/
+/data/review/

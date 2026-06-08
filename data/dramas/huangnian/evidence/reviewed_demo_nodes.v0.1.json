@@ -6,50 +6,74 @@
   "demo_nodes": [
     {
       "moment_id": "huangnian_ep03_m001",
-      "candidate_id": "huangnian_ep03_c001",
+      "candidate_id": "huangnian_ep03_c003",
       "review_status": "demo_candidate",
-      "corrected_trigger_type": "system_rule",
+      "corrected_trigger_type": "resource_crisis",
       "source_window": {
-        "start_ms": 0,
-        "end_ms": 20000,
+        "start_ms": 20000,
+        "end_ms": 40000,
         "transcript_refs": [
           {
             "id": "huangnian_ep03_u001",
             "episode_id": "huangnian_ep03",
-            "start_ms": 230,
-            "end_ms": 6830,
-            "text": "天然无污染野蕨菜一斤价值十文钱，是否售卖？呵，这是系统？",
+            "start_ms": 19270,
+            "end_ms": 21750,
+            "text": "啊，这野菜坏了，我拿出去扔了。娘！",
             "source": "sanitized_asr_snippet"
           },
           {
             "id": "huangnian_ep03_u002",
             "episode_id": "huangnian_ep03",
-            "start_ms": 11710,
-            "end_ms": 13750,
-            "text": "娘，您在灶台干什么？",
+            "start_ms": 22740,
+            "end_ms": 24060,
+            "text": "你是不是又要去大舅家？",
             "source": "sanitized_asr_snippet"
           },
           {
             "id": "huangnian_ep03_u003",
             "episode_id": "huangnian_ep03",
-            "start_ms": 14150,
-            "end_ms": 18830,
-            "text": "这个面板只有我能看见，我得找个地方试验一下系统的功能。",
+            "start_ms": 24660,
+            "end_ms": 33420,
+            "text": "这些野菜是我跟弟弟们挖了一天才挖来的，这已经是家里最后一点吃的了，再把这些送走，我们我们真的会饿死的。",
+            "source": "sanitized_asr_snippet"
+          },
+          {
+            "id": "huangnian_ep03_u004",
+            "episode_id": "huangnian_ep03",
+            "start_ms": 34890,
+            "end_ms": 35010,
+            "text": "娘！",
+            "source": "sanitized_asr_snippet"
+          },
+          {
+            "id": "huangnian_ep03_u005",
+            "episode_id": "huangnian_ep03",
+            "start_ms": 35170,
+            "end_ms": 35250,
+            "text": "娘！",
+            "source": "sanitized_asr_snippet"
+          },
+          {
+            "id": "huangnian_ep03_u006",
+            "episode_id": "huangnian_ep03",
+            "start_ms": 35570,
+            "end_ms": 39570,
+            "text": "这程弯弯的人设，未免也太深入人心了。",
             "source": "sanitized_asr_snippet"
           }
         ],
         "keyframe_refs": [
           {
-            "id": "huangnian_ep03_k001",
+            "id": "huangnian_ep03_k003",
             "episode_id": "huangnian_ep03",
-            "time_seconds": 0,
+            "time_seconds": 30,
             "description": "keyframe reference only; not psychological proof",
             "source": "sanitized_keyframe_ref"
           },
           {
-            "id": "huangnian_ep03_k002",
+            "id": "huangnian_ep03_k004",
             "episode_id": "huangnian_ep03",
-            "time_seconds": 10,
+            "time_seconds": 40,
             "description": "keyframe reference only; not psychological proof",
             "source": "sanitized_keyframe_ref"
           }
@@ -62,33 +86,34 @@
         },
         "provenance_status": "publish_safe_sanitized"
       },
-      "companion_hook": "野蕨菜能卖钱，系统面板要不要现在试？",
-      "viewer_impulse": "要是我来，想用系统能力快速改局面。",
+      "companion_hook": "最后一点野菜该不该再送大舅？",
+      "viewer_impulse": "要是我来，想替孩子把“别再把最后一口送走”说出来。",
       "default_options": [
-        "立刻售卖野蕨菜，先验证系统能不能救命",
-        "只卖一小部分，确认别人看不见面板",
-        "先不卖，离开灶台再单独测试系统"
+        "直接告诉孩子，这点野菜先留在家里",
+        "先安孩子，别让他们再怕这口吃的",
+        "大舅那边先停，家里这顿饭要保住"
       ],
       "canon_baseline_reviewed": {
-        "original_action": "原剧情先试探系统规则，再逐步使用。",
-        "original_rationale": "系统收益高，但解释成本和暴露风险也高。",
-        "audience_tension": "观众会想马上用系统开挂。",
+        "original_action": "孩子拦住程弯弯处理野菜，点破她是不是又要去大舅家。",
+        "original_rationale": "这段先建立旧人设给家里留下的资源外流预期，让主角意识到孩子为什么害怕。",
+        "audience_tension": "观众会想替孩子喊停，不让最后一点吃的继续被送走。",
         "review_note": "只回答当前局面可信后果，不承诺后续剧集分支。"
       },
-      "original_plot_note_reviewed": "原剧情先试探系统功能，保住系统只对主角可见的规则。",
+      "original_plot_note_reviewed": "原剧情通过孩子拦野菜和旁白，说明程弯弯旧人设让家里人默认她会优先补贴大舅家。",
       "evidence": {
-        "grade": "high",
-        "notes": "ASR 明确系统售卖和面板；contact sheet ep03 00:10-00:20 有系统商城/面板视觉。视觉证据支持系统 UI 出现。",
-        "excerpt": "天然无污染野蕨菜一斤价值十文钱，是否售卖？呵，这是系统？娘，您在灶台干什么？这个面板只有我能看见，我得找个地方试验一下系统的功能。"
+        "grade": "medium",
+        "notes": "ASR 明确孩子拦住野菜、点出又要送大舅家，并说这是家里最后一点吃的；38 秒旁白点明程弯弯人设深入人心。视觉证据只做时间上下文。",
+        "excerpt": "啊，这野菜坏了，我拿出去扔了。娘！你是不是又要去大舅家？这些野菜是我跟弟弟们挖了一天才挖来的，这已经是家里最后一点吃的了，再把这些送走，我们我们真的会饿死的。娘！娘！这程弯弯的人设，未免也太深入人心了。"
       },
       "required_pack_fields": [
-        "system_rule.first_use",
-        "hidden_power_visibility",
-        "world_explanation_cost",
-        "custom_action_policy.no_public_panel"
+        "resource_scarcity.last_food",
+        "relationship_pressure.natal_family_boundary",
+        "children_food_anxiety",
+        "custom_action_policy.local_only"
       ],
-      "evidence_vs_inference": "source_window and excerpt are evidence; hook/options/local consequences are reviewed product inference constrained by evidence.",
-      "producer_ref": "tmp review artifact; see runtime moment producer_refs for local-only provenance"
+      "evidence_vs_inference": "source_window and excerpt are evidence; companion_lead/replies/local consequences are reviewed product inference constrained by evidence.",
+      "producer_ref": "tmp review artifact; see runtime moment producer_refs for local-only provenance",
+      "companion_lead": "原主的人设有点离谱😂"
     },
     {
       "moment_id": "huangnian_ep04_m001",

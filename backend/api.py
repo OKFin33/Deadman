@@ -30,7 +30,7 @@ from .runtime_client import CabRuntimeWorkerConfig, RuntimeClientError
 from .runtime_models import RuntimeEventRequest, RuntimeEventResponse
 
 LOCAL_VITE_ORIGIN_REGEX = r"^http://(localhost|127\.0\.0\.1):51\d{2}$"
-REPO_ROOT = Path(__file__).resolve().parents[2]
+REPO_ROOT = Path(__file__).resolve().parents[1]
 LOCAL_MEDIA_ROOT = REPO_ROOT / "tmp"
 DEFAULT_JUDGMENT_ENGINE = "cab_runtime"
 
@@ -48,7 +48,7 @@ def _get_companion_runtime(app: FastAPI) -> CompanionRuntime:
 
 
 def create_app(store: DeadmanPackStore | None = None, judgment_service: Any | None = None) -> FastAPI:
-    app = FastAPI(title="Deadman Branch 3 API", version="0.1.0")
+    app = FastAPI(title="Deadman Companion API", version="0.1.0")
     app.add_middleware(
         CORSMiddleware,
         allow_origins=[
@@ -337,6 +337,8 @@ def _moment_summary(moment: dict[str, object]) -> MomentSummary:
     optional_modules = moment.get("optional_modules", {})
     if not isinstance(optional_modules, dict):
         optional_modules = {}
+    companion_exchange = _companion_exchange(moment)
+    reply_candidates = _reply_candidates(moment, action_space, companion_exchange)
     return MomentSummary(
         moment_id=str(moment.get("moment_id") or moment.get("pack_id") or ""),
         drama_id=str(moment.get("drama_id", "")),
@@ -345,12 +347,37 @@ def _moment_summary(moment: dict[str, object]) -> MomentSummary:
         interaction_window=cast(dict[str, object], moment.get("interaction_window", {}) or {}),
         notice_marker=cast(str | None, companion.get("notice_marker")),
         hook=cast(str | None, companion.get("hook")),
+        companion_lead=cast(str | None, companion.get("companion_lead")),
         viewer_impulse=cast(str | None, companion.get("viewer_impulse")),
         action_type=cast(str | None, action_space.get("action_type")),
         default_options=[str(option) for option in action_space.get("default_options", [])],
+        companion_exchange=cast(Any, companion_exchange),
+        mouthpiece_candidates_schema_version=cast(
+            str | None,
+            action_space.get("mouthpiece_candidates_schema_version") or ("mouthpiece_candidates.v0.1" if reply_candidates else None),
+        ),
+        mouthpiece_candidates=cast(list[Any], reply_candidates),
         result_media=cast(dict[str, object], moment.get("result_media", {}) or {}),
         original_plot_note=cast(str | None, moment.get("original_plot_note")),
         evidence_grade=cast(str | None, review_state.get("evidence_grade")),
         score_axes=cast(dict[str, object], moment.get("score_axes", {}) or {}),
         optional_module_keys=sorted(str(key) for key in optional_modules.keys()),
     )
+
+
+def _companion_exchange(moment: dict[str, object]) -> dict[str, Any] | None:
+    exchange = moment.get("companion_exchange")
+    return cast(dict[str, Any], exchange) if isinstance(exchange, dict) else None
+
+
+def _reply_candidates(
+    moment: dict[str, object],
+    action_space: dict[str, Any],
+    companion_exchange: dict[str, Any] | None,
+) -> list[dict[str, Any]]:
+    if companion_exchange and isinstance(companion_exchange.get("reply_candidates"), list):
+        return [item for item in companion_exchange["reply_candidates"] if isinstance(item, dict)]
+    candidates = action_space.get("mouthpiece_candidates")
+    if isinstance(candidates, list):
+        return [item for item in candidates if isinstance(item, dict)]
+    return []
