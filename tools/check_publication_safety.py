@@ -129,6 +129,8 @@ def main() -> int:
             errors.append(f"forbidden tracked secret file: {rel}")
         if not is_binary_or_large(path):
             text = path.read_text(encoding="utf-8", errors="ignore")
+            if rel.name == "media_registry.v0.1.json" and "local_media_path" in text:
+                errors.append(f"producer local_media_path in tracked registry: {rel} (move to gitignored media_local.v0.1.json sidecar)")
             for pattern in SECRET_PATTERNS:
                 if pattern.search(text):
                     errors.append(f"possible secret literal in {rel}: {pattern.pattern}")

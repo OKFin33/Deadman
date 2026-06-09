@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import copy
+import json
 import os
 from pathlib import Path
 from typing import Any, cast
@@ -25,7 +26,7 @@ from .models import (
     JudgmentResponse,
     MomentSummary,
 )
-from .pack_store import DeadmanPackStore, PackStoreError
+from .pack_store import DeadmanPackStore, DramaPack, PackStoreError
 from .runtime_client import CabRuntimeWorkerConfig, RuntimeClientError
 from .runtime_models import RuntimeEventRequest, RuntimeEventResponse
 
@@ -155,7 +156,10 @@ def create_app(store: DeadmanPackStore | None = None, judgment_service: Any | No
         producer_media = episode.get("producer_media", {})
         if not isinstance(producer_media, dict):
             producer_media = {}
-        local_media_path = str(producer_media.get("local_media_path") or "")
+        # Local producer media path comes from a gitignored sidecar (media_local.v0.1.json) so the
+        # public-source-candidate registry carries no producer filesystem layout; the rolling
+        # sandbox drama (no sidecar) falls back to its own registry path.
+        local_media_path = _sidecar_media_path(pack, episode_id) or str(producer_media.get("local_media_path") or "")
         media_path = _safe_local_media_path(local_media_path)
         if media_path is None or not media_path.exists():
             raise PackStoreError(
@@ -231,6 +235,19 @@ def _registry_episode(registry: dict[str, Any], episode_id: str) -> dict[str, An
         if isinstance(episode, dict) and episode.get("episode_id") == episode_id:
             return episode
     return None
+
+
+def _sidecar_media_path(pack: DramaPack, episode_id: str) -> str:
+    """Read the gitignored per-drama media_local.v0.1.json (episode_id → local path), if present."""
+    sidecar = pack.root / "media_local.v0.1.json"
+    if not sidecar.exists():
+        return ""
+    try:
+        data = json.loads(sidecar.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return ""
+    episodes = data.get("episodes") if isinstance(data, dict) else None
+    return str(episodes.get(episode_id) or "") if isinstance(episodes, dict) else ""
 
 
 def _safe_local_media_path(local_media_path: str) -> Path | None:

@@ -262,7 +262,13 @@ def assemble_proof_report(
         ),
         "provider_identity_redacted": {
             "provider": provider_name,
-            "model_alias": provider_model,
+            # Redact a raw ARK endpoint id (ep-...) to the public model-family alias —
+            # proof artifacts must never embed the real endpoint id (it lives only in .env).
+            "model_alias": (
+                "doubao-seed-2.0-lite"
+                if (not provider_model or str(provider_model).lower().startswith("ep-"))
+                else provider_model
+            ),
             "mock_provider": bool(provider_mock),
         },
         "guidance_dataset_ref": {

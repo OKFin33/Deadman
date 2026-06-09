@@ -20,10 +20,15 @@ import argparse
 import copy
 import json
 import re
+import sys
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
 HN = REPO / "data" / "dramas" / "huangnian"
+
+# Sibling module: backfill the judgment fields so promoted moments survive the runtime adapter.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from deadman_backfill_judgment_fields import backfill_moment  # noqa: E402
 
 # Neutral, drama-agnostic placeholder stances: (display_text, action_text, semantic_role, emotion_role, echo)
 NEUTRAL_STANCES = [
@@ -182,10 +187,16 @@ def main() -> int:
             "transcript_snippets": m["source_window"]["transcript_refs"], "keyframe_refs": [],
         }
         m["producer_refs"] = {"policy": "light promote; producer evidence under ignored tmp/ars_<drama>_analysis; runtime refs sanitized"}
+        # Strip the template's drama-specific judgment fields, then backfill neutral-but-valid
+        # equivalents (NOT huangnian's values) so the runtime judgment adapter runs cleanly.
+        # The viewer surface for a preset tap is the authored echo, so the computed verdict is
+        # internal; these fields only need to be valid, not genre-tuned. See
+        # deadman_backfill_judgment_fields for the full rationale.
         for k in ("optional_modules", "required_pack_fields", "actor_context", "local_constraints",
                   "canon_baseline", "result_media", "judgment_policy", "outcome_response_contract",
                   "visual_result_policy", "score_axes", "producer_review_fields"):
             m.pop(k, None)
+        backfill_moment(m, base_moment)
         moments.append(m)
 
         nodes.append({

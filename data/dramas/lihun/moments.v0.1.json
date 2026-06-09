@@ -25,8 +25,8 @@
         "media_registry_ref": "data/dramas/lihun/media_registry.v0.1.json#lihun_ep06"
       },
       "source_window": {
-        "start_ms": 0,
-        "end_ms": 20000,
+        "start_ms": 20000,
+        "end_ms": 40000,
         "transcript_refs": [
           {
             "id": "lihun_ep06_m001_u001",
@@ -175,9 +175,9 @@
         "keyframe_refs": []
       },
       "interaction_window": {
-        "notice_at_seconds": 0,
-        "start_seconds": 0,
-        "end_seconds": 20,
+        "notice_at_seconds": 20,
+        "start_seconds": 20,
+        "end_seconds": 40,
         "source": "reviewed_ars",
         "confidence": "medium",
         "pause_policy": "pause_on_invite",
@@ -306,7 +306,98 @@
         "review_status": "reviewed",
         "content_status": "cab_authored_owner_reviewed"
       },
-      "title": "幸得相遇离婚时"
+      "title": "幸得相遇离婚时",
+      "outcome_response_contract": {
+        "format": "short local consequence + why original plot still remains watchable",
+        "time_horizon": "current scene or immediate aftermath",
+        "include_original_plot_note": true
+      },
+      "judgment_policy": {
+        "must_consider": [
+          "source_window evidence",
+          "drama_context_ref global constraints",
+          "scene-local watch_flow_fit",
+          "resource/secrecy/family/public pressure where applicable"
+        ],
+        "must_not_claim": [
+          "later episodes actually follow this branch",
+          "facts not present in source evidence",
+          "unbounded system or power escalation"
+        ]
+      },
+      "visual_result_policy": {
+        "allowed": "result card or still prompt only when object/person is evidenced",
+        "keyframe_ref_quality": "medium",
+        "visual_evidence": "high"
+      },
+      "optional_modules": {},
+      "canon_baseline": {
+        "original_action": "原剧情按当前场景自然推进，没有替观众把话说满。",
+        "original_rationale": "这一拍的张力靠场面本身，不需要额外动作改写。",
+        "audience_tension": "他们居然敢打这种恶毒主意",
+        "original_plot_note": "原剧情按当前场景推进；互动只接当下这一口气。"
+      },
+      "actor_context": {
+        "pov_actor": "主角",
+        "directly_affected_actors": [],
+        "relationship_context": "他们居然敢打这种恶毒主意",
+        "local_emotional_pressure": "他们居然敢打这种恶毒主意"
+      },
+      "local_constraints": {
+        "known_facts": [
+          "呐，里面的药我已经换过了，给你老婆吃。这是什么？你不就是因为她现在怀孕了，所以才不忍心跟她离婚吗？嗯，只要她孩子没了，那不就好了？",
+          "呐，里面的药我已经换过了，给你老婆吃。这是什么？你不就是因为她现在怀孕了，所以才不忍心跟她离婚吗？嗯，只要她孩子没了，那不就好了？"
+        ],
+        "unknown_or_hidden_facts": [
+          "later-episode branch outcomes",
+          "facts outside this window"
+        ],
+        "risk_notes": [],
+        "hard_constraints": [
+          "current_scene_only"
+        ]
+      },
+      "score_axes": {
+        "emotion_heat": 80,
+        "choice_leverage": 58,
+        "causal_clarity": 70,
+        "world_constraint_value": 68,
+        "watch_flow_fit": 80,
+        "visual_result_fit": 50
+      },
+      "result_media": {
+        "preset_options": [
+          {
+            "option_index": 0,
+            "status": "placeholder",
+            "image_url": "",
+            "prompt": "lihun_ep06_m001 option 0: 这也太歹毒了吧",
+            "source": "manual_placeholder",
+            "fallback_text": "P0 result image slot reserved; render text consequence when no image is available."
+          },
+          {
+            "option_index": 1,
+            "status": "placeholder",
+            "image_url": "",
+            "prompt": "lihun_ep06_m001 option 1: 绝对不能让他们得逞啊",
+            "source": "manual_placeholder",
+            "fallback_text": "P0 result image slot reserved; render text consequence when no image is available."
+          },
+          {
+            "option_index": 2,
+            "status": "placeholder",
+            "image_url": "",
+            "prompt": "lihun_ep06_m001 option 2: 看得人心里直发毛",
+            "source": "manual_placeholder",
+            "fallback_text": "P0 result image slot reserved; render text consequence when no image is available."
+          }
+        ],
+        "custom_action": {
+          "status": "not_requested",
+          "mode": "realtime_generate_or_text_only_fallback",
+          "timeout_ms": 8000
+        }
+      }
     },
     {
       "pack_id": "lihun_ep12_m001",
@@ -607,7 +698,98 @@
         "review_status": "reviewed",
         "content_status": "cab_authored_owner_reviewed"
       },
-      "title": "幸得相遇离婚时"
+      "title": "幸得相遇离婚时",
+      "outcome_response_contract": {
+        "format": "short local consequence + why original plot still remains watchable",
+        "time_horizon": "current scene or immediate aftermath",
+        "include_original_plot_note": true
+      },
+      "judgment_policy": {
+        "must_consider": [
+          "source_window evidence",
+          "drama_context_ref global constraints",
+          "scene-local watch_flow_fit",
+          "resource/secrecy/family/public pressure where applicable"
+        ],
+        "must_not_claim": [
+          "later episodes actually follow this branch",
+          "facts not present in source evidence",
+          "unbounded system or power escalation"
+        ]
+      },
+      "visual_result_policy": {
+        "allowed": "result card or still prompt only when object/person is evidenced",
+        "keyframe_ref_quality": "medium",
+        "visual_evidence": "high"
+      },
+      "optional_modules": {},
+      "canon_baseline": {
+        "original_action": "原剧情按当前场景自然推进，没有替观众把话说满。",
+        "original_rationale": "这一拍的张力靠场面本身，不需要额外动作改写。",
+        "audience_tension": "这摆明了是故意害她",
+        "original_plot_note": "原剧情按当前场景推进；互动只接当下这一口气。"
+      },
+      "actor_context": {
+        "pov_actor": "主角",
+        "directly_affected_actors": [],
+        "relationship_context": "这摆明了是故意害她",
+        "local_emotional_pressure": "这摆明了是故意害她"
+      },
+      "local_constraints": {
+        "known_facts": [
+          "毒药。不只是孩子。所以我肚子疼。不是偶然。",
+          "毒药。不只是孩子。所以我肚子疼。不是偶然。"
+        ],
+        "unknown_or_hidden_facts": [
+          "later-episode branch outcomes",
+          "facts outside this window"
+        ],
+        "risk_notes": [],
+        "hard_constraints": [
+          "current_scene_only"
+        ]
+      },
+      "score_axes": {
+        "emotion_heat": 80,
+        "choice_leverage": 58,
+        "causal_clarity": 70,
+        "world_constraint_value": 68,
+        "watch_flow_fit": 80,
+        "visual_result_fit": 50
+      },
+      "result_media": {
+        "preset_options": [
+          {
+            "option_index": 0,
+            "status": "placeholder",
+            "image_url": "",
+            "prompt": "lihun_ep12_m001 option 0: 这人也太恶毒了",
+            "source": "manual_placeholder",
+            "fallback_text": "P0 result image slot reserved; render text consequence when no image is available."
+          },
+          {
+            "option_index": 1,
+            "status": "placeholder",
+            "image_url": "",
+            "prompt": "lihun_ep12_m001 option 1: 之前肚子疼果然不是巧合",
+            "source": "manual_placeholder",
+            "fallback_text": "P0 result image slot reserved; render text consequence when no image is available."
+          },
+          {
+            "option_index": 2,
+            "status": "placeholder",
+            "image_url": "",
+            "prompt": "lihun_ep12_m001 option 2: 女主实在太委屈了",
+            "source": "manual_placeholder",
+            "fallback_text": "P0 result image slot reserved; render text consequence when no image is available."
+          }
+        ],
+        "custom_action": {
+          "status": "not_requested",
+          "mode": "realtime_generate_or_text_only_fallback",
+          "timeout_ms": 8000
+        }
+      }
     },
     {
       "pack_id": "lihun_ep19_m001",
@@ -902,7 +1084,98 @@
         "review_status": "reviewed",
         "content_status": "placeholder_pending_cab"
       },
-      "title": "幸得相遇离婚时"
+      "title": "幸得相遇离婚时",
+      "outcome_response_contract": {
+        "format": "short local consequence + why original plot still remains watchable",
+        "time_horizon": "current scene or immediate aftermath",
+        "include_original_plot_note": true
+      },
+      "judgment_policy": {
+        "must_consider": [
+          "source_window evidence",
+          "drama_context_ref global constraints",
+          "scene-local watch_flow_fit",
+          "resource/secrecy/family/public pressure where applicable"
+        ],
+        "must_not_claim": [
+          "later episodes actually follow this branch",
+          "facts not present in source evidence",
+          "unbounded system or power escalation"
+        ]
+      },
+      "visual_result_policy": {
+        "allowed": "result card or still prompt only when object/person is evidenced",
+        "keyframe_ref_quality": "medium",
+        "visual_evidence": "high"
+      },
+      "optional_modules": {},
+      "canon_baseline": {
+        "original_action": "原剧情按当前场景自然推进，没有替观众把话说满。",
+        "original_rationale": "这一拍的张力靠场面本身，不需要额外动作改写。",
+        "audience_tension": "这笔账要不要现在摊开算？",
+        "original_plot_note": "原剧情按当前场景推进；互动只接当下这一口气。"
+      },
+      "actor_context": {
+        "pov_actor": "主角",
+        "directly_affected_actors": [],
+        "relationship_context": "这笔账要不要现在摊开算？",
+        "local_emotional_pressure": "这一下我有点想替他说一句。"
+      },
+      "local_constraints": {
+        "known_facts": [
+          "只能偷偷地你这算骚扰。",
+          "只能偷偷地你这算骚扰。"
+        ],
+        "unknown_or_hidden_facts": [
+          "later-episode branch outcomes",
+          "facts outside this window"
+        ],
+        "risk_notes": [],
+        "hard_constraints": [
+          "current_scene_only"
+        ]
+      },
+      "score_axes": {
+        "emotion_heat": 80,
+        "choice_leverage": 58,
+        "causal_clarity": 70,
+        "world_constraint_value": 68,
+        "watch_flow_fit": 80,
+        "visual_result_fit": 50
+      },
+      "result_media": {
+        "preset_options": [
+          {
+            "option_index": 0,
+            "status": "placeholder",
+            "image_url": "",
+            "prompt": "lihun_ep19_m001 option 0: 想替他接一句",
+            "source": "manual_placeholder",
+            "fallback_text": "P0 result image slot reserved; render text consequence when no image is available."
+          },
+          {
+            "option_index": 1,
+            "status": "placeholder",
+            "image_url": "",
+            "prompt": "lihun_ep19_m001 option 1: 这事得有人吭声",
+            "source": "manual_placeholder",
+            "fallback_text": "P0 result image slot reserved; render text consequence when no image is available."
+          },
+          {
+            "option_index": 2,
+            "status": "placeholder",
+            "image_url": "",
+            "prompt": "lihun_ep19_m001 option 2: 先稳一下别急",
+            "source": "manual_placeholder",
+            "fallback_text": "P0 result image slot reserved; render text consequence when no image is available."
+          }
+        ],
+        "custom_action": {
+          "status": "not_requested",
+          "mode": "realtime_generate_or_text_only_fallback",
+          "timeout_ms": 8000
+        }
+      }
     }
   ]
 }

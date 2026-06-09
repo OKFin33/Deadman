@@ -193,7 +193,11 @@ function getConfiguredEpisodeId(): string {
   return searchParams.get("episodeId")?.trim() || searchParams.get("branch3_episode")?.trim() || DEFAULT_EPISODE_ID;
 }
 
-export function Branch3PlayerDemo() {
+export function Branch3PlayerDemo({
+  dramaId = DRAMA_ID,
+  startSeconds = 0,
+  onBack,
+}: { dramaId?: string; startSeconds?: number; onBack?: () => void } = {}) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const bubbleRef = useRef<HTMLElement | null>(null);
   const notifiedMarkersRef = useRef(new Set<string>());
@@ -246,7 +250,7 @@ export function Branch3PlayerDemo() {
 
   useEffect(() => {
     const controller = new AbortController();
-    listDramaMoments(DRAMA_ID, { signal: controller.signal })
+    listDramaMoments(dramaId, { signal: controller.signal })
       .then((summaries) => {
         const hydratedMarkers = mapMomentSummariesToMarkers(summaries);
         if (hydratedMarkers.length === 0) {
@@ -305,12 +309,31 @@ export function Branch3PlayerDemo() {
     sendCompanionEvent({ type: "RESET" });
   }, [allMarkers, initialVideoUrl, selectedEpisodeId, sendCompanionEvent]);
 
+  // One-time seek to the highlight the Stage list handed us (optional; 0 = normal start).
+  const didInitialSeekRef = useRef(false);
+  useEffect(() => {
+    if (didInitialSeekRef.current || !startSeconds || startSeconds <= 0) return;
+    const video = videoRef.current;
+    if (!video) return;
+    const seek = () => {
+      try {
+        video.currentTime = startSeconds;
+      } catch {
+        // Media APIs are optional in some test/browser shells.
+      }
+      setCurrentTime(startSeconds);
+      didInitialSeekRef.current = true;
+    };
+    if (video.readyState >= 1) seek();
+    else video.addEventListener("loadedmetadata", seek, { once: true });
+  }, [startSeconds]);
+
   useEffect(() => {
     void sendRuntimeEvent({
       viewer_session_id: viewerSessionIdRef.current,
       event_id: createRuntimeEventId(),
       event_type: "session_start",
-      drama_id: DRAMA_ID,
+      drama_id: dramaId,
       episode_id: activeMarker.episodeId,
       playback_time_seconds: currentTime,
       moment_id: activeMarker.momentId,
@@ -347,7 +370,7 @@ export function Branch3PlayerDemo() {
       viewer_session_id: viewerSessionIdRef.current,
       event_id: createRuntimeEventId(),
       event_type: "moment_notice",
-      drama_id: DRAMA_ID,
+      drama_id: dramaId,
       episode_id: marker.episodeId,
       playback_time_seconds: marker.timeSeconds,
       moment_id: marker.momentId,
@@ -505,7 +528,7 @@ export function Branch3PlayerDemo() {
         viewer_session_id: viewerSessionIdRef.current,
         event_id: eventId,
         event_type: "user_action",
-        drama_id: DRAMA_ID,
+        drama_id: dramaId,
         episode_id: activeMarker.episodeId,
         playback_time_seconds: currentTime,
         moment_id: activeMarker.momentId,
@@ -531,7 +554,7 @@ export function Branch3PlayerDemo() {
       viewer_session_id: viewerSessionIdRef.current,
       event_id: createRuntimeEventId(),
       event_type: "continue_watching",
-      drama_id: DRAMA_ID,
+      drama_id: dramaId,
       episode_id: activeMarker.episodeId,
       playback_time_seconds: currentTime,
       moment_id: activeMarker.momentId,
@@ -558,7 +581,7 @@ export function Branch3PlayerDemo() {
       viewer_session_id: viewerSessionIdRef.current,
       event_id: createRuntimeEventId(),
       event_type: "companion_tap",
-      drama_id: DRAMA_ID,
+      drama_id: dramaId,
       episode_id: marker.episodeId,
       playback_time_seconds: currentTime,
       moment_id: marker.momentId,
@@ -580,7 +603,7 @@ export function Branch3PlayerDemo() {
         viewer_session_id: viewerSessionIdRef.current,
         event_id: retryContext.eventId,
         event_type: "runtime_retry",
-        drama_id: DRAMA_ID,
+        drama_id: dramaId,
         episode_id: retryContext.marker.episodeId,
         playback_time_seconds: currentTime,
         moment_id: retryContext.marker.momentId,
@@ -666,9 +689,21 @@ export function Branch3PlayerDemo() {
         </div>
 
         <header className="branch3-player__topbar">
-          <div>
-            <p>看剧搭子 · 在场</p>
-            <strong>{activeMarker.episodeTitle || DRAMA_TITLE}</strong>
+          <div className="branch3-player__topbar-left">
+            {onBack ? (
+              <button
+                aria-label="返回短剧目录"
+                className="branch3-player__back"
+                onClick={onBack}
+                type="button"
+              >
+                ‹
+              </button>
+            ) : null}
+            <div>
+              <p>看剧搭子 · 在场</p>
+              <strong>{activeMarker.episodeTitle || DRAMA_TITLE}</strong>
+            </div>
           </div>
           <button
             aria-controls="branch3-episode-picker"
@@ -964,7 +999,8 @@ function buildStampTextForStance(stance: DeadmanJudgmentResponse["verdict"]["sta
 
 function formatEpisodeLabel(episodeId: string): string {
   const match = episodeId.match(/ep(\d+)/i);
-  return match ? `EP${String(Number(match[1])).padStart(2, "0")}` : "EP12";
+  if (match) return `EP${String(Number(match[1])).padStart(2, "0")}`;
+  return episodeId.startsWith("up_") ? "样片" : "本集"; // uploaded sample / unnumbered episode
 }
 
 function formatTime(totalSeconds: number): string {

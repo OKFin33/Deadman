@@ -51,6 +51,11 @@ class DeadmanPackStore:
             self._packs = self._load_all()
         return self._packs
 
+    def reset(self) -> None:
+        """Drop the in-memory cache so a newly written/promoted drama dir is picked up
+        on the next request (used by the Studio console's live promote-to-sandbox)."""
+        self._packs = None
+
     def list_drama_ids(self) -> list[str]:
         return sorted(self.load().keys())
 
@@ -101,6 +106,8 @@ class DeadmanPackStore:
                 str(moment.get("moment_id") or moment.get("pack_id")): moment
                 for moment in moments
                 if isinstance(moment, dict) and (moment.get("moment_id") or moment.get("pack_id"))
+                # placeholder moments are not yet CAB-authored/reviewed — never serve them at runtime
+                and (moment.get("companion_exchange") or {}).get("content_status") != "placeholder_pending_cab"
             }
             packs[drama_id] = DramaPack(
                 drama_id=drama_id,
@@ -126,9 +133,11 @@ class DeadmanPackStore:
             ) from exc
 
     def _catalog_item(self, pack: DramaPack) -> dict[str, Any]:
+        cover = pack.manifest.get("cover_image_url") or pack.context.get("cover_image_url")
         return {
             "drama_id": pack.drama_id,
             "title": pack.title,
+            "cover_image_url": cover,
             "schema_version": str(pack.context.get("schema_version", "")),
             "manifest_schema_version": str(pack.manifest.get("schema_version", "")),
             "moment_count": len(pack.moments_by_id),

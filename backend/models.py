@@ -29,6 +29,7 @@ class HealthResponse(BaseModel):
 class DramaCatalogItem(BaseModel):
     drama_id: str
     title: str
+    cover_image_url: str | None = None
     schema_version: str
     manifest_schema_version: str
     moment_count: int

@@ -1,0 +1,337 @@
+/* =============================================================================
+ * stage.css — Surface 1 · Stage list (Direction B · 海报架)
+ * Tokens are lifted verbatim from frontend/src/player/Branch3PlayerDemo.css so
+ * the list and the player share one palette. Mobile-first; no device frame.
+ * ===========================================================================*/
+
+.deadman-stage {
+  --ink-0: #0c0a09;
+  --ink-1: #151110;
+  --ink-2: #1f1916;
+  --cream: #fff2df;
+  --cream-dim: #c8b6a3;
+  --cream-faint: #8d7c6e;
+  --tomato: #e7472b;
+  --coral: #ff6f4d;
+  --amber: #ffb259;
+  --line: rgba(255, 224, 190, 0.14);
+  --line-strong: rgba(255, 224, 190, 0.26);
+  --glass: rgba(28, 21, 18, 0.74);
+  --font-sans: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  --font-serif: "Noto Serif SC", "Songti SC", "STSong", serif;
+  --font-mono: ui-monospace, "SF Mono", monospace;
+
+  position: relative;
+  min-height: 100dvh;
+  overflow: hidden;
+  background: var(--ink-0);
+  color: var(--cream);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+.deadman-stage *,
+.deadman-stage *::before,
+.deadman-stage *::after { box-sizing: border-box; }
+
+.deadman-stage__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(110% 60% at 50% -8%, rgba(118, 40, 31, 0.4), transparent 42%),
+    linear-gradient(180deg, #171312 0%, #090807 72%);
+}
+
+/* brand bar */
+.deadman-stage__bar {
+  position: relative;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: max(18px, env(safe-area-inset-top)) 20px 14px;
+}
+.deadman-stage__brand p {
+  margin: 0;
+  color: var(--coral);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 2.5px;
+}
+.deadman-stage__brand h1 {
+  margin: 2px 0 0;
+  font-family: var(--font-serif);
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1;
+  color: #fff8ec;
+}
+.deadman-stage__tag {
+  display: inline-grid;
+  place-items: center;
+  min-height: 34px;
+  padding: 0 13px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: rgba(12, 10, 9, 0.55);
+  color: var(--cream-dim);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+/* scroll + pull */
+.deadman-stage__pull-wrap { position: relative; z-index: 2; }
+.deadman-stage__scroll {
+  position: relative;
+  height: calc(100dvh - 84px);
+  overflow-y: auto;
+  padding: 6px 16px calc(env(safe-area-inset-bottom) + 26px);
+  scrollbar-width: none;
+  touch-action: pan-y;
+}
+.deadman-stage__scroll::-webkit-scrollbar { display: none; }
+.deadman-stage__pull {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  height: 54px;
+  color: var(--cream-faint);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+.deadman-stage__spinner {
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  border: 2.5px solid rgba(255, 224, 190, 0.18);
+  border-top-color: var(--coral);
+  animation: deadman-spin 720ms linear infinite;
+}
+@keyframes deadman-spin { to { transform: rotate(360deg); } }
+
+.deadman-stage__section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 4px 2px 12px;
+}
+.deadman-stage__section b {
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 1.6px;
+  color: var(--cream-dim);
+  white-space: nowrap;
+}
+.deadman-stage__section span {
+  font-size: 11px;
+  color: var(--cream-faint);
+  white-space: nowrap;
+}
+
+.deadman-stage__cards { display: grid; gap: 13px; }
+
+/* intervention-point dots (echo the player's progress markers) */
+.deadman-stage__idots { display: inline-flex; align-items: center; gap: 4px; }
+.deadman-stage__idots i {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--tomato);
+  box-shadow: 0 0 6px rgba(231, 71, 43, 0.75);
+}
+
+/* ---------------------------------------- Direction B · poster card ------- */
+.deadman-stage__post {
+  position: relative;
+  display: grid;
+  grid-template-columns: 124px 1fr;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--ink-1);
+  cursor: pointer;
+  transition: transform 130ms ease, border-color 200ms ease;
+}
+.deadman-stage__post:hover { border-color: rgba(255, 111, 77, 0.5); }
+.deadman-stage__post:active { transform: scale(0.992); }
+
+.deadman-stage__post-cover { position: relative; height: 178px; background: var(--ink-2); }
+.deadman-stage__post-cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.deadman-stage__post-cover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 52%, rgba(21, 17, 16, 0.95));
+}
+.deadman-stage__cover-fallback {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  color: rgba(255, 224, 190, 0.3);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+.deadman-stage__post-genre {
+  position: absolute;
+  top: 9px;
+  left: 9px;
+  z-index: 2;
+  padding: 4px 8px;
+  border-radius: 7px;
+  background: rgba(9, 8, 7, 0.62);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  color: var(--cream);
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.deadman-stage__post-body {
+  position: relative;
+  display: grid;
+  align-content: space-between;
+  gap: 9px;
+  padding: 14px 14px 13px;
+}
+.deadman-stage__post-title {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.32;
+  color: #fff8ec;
+}
+.deadman-stage__post-hook {
+  margin: 4px 0 0;
+  font-family: var(--font-serif);
+  color: var(--cream-dim);
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+.deadman-stage__post-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.deadman-stage__moments {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  color: var(--cream-faint);
+  font-size: 11.5px;
+  font-weight: 600;
+}
+.deadman-stage__moments b { color: var(--amber); font-weight: 800; }
+.deadman-stage__post-enter {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 38px;
+  padding: 0 15px;
+  white-space: nowrap;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: rgba(255, 111, 77, 0.1);
+  color: var(--coral);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 900;
+  cursor: pointer;
+  transition: background 180ms ease, color 180ms ease, border-color 180ms ease;
+}
+.deadman-stage__post:hover .deadman-stage__post-enter {
+  background: linear-gradient(180deg, var(--coral), var(--tomato));
+  color: #fff;
+  border-color: transparent;
+}
+.deadman-stage__post-hl {
+  color: var(--cream-faint);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ------------------------------------------------------- skeleton --------- */
+.deadman-stage__post--skel { cursor: default; }
+.deadman-stage__post--skel:hover { border-color: var(--line); }
+.skel-line { height: 13px; border-radius: 7px; }
+.shimmer {
+  position: relative;
+  overflow: hidden;
+  background: rgba(255, 224, 190, 0.07);
+}
+.shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255, 224, 190, 0.12), transparent);
+  animation: deadman-sweep 1300ms ease-in-out infinite;
+}
+@keyframes deadman-sweep { 100% { transform: translateX(100%); } }
+
+/* ------------------------------------------------------ empty / error ----- */
+.deadman-stage__state {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 6px;
+  height: calc(100dvh - 84px);
+  padding: 0 40px 60px;
+  text-align: center;
+}
+.deadman-stage__mascot { width: 138px; height: auto; }
+.deadman-stage__mascot--peek { width: 96px; }
+.deadman-stage__state h3 {
+  margin: 12px 0 0;
+  font-family: var(--font-serif);
+  font-size: 19px;
+  font-weight: 700;
+  color: #fff8ec;
+}
+.deadman-stage__state p {
+  margin: 0;
+  max-width: 250px;
+  color: var(--cream-dim);
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+.deadman-stage__state-btn {
+  margin-top: 14px;
+  min-height: 46px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: 13px;
+  background: linear-gradient(180deg, var(--coral), var(--tomato));
+  color: #fff;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 8px 20px -8px rgba(231, 71, 43, 0.7);
+}
+.deadman-stage__state-code {
+  margin-top: 4px;
+  color: var(--cream-faint);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shimmer::after,
+  .deadman-stage__spinner { animation: none !important; }
+}

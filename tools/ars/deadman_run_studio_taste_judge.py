@@ -245,7 +245,12 @@ def build_taste_judge_report(
         ),
         "provider_identity_redacted": {
             "provider": getattr(provider, "name", "ark"),
-            "model_alias": provider.model,
+            # Redact a raw ARK endpoint id (ep-...) to the public model-family alias.
+            "model_alias": (
+                "doubao-seed-2.0-lite"
+                if (not provider.model or str(provider.model).lower().startswith("ep-"))
+                else provider.model
+            ),
             "mock_provider": False,
             "role": "taste_judge",
         },

@@ -158,6 +158,32 @@ body {
   margin: 0;
 }
 
+.branch3-player__topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-width: 0;
+}
+
+.branch3-player__back {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(20, 16, 14, 0.5);
+  backdrop-filter: blur(8px);
+  color: var(--cream);
+  font-size: 23px;
+  line-height: 1;
+  padding-bottom: 3px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+.branch3-player__back:hover {
+  background: rgba(20, 16, 14, 0.72);
+}
+
 .branch3-player__topbar > div {
   min-width: 0;
 }

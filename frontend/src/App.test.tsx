@@ -425,14 +425,26 @@ describe("Deadman standalone app", () => {
     vi.unstubAllGlobals();
   });
 
-  it("opens on a mobile drama catalog and enters the 陪看 player", async () => {
+  it("opens on a mobile drama catalog (data-driven) and enters the 陪看 player", async () => {
     const user = userEvent.setup();
-    const fetchMock = stubMomentsFetch();
+    const fetchMock = vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+      const url = String(input);
+      if (url.endsWith("/api/deadman/dramas")) {
+        return jsonResponse([{ drama_id: "huangnian", title: "荒年全村啃树皮，我有系统满仓肉", moment_count: 5 }]);
+      }
+      if (url.endsWith("/api/deadman/dramas/huangnian/moments")) {
+        return jsonResponse([makeMomentSummary()]);
+      }
+      if (url.endsWith("/api/deadman/runtime/session/event")) {
+        return jsonResponse(makeRuntimeResponse(JSON.parse(String(init?.body || "{}"))));
+      }
+      throw new Error(`Unexpected request: ${url}`);
+    });
+    vi.stubGlobal("fetch", fetchMock);
     render(<App />);
 
-    expect(screen.getByRole("region", { name: "看剧搭子短剧目录" })).toBeInTheDocument();
-    expect(screen.getByAltText("番茄搭子荒年互动预览")).toBeInTheDocument();
-    await user.click(screen.getByRole("button", { name: "进入" }));
+    expect(screen.getByRole("main", { name: "看剧搭子短剧目录" })).toBeInTheDocument();
+    await user.click(await screen.findByRole("button", { name: "进入" }));
 
     expect(screen.getByRole("region", { name: "看剧搭子播放器" })).toBeInTheDocument();
     await waitFor(() => expect(fetchMock).toHaveBeenCalledWith("/api/deadman/dramas/huangnian/moments", expect.any(Object)));

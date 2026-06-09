@@ -1,55 +1,33 @@
 import { useMemo, useState } from "react";
 import { Branch3PlayerDemo } from "./player/Branch3PlayerDemo";
+import { StageList } from "./stage/StageList";
 import "./App.css";
 
-const PUBLIC_BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
-const CATALOG_THUMBNAIL_URL = `${PUBLIC_BASE}/assets/branch3/companion/tomato-robes/webp/runout.webp`;
-
+// App = the top-level screen switch. Surface 1 (StageList — Claude Design「海报架」) is
+// the catalog; selecting a card hands the real drama_id + current-highlight seek to the
+// player. ?branch3_player=1 (or ?deadman=1) opens the player directly for legacy/demo
+// URLs; ?dramaId=<slug> picks which drama that direct player loads.
 export default function App() {
-  const shouldOpenPlayerDirectly = useMemo(() => {
-    const searchParams = new URLSearchParams(window.location.search);
-    return searchParams.get("branch3_player") === "1" || searchParams.get("deadman") === "1";
-  }, []);
-  const [screen, setScreen] = useState<"catalog" | "player">(shouldOpenPlayerDirectly ? "player" : "catalog");
+  const params = useMemo(() => new URLSearchParams(window.location.search), []);
+  const directDrama = params.get("dramaId")?.trim() || "";
+  const openPlayerDirectly = params.get("branch3_player") === "1" || params.get("deadman") === "1";
+  const seekParam = Number(params.get("seek")); // deep-link from Studio 发布 → land on the same moment (?episodeId is read by the player)
+
+  const [screen, setScreen] = useState<"catalog" | "player">(openPlayerDirectly ? "player" : "catalog");
+  const [activeDramaId, setActiveDramaId] = useState<string>(directDrama || "huangnian");
+  const [seekSeconds, setSeekSeconds] = useState<number>(Number.isFinite(seekParam) && seekParam > 0 ? seekParam : 0);
 
   if (screen === "player") {
-    return <Branch3PlayerDemo />;
+    return <Branch3PlayerDemo dramaId={activeDramaId} startSeconds={seekSeconds} onBack={() => setScreen("catalog")} />;
   }
 
   return (
-    <main className="deadman-catalog-app">
-      <section aria-label="看剧搭子短剧目录" className="deadman-catalog__device" role="region">
-        <header className="deadman-catalog__topbar">
-          <div>
-            <span>短剧高光</span>
-            <h1>看剧搭子</h1>
-          </div>
-          <strong>陪看</strong>
-        </header>
-
-        <section className="deadman-catalog__hero" aria-label="今日高光">
-          <div className="deadman-catalog__hero-still" aria-hidden="true">
-            <span>第 3 集</span>
-            <strong>最后一点野菜</strong>
-          </div>
-          <p>孩子盯着最后一点野菜，怕它又被送走。</p>
-        </section>
-
-        <article className="deadman-catalog__drama">
-          <div className="deadman-catalog__thumbnail-wrap">
-            <img alt="番茄搭子荒年互动预览" className="deadman-catalog__thumbnail" src={CATALOG_THUMBNAIL_URL} />
-            <span>搭子已在场</span>
-          </div>
-          <div className="deadman-catalog__drama-copy">
-            <p>荒年全村啃树皮，我有系统满仓肉</p>
-            <strong>第 3 集 · 最后一口先留家里</strong>
-            <span>5 个已发布介入点 · 当前高光 00:37</span>
-          </div>
-          <button onClick={() => setScreen("player")} type="button">
-            进入
-          </button>
-        </article>
-      </section>
-    </main>
+    <StageList
+      onOpenPlayer={(dramaId, startSeconds) => {
+        setActiveDramaId(dramaId);
+        setSeekSeconds(startSeconds);
+        setScreen("player");
+      }}
+    />
   );
 }

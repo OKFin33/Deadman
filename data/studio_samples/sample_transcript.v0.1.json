@@ -1,0 +1,99 @@
+{
+  "schema_version": "deadman_studio_sample_transcript.v0.1",
+  "provenance": "Demo fallback sample for the Studio upload pipeline (used only when no ASR creds are configured). Derived from a reviewed Volc Doubao flash-ASR transcript; utterance timings + text only, no media.",
+  "asr_source_note": "sample_fallback",
+  "duration": 104112,
+  "text": "云小姐留步，你说话怎么这么难听呢？老爷心念之人是他的同龄人，说不定这位姑娘是他心心念念之人的后人呢。是呀。我只是一叶障目，无论真与假，要见了才知道呀。是啊。云小姐，请留步。对不起，云小姐，我也是关心则乱。哎，你就看在我一片孝心的份上，一同和我见见我父亲吧。这女孩年纪轻轻脾气怎么这么大？知道我们周家在江城的地位。为了父亲低声下气一回又如何罢了，毕竟跟过我，也算有个善终。跟。云小姐，请。这姑娘身段倒是挺好，走起路来 仙缥缈的。她可真白呀！他那珍珠都白了。大嫂，这就是那新上任的后人吧？都这么漂亮，难怪老爷子心心念念了七十多年。云小姐，请。站住！",
+  "utterances": [
+    {
+      "start_time": 260,
+      "end_time": 3700,
+      "text": "云小姐留步，你说话怎么这么难听呢？"
+    },
+    {
+      "start_time": 3980,
+      "end_time": 9860,
+      "text": "老爷心念之人是他的同龄人，说不定这位姑娘是他心心念念之人的后人呢。"
+    },
+    {
+      "start_time": 12470,
+      "end_time": 12830,
+      "text": "是呀。"
+    },
+    {
+      "start_time": 13940,
+      "end_time": 20220,
+      "text": "我只是一叶障目，无论真与假，要见了才知道呀。是啊。"
+    },
+    {
+      "start_time": 21530,
+      "end_time": 23250,
+      "text": "云小姐，请留步。"
+    },
+    {
+      "start_time": 26710,
+      "end_time": 30190,
+      "text": "对不起，云小姐，我也是关心则乱。"
+    },
+    {
+      "start_time": 30670,
+      "end_time": 36350,
+      "text": "哎，你就看在我一片孝心的份上，一同和我见见我父亲吧。"
+    },
+    {
+      "start_time": 37880,
+      "end_time": 41720,
+      "text": "这女孩年纪轻轻脾气怎么这么大？"
+    },
+    {
+      "start_time": 42710,
+      "end_time": 45110,
+      "text": "知道我们周家在江城的地位。"
+    },
+    {
+      "start_time": 46920,
+      "end_time": 55270,
+      "text": "为了父亲低声下气一回又如何罢了，毕竟跟过我，也算有个善终。"
+    },
+    {
+      "start_time": 58180,
+      "end_time": 58220,
+      "text": "跟。"
+    },
+    {
+      "start_time": 61200,
+      "end_time": 62200,
+      "text": "云小姐，请。"
+    },
+    {
+      "start_time": 67360,
+      "end_time": 71280,
+      "text": "这姑娘身段倒是挺好，走起路来"
+    },
+    {
+      "start_time": 72440,
+      "end_time": 74760,
+      "text": "仙缥缈的。她可真白呀！"
+    },
+    {
+      "start_time": 76090,
+      "end_time": 77330,
+      "text": "他那珍珠都白了。"
+    },
+    {
+      "start_time": 78970,
+      "end_time": 82530,
+      "text": "大嫂，这就是那新上任的后人吧？"
+    },
+    {
+      "start_time": 83670,
+      "end_time": 90530,
+      "text": "都这么漂亮，难怪老爷子心心念念了七十多年。云小姐，请。"
+    },
+    {
+      "start_time": 98080,
+      "end_time": 98680,
+      "text": "站住！"
+    }
+  ]
+}

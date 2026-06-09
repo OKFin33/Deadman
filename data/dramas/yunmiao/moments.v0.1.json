@@ -306,7 +306,98 @@
         "review_status": "reviewed",
         "content_status": "cab_authored_owner_reviewed"
       },
-      "title": "云渺1：我修仙多年强亿点怎么了"
+      "title": "云渺1：我修仙多年强亿点怎么了",
+      "outcome_response_contract": {
+        "format": "short local consequence + why original plot still remains watchable",
+        "time_horizon": "current scene or immediate aftermath",
+        "include_original_plot_note": true
+      },
+      "judgment_policy": {
+        "must_consider": [
+          "source_window evidence",
+          "drama_context_ref global constraints",
+          "scene-local watch_flow_fit",
+          "resource/secrecy/family/public pressure where applicable"
+        ],
+        "must_not_claim": [
+          "later episodes actually follow this branch",
+          "facts not present in source evidence",
+          "unbounded system or power escalation"
+        ]
+      },
+      "visual_result_policy": {
+        "allowed": "result card or still prompt only when object/person is evidenced",
+        "keyframe_ref_quality": "medium",
+        "visual_evidence": "high"
+      },
+      "optional_modules": {},
+      "canon_baseline": {
+        "original_action": "原剧情按当前场景自然推进，没有替观众把话说满。",
+        "original_rationale": "这一拍的张力靠场面本身，不需要额外动作改写。",
+        "audience_tension": "长辈临走前放心不下小辈",
+        "original_plot_note": "原剧情按当前场景推进；互动只接当下这一口气。"
+      },
+      "actor_context": {
+        "pov_actor": "主角",
+        "directly_affected_actors": [],
+        "relationship_context": "长辈临走前放心不下小辈",
+        "local_emotional_pressure": "听完心里怪不是滋味的"
+      },
+      "local_constraints": {
+        "known_facts": [
+          "沈先生，您说是不是？当然。听到了吧？咱妈和你们家老爷子那不一样，咱妈生前不肯走，那不是因为有什么执念，而是因为舍不得我们这些小辈。是不是？",
+          "沈先生，您说是不是？当然。听到了吧？咱妈和你们家老爷子那不一样，咱妈生前不肯走，那不是因为有什么执念，而是因为舍不得我们这些小辈。是不是？"
+        ],
+        "unknown_or_hidden_facts": [
+          "later-episode branch outcomes",
+          "facts outside this window"
+        ],
+        "risk_notes": [],
+        "hard_constraints": [
+          "current_scene_only"
+        ]
+      },
+      "score_axes": {
+        "emotion_heat": 80,
+        "choice_leverage": 58,
+        "causal_clarity": 70,
+        "world_constraint_value": 68,
+        "watch_flow_fit": 80,
+        "visual_result_fit": 50
+      },
+      "result_media": {
+        "preset_options": [
+          {
+            "option_index": 0,
+            "status": "placeholder",
+            "image_url": "",
+            "prompt": "yunmiao_ep17_m001 option 0: 长辈的惦记永远是最戳人的",
+            "source": "manual_placeholder",
+            "fallback_text": "P0 result image slot reserved; render text consequence when no image is available."
+          },
+          {
+            "option_index": 1,
+            "status": "placeholder",
+            "image_url": "",
+            "prompt": "yunmiao_ep17_m001 option 1: 接连遇上糟心事真的太耗人了",
+            "source": "manual_placeholder",
+            "fallback_text": "P0 result image slot reserved; render text consequence when no image is available."
+          },
+          {
+            "option_index": 2,
+            "status": "placeholder",
+            "image_url": "",
+            "prompt": "yunmiao_ep17_m001 option 2: 这种感觉真的太复杂了",
+            "source": "manual_placeholder",
+            "fallback_text": "P0 result image slot reserved; render text consequence when no image is available."
+          }
+        ],
+        "custom_action": {
+          "status": "not_requested",
+          "mode": "realtime_generate_or_text_only_fallback",
+          "timeout_ms": 8000
+        }
+      }
     },
     {
       "pack_id": "yunmiao_ep03_m001",
@@ -601,7 +692,98 @@
         "review_status": "reviewed",
         "content_status": "placeholder_pending_cab"
       },
-      "title": "云渺1：我修仙多年强亿点怎么了"
+      "title": "云渺1：我修仙多年强亿点怎么了",
+      "outcome_response_contract": {
+        "format": "short local consequence + why original plot still remains watchable",
+        "time_horizon": "current scene or immediate aftermath",
+        "include_original_plot_note": true
+      },
+      "judgment_policy": {
+        "must_consider": [
+          "source_window evidence",
+          "drama_context_ref global constraints",
+          "scene-local watch_flow_fit",
+          "resource/secrecy/family/public pressure where applicable"
+        ],
+        "must_not_claim": [
+          "later episodes actually follow this branch",
+          "facts not present in source evidence",
+          "unbounded system or power escalation"
+        ]
+      },
+      "visual_result_policy": {
+        "allowed": "result card or still prompt only when object/person is evidenced",
+        "keyframe_ref_quality": "medium",
+        "visual_evidence": "high"
+      },
+      "optional_modules": {},
+      "canon_baseline": {
+        "original_action": "原剧情按当前场景自然推进，没有替观众把话说满。",
+        "original_rationale": "这一拍的张力靠场面本身，不需要额外动作改写。",
+        "audience_tension": "真实身份要不要现在摊牌？",
+        "original_plot_note": "原剧情按当前场景推进；互动只接当下这一口气。"
+      },
+      "actor_context": {
+        "pov_actor": "主角",
+        "directly_affected_actors": [],
+        "relationship_context": "真实身份要不要现在摊牌？",
+        "local_emotional_pressure": "这一下我有点想替他说一句。"
+      },
+      "local_constraints": {
+        "known_facts": [
+          "我知道，云小姐，不是我不信任你，我家请了大师，大师说我父亲心中想见的人是解放前的人，可是你这个年纪。于小姐，您去哪啊？我不和蠢货打交道。周康山生了个蠢货，也是他的一",
+          "我知道，云小姐，不是我不信任你，我家请了大师，大师说我父亲心中想见的人是解放前的人，可是你这个年纪。于小姐，您去哪啊？我不和蠢货打交道。周康山生了个蠢货，也是他的一"
+        ],
+        "unknown_or_hidden_facts": [
+          "later-episode branch outcomes",
+          "facts outside this window"
+        ],
+        "risk_notes": [],
+        "hard_constraints": [
+          "current_scene_only"
+        ]
+      },
+      "score_axes": {
+        "emotion_heat": 80,
+        "choice_leverage": 58,
+        "causal_clarity": 70,
+        "world_constraint_value": 68,
+        "watch_flow_fit": 80,
+        "visual_result_fit": 50
+      },
+      "result_media": {
+        "preset_options": [
+          {
+            "option_index": 0,
+            "status": "placeholder",
+            "image_url": "",
+            "prompt": "yunmiao_ep03_m001 option 0: 想替他接一句",
+            "source": "manual_placeholder",
+            "fallback_text": "P0 result image slot reserved; render text consequence when no image is available."
+          },
+          {
+            "option_index": 1,
+            "status": "placeholder",
+            "image_url": "",
+            "prompt": "yunmiao_ep03_m001 option 1: 这事得有人吭声",
+            "source": "manual_placeholder",
+            "fallback_text": "P0 result image slot reserved; render text consequence when no image is available."
+          },
+          {
+            "option_index": 2,
+            "status": "placeholder",
+            "image_url": "",
+            "prompt": "yunmiao_ep03_m001 option 2: 先稳一下别急",
+            "source": "manual_placeholder",
+            "fallback_text": "P0 result image slot reserved; render text consequence when no image is available."
+          }
+        ],
+        "custom_action": {
+          "status": "not_requested",
+          "mode": "realtime_generate_or_text_only_fallback",
+          "timeout_ms": 8000
+        }
+      }
     },
     {
       "pack_id": "yunmiao_ep18_m001",
@@ -902,7 +1084,98 @@
         "review_status": "reviewed",
         "content_status": "cab_authored_owner_reviewed"
       },
-      "title": "云渺1：我修仙多年强亿点怎么了"
+      "title": "云渺1：我修仙多年强亿点怎么了",
+      "outcome_response_contract": {
+        "format": "short local consequence + why original plot still remains watchable",
+        "time_horizon": "current scene or immediate aftermath",
+        "include_original_plot_note": true
+      },
+      "judgment_policy": {
+        "must_consider": [
+          "source_window evidence",
+          "drama_context_ref global constraints",
+          "scene-local watch_flow_fit",
+          "resource/secrecy/family/public pressure where applicable"
+        ],
+        "must_not_claim": [
+          "later episodes actually follow this branch",
+          "facts not present in source evidence",
+          "unbounded system or power escalation"
+        ]
+      },
+      "visual_result_policy": {
+        "allowed": "result card or still prompt only when object/person is evidenced",
+        "keyframe_ref_quality": "medium",
+        "visual_evidence": "high"
+      },
+      "optional_modules": {},
+      "canon_baseline": {
+        "original_action": "原剧情按当前场景自然推进，没有替观众把话说满。",
+        "original_rationale": "这一拍的张力靠场面本身，不需要额外动作改写。",
+        "audience_tension": "这眼神谁看了不发怵啊",
+        "original_plot_note": "原剧情按当前场景推进；互动只接当下这一口气。"
+      },
+      "actor_context": {
+        "pov_actor": "主角",
+        "directly_affected_actors": [],
+        "relationship_context": "这眼神谁看了不发怵啊",
+        "local_emotional_pressure": "这眼神谁看了不发怵啊"
+      },
+      "local_constraints": {
+        "known_facts": [
+          "你真的觉得你母亲生前幸福吗？于小姐，我们孙家和你有什么关系？啊？就算我母亲生前有什么，那也轮不到你一个小朋友来这智慧。是吗？这这眼神好冷，哪像是活人的眼神？",
+          "你真的觉得你母亲生前幸福吗？于小姐，我们孙家和你有什么关系？啊？就算我母亲生前有什么，那也轮不到你一个小朋友来这智慧。是吗？这这眼神好冷，哪像是活人的眼神？"
+        ],
+        "unknown_or_hidden_facts": [
+          "later-episode branch outcomes",
+          "facts outside this window"
+        ],
+        "risk_notes": [],
+        "hard_constraints": [
+          "current_scene_only"
+        ]
+      },
+      "score_axes": {
+        "emotion_heat": 80,
+        "choice_leverage": 58,
+        "causal_clarity": 70,
+        "world_constraint_value": 68,
+        "watch_flow_fit": 80,
+        "visual_result_fit": 50
+      },
+      "result_media": {
+        "preset_options": [
+          {
+            "option_index": 0,
+            "status": "placeholder",
+            "image_url": "",
+            "prompt": "yunmiao_ep18_m001 option 0: 孙家这下要踢到铁板了",
+            "source": "manual_placeholder",
+            "fallback_text": "P0 result image slot reserved; render text consequence when no image is available."
+          },
+          {
+            "option_index": 1,
+            "status": "placeholder",
+            "image_url": "",
+            "prompt": "yunmiao_ep18_m001 option 1: 她藏的实力果然深不可测",
+            "source": "manual_placeholder",
+            "fallback_text": "P0 result image slot reserved; render text consequence when no image is available."
+          },
+          {
+            "option_index": 2,
+            "status": "placeholder",
+            "image_url": "",
+            "prompt": "yunmiao_ep18_m001 option 2: 这气场也太唬人了",
+            "source": "manual_placeholder",
+            "fallback_text": "P0 result image slot reserved; render text consequence when no image is available."
+          }
+        ],
+        "custom_action": {
+          "status": "not_requested",
+          "mode": "realtime_generate_or_text_only_fallback",
+          "timeout_ms": 8000
+        }
+      }
     }
   ]
 }

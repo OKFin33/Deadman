@@ -149,6 +149,10 @@ export function getDeadmanApiBase(): string {
   return (queryBase || configuredBase || DEFAULT_API_BASE).replace(/\/$/, "");
 }
 
+// NOTE: listDramas() now lives in deadmanStageApi.ts (the Surface 1 data layer),
+// which returns the richer DeadmanDrama shape (cover_image_url / genre_tag). This
+// module keeps the moment + judgment calls that deadmanStageApi composes on top of.
+
 export async function listDramaMoments(
   dramaId: string,
   options: { signal?: AbortSignal } = {},
