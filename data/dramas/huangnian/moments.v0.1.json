@@ -397,9 +397,9 @@
         "do_not_promote_reasons": []
       },
       "interaction_window": {
-        "notice_at_seconds": 0,
-        "start_seconds": 0,
-        "end_seconds": 20,
+        "notice_at_seconds": 10.0,
+        "start_seconds": 10.0,
+        "end_seconds": 20.0,
         "source": "reviewed_ars",
         "confidence": "high",
         "pause_policy": "pause_on_invite",
@@ -971,9 +971,9 @@
         "do_not_promote_reasons": []
       },
       "interaction_window": {
-        "notice_at_seconds": 20,
-        "start_seconds": 20,
-        "end_seconds": 40,
+        "notice_at_seconds": 30.0,
+        "start_seconds": 30.0,
+        "end_seconds": 40.0,
         "source": "reviewed_ars",
         "confidence": "high",
         "pause_policy": "pause_on_invite",
@@ -1556,9 +1556,9 @@
         "do_not_promote_reasons": []
       },
       "interaction_window": {
-        "notice_at_seconds": 37,
-        "start_seconds": 37,
-        "end_seconds": 47,
+        "notice_at_seconds": 37.0,
+        "start_seconds": 37.0,
+        "end_seconds": 47.0,
         "source": "reviewed_ars",
         "confidence": "medium",
         "pause_policy": "pause_on_invite",
@@ -2161,9 +2161,9 @@
         "do_not_promote_reasons": []
       },
       "interaction_window": {
-        "notice_at_seconds": 60,
-        "start_seconds": 60,
-        "end_seconds": 80,
+        "notice_at_seconds": 70.0,
+        "start_seconds": 70.0,
+        "end_seconds": 80.0,
         "source": "reviewed_ars",
         "confidence": "medium",
         "pause_policy": "pause_on_invite",
@@ -2736,9 +2736,9 @@
         "do_not_promote_reasons": []
       },
       "interaction_window": {
-        "notice_at_seconds": 60,
-        "start_seconds": 60,
-        "end_seconds": 80,
+        "notice_at_seconds": 70.0,
+        "start_seconds": 70.0,
+        "end_seconds": 80.0,
         "source": "reviewed_ars",
         "confidence": "high",
         "pause_policy": "pause_on_invite",

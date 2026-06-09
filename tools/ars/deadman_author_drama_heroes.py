@@ -121,8 +121,8 @@ def stage_a_prompt(scene, leads, replies):
     }
 
 
-def stage_b_prompt(scene, lead, target, siblings, prior, echoes):
-    return {
+def stage_b_prompt(scene, lead, target, siblings, prior, echoes, feedback=None):
+    prompt = {
         "system_prompt": ("You are a Deadman Studio/CAB authoring unit for 看剧搭子, layer 2. You reply, as the "
             "co-watching host, to ONE specific viewer who just said the given display_text. Return one strict JSON object, no prose."),
         "task": "author_new_drama_hero.stage_b", "product": "看剧搭子", "case_id": scene["case_id"],
@@ -143,9 +143,16 @@ def stage_b_prompt(scene, lead, target, siblings, prior, echoes):
         "negative_echo_patterns": [{"pattern": n.get("pattern"), "severity": n.get("severity"), "illustrative_examples": n.get("illustrative_examples", [])} for n in OVERLAY.get("named_negatives", []) if n.get("layer") == "echo"],
         "output_contract": {"case_id": scene["case_id"], "selected_echo": "...", "echo_rationale": "..."},
     }
+    if feedback:  # M4 directed revision: a critic rejected the prior draft — fix the echo specifically
+        prompt["revision_feedback"] = str(feedback)
+        prompt["echo_rules"] = [
+            "这是修订轮：上一稿的 echo 被评审拒了。严格按 revision_feedback 重写这条 echo，专门修它点名的毛病，别再犯同样的。",
+            *prompt["echo_rules"],
+        ]
+    return prompt
 
 
-def author_moment(provider, guidance, drama, pack, moment):
+def author_moment(provider, guidance, drama, pack, moment, feedback=None):
     mid = moment["moment_id"]
     ep = moment["source_drama"]["episode_id"]
     iw = moment["interaction_window"]
@@ -162,7 +169,7 @@ def author_moment(provider, guidance, drama, pack, moment):
     prior: list[str] = []
     for i, r in enumerate(rcs):
         sib = [d for j, d in enumerate(disp) if j != i]
-        b = call_json(provider, stage_b_prompt(scene, lead, r, sib, list(prior), echoes), stage_b_output_schema())
+        b = call_json(provider, stage_b_prompt(scene, lead, r, sib, list(prior), echoes, feedback), stage_b_output_schema())
         r["selected_echo"] = str(b.get("selected_echo") or "")
         prior.append(r["selected_echo"])
     return scene, lead, rcs

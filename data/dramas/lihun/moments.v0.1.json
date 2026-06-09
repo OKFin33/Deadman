@@ -175,9 +175,9 @@
         "keyframe_refs": []
       },
       "interaction_window": {
-        "notice_at_seconds": 20,
-        "start_seconds": 20,
-        "end_seconds": 40,
+        "notice_at_seconds": 30.0,
+        "start_seconds": 30.0,
+        "end_seconds": 40.0,
         "source": "reviewed_ars",
         "confidence": "medium",
         "pause_policy": "pause_on_invite",
@@ -567,9 +567,9 @@
         "keyframe_refs": []
       },
       "interaction_window": {
-        "notice_at_seconds": 40,
-        "start_seconds": 40,
-        "end_seconds": 60,
+        "notice_at_seconds": 50.0,
+        "start_seconds": 50.0,
+        "end_seconds": 60.0,
         "source": "reviewed_ars",
         "confidence": "medium",
         "pause_policy": "pause_on_invite",
@@ -956,9 +956,9 @@
         "keyframe_refs": []
       },
       "interaction_window": {
-        "notice_at_seconds": 60,
-        "start_seconds": 60,
-        "end_seconds": 80,
+        "notice_at_seconds": 70.0,
+        "start_seconds": 70.0,
+        "end_seconds": 80.0,
         "source": "reviewed_ars",
         "confidence": "medium",
         "pause_policy": "pause_on_invite",
