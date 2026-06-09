@@ -41,7 +41,7 @@ class CompanionRuntimeApiTests(unittest.TestCase):
 
         notice = self.client.post(
             "/api/deadman/runtime/session/event",
-            json=self._event("moment_notice", event_id="evt-notice", playback_time_seconds=5),
+            json=self._event("moment_notice", event_id="evt-notice", playback_time_seconds=15),
         )
         self.assertEqual(notice.status_code, 200)
         self.assertEqual(notice.json()["status"], "ok")
@@ -53,7 +53,7 @@ class CompanionRuntimeApiTests(unittest.TestCase):
 
         tap = self.client.post(
             "/api/deadman/runtime/session/event",
-            json=self._event("companion_tap", event_id="evt-tap", playback_time_seconds=5),
+            json=self._event("companion_tap", event_id="evt-tap", playback_time_seconds=15),
         )
         self.assertEqual(tap.status_code, 200)
         self.assertEqual(tap.json()["status"], "ok")
@@ -274,11 +274,11 @@ class CompanionRuntimeApiTests(unittest.TestCase):
         self._start_session()
         first = self.client.post(
             "/api/deadman/runtime/session/event",
-            json=self._event("moment_notice", event_id="evt-notice-first", playback_time_seconds=5),
+            json=self._event("moment_notice", event_id="evt-notice-first", playback_time_seconds=15),
         )
         second = self.client.post(
             "/api/deadman/runtime/session/event",
-            json=self._event("moment_notice", event_id="evt-notice-second", playback_time_seconds=6),
+            json=self._event("moment_notice", event_id="evt-notice-second", playback_time_seconds=16),
         )
 
         self.assertEqual(first.status_code, 200)
