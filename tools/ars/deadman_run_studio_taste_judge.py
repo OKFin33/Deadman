@@ -84,7 +84,10 @@ TASTE_LEVELS = {"excellent", "acceptable", "needs_repair"}
 OVERALL_VERDICTS = {"accept", "accept_with_minor_tweak", "reject"}
 ELIGIBLE_CASE_TYPES = {"owner_gold_exchange_authoring", "phase2_repair_regression"}
 ALLOWED_JUDGE_PROVIDERS = {"ark", "bailian"}
-DEFAULT_BAILIAN_MODEL = "qwen3.6-plus"
+# Default judge model: a light Qwen for fast cross-model critique (overridable via
+# BAILIAN_JUDGE_MODEL). The owner-review gate provides the final discrimination, so the
+# default favors speed; set a heavier model (e.g. qwen3.6-plus) when you want a stricter critic.
+DEFAULT_BAILIAN_MODEL = "qwen-flash"
 
 
 @dataclass(frozen=True)
