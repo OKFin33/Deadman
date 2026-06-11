@@ -45,21 +45,21 @@ python3 -m uvicorn server:app --host 127.0.0.1 --port 7861
 
 ---
 
-## 模型可自选 / Bring your own models
+## 模型与 key
 
-**观众端 Stage demo 不需要任何 key** —— preset 回声已烘焙进已审核 pack。只有**制作端 Studio 实时创作**（自定义回声 / ASR 上传）才需要 provider 凭据：`cp .env.example .env` 后填三类，**每一类都可换 key、换模型**：
+观众端的**默认互动**——开场 + 三句「我想说」+ 回声——来自已审核 pack，**开箱即用、播放时不调模型**。两处会**实时调模型、需要 provider 凭据**：观众端的**自定义输入**（观众说出自己的话 → 搭子在当前场景边界内接一句，这是观众体验的**一等能力**，不是附属）和**制作端 Studio 实时创作**。`cp .env.example .env` 后填三类——**已给预设，开箱即用，也可替换**：
 
-| 用途 | 角色 | 自选模型 |
-|---|---|---|
-| 创作 + 语义选窗 | author | 任意 Ark/Doubao endpoint |
-| ASR 语音转写 | speech | 火山 / 豆包语音 |
-| 味觉评审 | judge | Bailian `bl` CLI（如 `qwen-flash` 快 / `qwen3.6-plus` 更稳） |
+| 用途 | 预设模型 |
+|---|---|
+| 创作 + 语义选窗 (author) | Ark · Doubao-Seed-2.0-lite |
+| ASR 语音转写 (speech) | 火山 / 豆包语音 |
+| 味觉评审 (judge) | Qwen via Bailian `bl`（默认 `qwen-flash`） |
 
 ```bash
-cp .env.example .env   # 填三类 provider 的 key / 模型（仅 Studio 实时创作需要）
+cp .env.example .env   # 填三类 provider 的 key（自定义输入 / Studio 创作需要）
 ```
 
-> ⚠ **创作模型 (author) 与评审模型 (judge) 建议用【不同】模型** —— 跨模型评审才可信；让一个模型评它自己写的稿会自我偏袒（self-grading），判别力归零。这也是本项目「Ark 创作 + Qwen 评审」的设计。最终判别力由**人审 gate** 兜底。
+> 创作 (author) 与评审 (judge) 建议用**不同**模型——跨模型评审才可信，同模型自评会自我偏袒；最终判别力由**人审 gate** 兜底。
 
 ---
 

@@ -149,7 +149,7 @@ export function StudioPipeline() {
         </div>
         <div className="sc-rail__foot">
           <span className="dot" />
-          模型在 <code>.env</code> 自选：创作 / ASR / 评审三类；创作与评审建议用<b>不同</b>模型（跨模型评审更可信）
+          模型在 <code>.env</code> 配置（已给预设）；创作与评审建议用<b>不同</b>模型，跨模型评审更可信
         </div>
       </aside>
 
