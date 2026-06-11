@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -21,7 +22,28 @@ from typing import Any
 
 
 REPO_ROOT = find_deadman_root(__file__)
-DEFAULT_DRAMA_DIR = REPO_ROOT / "data/dramas/huangnian"
+DEFAULT_DRAMA_ID = "huangnian"
+
+
+def default_dramas_root() -> Path:
+    """The data/dramas root the gate validates under, honoring DEADMAN_DRAMA_DATA_ROOT.
+
+    This is the SAME env the runtime pack_store reads (backend/pack_store.py): when an override
+    root is set, the gate must validate THAT root — not silently keep checking the tracked
+    data/dramas while the runtime serves a different root (the footgun). When unset it falls back
+    to the tracked repo data/dramas. Mirrors pack_store's resolution so the gate and runtime agree."""
+    env_root = os.environ.get("DEADMAN_DRAMA_DATA_ROOT")
+    return Path(env_root) if env_root else REPO_ROOT / "data" / "dramas"
+
+
+def default_drama_dir() -> Path:
+    """The default single-drama dir the gate validates when --drama-dir is not given."""
+    return default_dramas_root() / DEFAULT_DRAMA_ID
+
+
+# Back-compat alias: the historical module constant. Resolved at import (env-aware) so existing
+# importers see the env-honoring default; an explicit --drama-dir still wins at the CLI.
+DEFAULT_DRAMA_DIR = default_drama_dir()
 RAW_MEDIA_SUFFIXES = {".mp4", ".mov", ".m4v"}
 ACCEPTED_REVIEW_STATES = {"demo_candidate", "pack_draft", "reviewed", "promoted"}
 PRODUCER_ONLY_SEGMENTS = {"producer_refs", "producer_media", "producer_ref"}
@@ -654,14 +676,22 @@ def build_report(result: dict[str, Any]) -> str:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__, allow_abbrev=False)
-    parser.add_argument("--drama-dir", default=str(DEFAULT_DRAMA_DIR))
+    parser.add_argument(
+        "--drama-dir",
+        default=None,
+        help="Drama dir to validate. Defaults to <DEADMAN_DRAMA_DATA_ROOT or repo data/dramas>/"
+        f"{DEFAULT_DRAMA_ID}; an explicit value always wins over the env root.",
+    )
     parser.add_argument("--report", help="Optional Markdown report path.")
     return parser.parse_args()
 
 
 def main() -> int:
     args = parse_args()
-    validator = BridgeValidator(resolve_path(args.drama_dir))
+    # Resolve the env-aware default at call time (not import time) so DEADMAN_DRAMA_DATA_ROOT set in
+    # the process environment is honored; an explicit --drama-dir always wins.
+    drama_dir = resolve_path(args.drama_dir) if args.drama_dir else default_drama_dir()
+    validator = BridgeValidator(drama_dir)
     result = validator.validate()
     if args.report:
         write_text(resolve_path(args.report), build_report(result))

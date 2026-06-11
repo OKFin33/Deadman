@@ -11,7 +11,7 @@
  * ===========================================================================*/
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { loadStageRows, formatClock, type StageRow } from "../api/deadmanStageApi";
+import { loadStageRows, type StageRow } from "../api/deadmanStageApi";
 import "./stage.css";
 
 type Phase = "loading" | "ready" | "empty" | "error";
@@ -44,7 +44,14 @@ export function StageList({ onOpenPlayer }: StageListProps) {
     void load("initial");
   }, [load]);
 
+  // genre tabs (推荐 = all) — derived from the dramas actually present
+  const genres = Array.from(new Set(rows.map((r) => r.genreTag).filter(Boolean))) as string[];
+  const tabs = ["推荐", ...genres];
+  const [tab, setTab] = useState<string>("推荐");
+  const shown = tab === "推荐" ? rows : rows.filter((r) => r.genreTag === tab);
+
   return (
+    <div className="deadman-stage-app">
     <main className="deadman-stage" aria-label="看剧搭子短剧目录">
       <div className="deadman-stage__bg" aria-hidden="true" />
 
@@ -56,23 +63,36 @@ export function StageList({ onOpenPlayer }: StageListProps) {
         <span className="deadman-stage__tag">陪看</span>
       </header>
 
+      {phase === "ready" && tabs.length > 1 && (
+        <nav className="deadman-stage__tabs" aria-label="分类">
+          {tabs.map((t) => (
+            <button
+              key={t}
+              type="button"
+              className={`deadman-stage__tab${t === tab ? " is-active" : ""}`}
+              onClick={() => setTab(t)}
+            >
+              {t === "推荐" && <FlameIcon />}
+              {t}
+            </button>
+          ))}
+        </nav>
+      )}
+
       {phase === "loading" && <SkeletonList />}
       {phase === "empty" && <EmptyState onRefresh={() => load("refresh")} />}
       {phase === "error" && <ErrorState onRetry={() => load("initial")} />}
       {phase === "ready" && (
         <PullToRefresh refreshing={refreshing} onRefresh={() => load("refresh")}>
-          <div className="deadman-stage__section">
-            <b>在追的短剧</b>
-            <span>{rows.length} 部 · 搭子在场</span>
-          </div>
-          <div className="deadman-stage__cards">
-            {rows.map((row) => (
+          <div className="deadman-stage__grid">
+            {shown.map((row) => (
               <PosterCard key={row.drama_id} row={row} onOpenPlayer={onOpenPlayer} />
             ))}
           </div>
         </PullToRefresh>
       )}
     </main>
+    </div>
   );
 }
 
@@ -84,61 +104,51 @@ function PosterCard({
   row: StageRow;
   onOpenPlayer: (dramaId: string, startSeconds: number) => void;
 }) {
-  const enter = () => onOpenPlayer(row.drama_id, row.currentHighlightSeconds ?? 0);
-  // Covers are drama keyframes served locally; the public repo doesn't ship them, so
-  // fall back to a titled tile when the image is absent or fails to load.
+  // Catalog entry always starts the drama from 0s (and the player best-effort autoplays);
+  // the per-highlight seek is the Studio deep-link path (?seek=N) handled in App.tsx, not catalog entry.
+  const enter = () => onOpenPlayer(row.drama_id, 0);
+  // Covers are drama keyframes served locally; fall back to a titled tile if absent.
   const [coverOk, setCoverOk] = useState(true);
   return (
-    <article className="deadman-stage__post" onClick={enter}>
-      <div className="deadman-stage__post-cover">
-        {row.genreTag && <span className="deadman-stage__post-genre">{row.genreTag}</span>}
+    <article
+      className="deadman-stage__poster"
+      role="button"
+      tabIndex={0}
+      aria-label={`进入 ${row.title}`}
+      onClick={enter}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          enter();
+        }
+      }}
+    >
+      <div className="deadman-stage__poster-cover">
         {row.coverUrl && coverOk ? (
-          <img src={row.coverUrl} alt={row.title} loading="lazy" onError={() => setCoverOk(false)} />
+          <img src={row.coverUrl} alt={row.title} onError={() => setCoverOk(false)} />
         ) : (
-          <div className="deadman-stage__cover-fallback" aria-hidden="true">
-            {row.title.slice(0, 6)}
-          </div>
+          <div className="deadman-stage__poster-fallback" aria-hidden="true">{row.title.slice(0, 8)}</div>
         )}
+        {row.genreTag && <span className="deadman-stage__poster-genre">{row.genreTag}</span>}
+        <span className="deadman-stage__poster-plays">
+          <PlayIcon /> {row.playLabel ?? String(row.momentCount)}
+        </span>
       </div>
-      <div className="deadman-stage__post-body">
-        <div>
-          <p className="deadman-stage__post-title">{row.title}</p>
-          {row.hook && <p className="deadman-stage__post-hook">「{row.hook}」</p>}
-        </div>
-        <div className="deadman-stage__post-foot">
-          <span className="deadman-stage__moments">
-            <IDots count={row.momentCount} />
-            <span>
-              <b>{row.momentCount}</b> 介入点
-            </span>
-          </span>
-          <button
-            className="deadman-stage__post-enter"
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              enter();
-            }}
-          >
-            <PlayIcon /> 进入
-          </button>
-        </div>
-        {row.currentHighlightSeconds != null && (
-          <span className="deadman-stage__post-hl">当前高光 {formatClock(row.currentHighlightSeconds)}</span>
-        )}
+      <p className="deadman-stage__poster-title">{row.title}</p>
+      <div className="deadman-stage__poster-meta">
+        <span>{row.genreTag ?? "热播"}</span>
+        <b>{row.episodeCount ?? row.momentCount}集</b>
       </div>
     </article>
   );
 }
 
 /* ----------------------------------------------------- shared bits -------- */
-function IDots({ count }: { count: number }) {
+function FlameIcon() {
   return (
-    <span className="deadman-stage__idots" aria-hidden="true">
-      {Array.from({ length: Math.min(count, 8) }).map((_, i) => (
-        <i key={i} />
-      ))}
-    </span>
+    <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true">
+      <path d="M12 2c1 3-1 4.5-2.3 6C8 10 8.6 13.5 12 13.5c1.8 0 3-1.6 2.6-3.6 1.6 1 2.4 3 1.4 5.4C19 14 20 11.4 18.8 8.6 17.6 5.8 14.2 5 12 2Z" />
+    </svg>
   );
 }
 
@@ -154,19 +164,12 @@ function PlayIcon() {
 function SkeletonList() {
   return (
     <div className="deadman-stage__scroll">
-      <div className="deadman-stage__section">
-        <b>在追的短剧</b>
-        <span>加载中…</span>
-      </div>
-      <div className="deadman-stage__cards">
-        {[0, 1, 2].map((i) => (
-          <div className="deadman-stage__post deadman-stage__post--skel" key={i}>
-            <div className="deadman-stage__post-cover shimmer" />
-            <div className="deadman-stage__post-body">
-              <div className="skel-line shimmer" style={{ width: "82%" }} />
-              <div className="skel-line shimmer" style={{ width: "54%" }} />
-              <div className="skel-line shimmer" style={{ width: "40%", marginTop: "auto" }} />
-            </div>
+      <div className="deadman-stage__grid">
+        {[0, 1, 2, 3, 4, 5].map((i) => (
+          <div className="deadman-stage__poster deadman-stage__poster--skel" key={i}>
+            <div className="deadman-stage__poster-cover shimmer" />
+            <div className="skel-line shimmer" style={{ width: "88%", marginTop: "8px" }} />
+            <div className="skel-line shimmer" style={{ width: "50%", marginTop: "6px" }} />
           </div>
         ))}
       </div>

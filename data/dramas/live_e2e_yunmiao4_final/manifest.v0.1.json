@@ -1,0 +1,31 @@
+{
+  "schema_version": "deadman_drama_runtime_manifest.v0.1",
+  "drama_id": "live_e2e_yunmiao4_final",
+  "title": "云渺E2E最终样片",
+  "cover_image_url": "/assets/covers/deadman-demo.png",
+  "pack_type": "lightweight_drama_context_pack_not_arcforge_world_simulation",
+  "context_pack": {
+    "path": "context.v0.1.json",
+    "schema_version": "drama_context_pack.v0.1"
+  },
+  "moment_packs": {
+    "path": "moments.v0.1.json",
+    "schema_version": "moment_causality_pack.v0.1",
+    "count": 2,
+    "moment_ids": [
+      "live_e2e_yunmiao4_final_ep01_m001",
+      "live_e2e_yunmiao4_final_ep01_m002"
+    ]
+  },
+  "media_registry": {
+    "path": "media_registry.v0.1.json",
+    "schema_version": "deadman_media_registry.v0.1",
+    "episode_count": 1,
+    "registered_count": 1
+  },
+  "source_artifacts": {
+    "reviewed_demo_nodes": "evidence/reviewed_demo_nodes.v0.1.json"
+  },
+  "promoted_dir": "data/dramas/live_e2e_yunmiao4_final",
+  "source_sandbox_of": "ingest_pipeline"
+}

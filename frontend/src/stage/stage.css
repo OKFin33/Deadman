@@ -1,8 +1,19 @@
 /* =============================================================================
  * stage.css — Surface 1 · Stage list (Direction B · 海报架)
  * Tokens are lifted verbatim from frontend/src/player/Branch3PlayerDemo.css so
- * the list and the player share one palette. Mobile-first; no device frame.
+ * the list and the player share one palette. Mobile-first; centered device
+ * frame on desktop (mirrors the player's .branch3-player__device at ≥760px).
  * ===========================================================================*/
+
+/* surround: dark bezel area shown around the mobile frame on wide screens */
+.deadman-stage-app {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(118, 40, 31, 0.34), transparent 34%),
+    linear-gradient(180deg, #171312 0%, #090807 100%);
+}
 
 .deadman-stage {
   --ink-0: #0c0a09;
@@ -22,12 +33,16 @@
   --font-mono: ui-monospace, "SF Mono", monospace;
 
   position: relative;
+  width: min(100vw, 432px);
+  margin-inline: auto;
   min-height: 100dvh;
   overflow: hidden;
   background: var(--ink-0);
   color: var(--cream);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+  display: flex;
+  flex-direction: column;
 }
 .deadman-stage *,
 .deadman-stage *::before,
@@ -85,10 +100,11 @@
 }
 
 /* scroll + pull */
-.deadman-stage__pull-wrap { position: relative; z-index: 2; }
+.deadman-stage__pull-wrap { position: relative; z-index: 2; flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
 .deadman-stage__scroll {
   position: relative;
-  height: calc(100dvh - 84px);
+  flex: 1 1 auto;
+  min-height: 0;
   overflow-y: auto;
   padding: 6px 16px calc(env(safe-area-inset-bottom) + 26px);
   scrollbar-width: none;
@@ -139,6 +155,142 @@
 }
 
 .deadman-stage__cards { display: grid; gap: 13px; }
+
+/* category tabs (推荐 + the genres actually present) */
+.deadman-stage__tabs {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 2px 16px 12px;
+  scrollbar-width: none;
+}
+.deadman-stage__tabs::-webkit-scrollbar { display: none; }
+.deadman-stage__tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex: 0 0 auto;
+  min-height: 32px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(12, 10, 9, 0.4);
+  color: var(--cream-dim);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
+}
+.deadman-stage__tab svg { color: var(--amber); }
+.deadman-stage__tab.is-active {
+  border-color: transparent;
+  background: linear-gradient(180deg, var(--coral), var(--tomato));
+  color: #fff;
+}
+.deadman-stage__tab.is-active svg { color: #fff; }
+
+/* 3-column vertical poster grid (海报架) */
+.deadman-stage__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px 9px;
+}
+.deadman-stage__poster { cursor: pointer; }
+.deadman-stage__poster--skel { cursor: default; }
+.deadman-stage__poster-cover {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--ink-2);
+  border: 1px solid var(--line);
+}
+.deadman-stage__poster-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 28%;
+  display: block;
+  transition: transform 220ms ease;
+}
+.deadman-stage__poster:active .deadman-stage__poster-cover img { transform: scale(0.985); }
+.deadman-stage__poster-fallback {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  padding: 8px;
+  text-align: center;
+  color: rgba(255, 224, 190, 0.5);
+  font-family: var(--font-serif);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+.deadman-stage__poster-genre {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: rgba(9, 8, 7, 0.66);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  color: var(--cream);
+  font-size: 9.5px;
+  font-weight: 800;
+}
+.deadman-stage__poster-plays {
+  position: absolute;
+  bottom: 6px;
+  left: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: rgba(9, 8, 7, 0.6);
+  color: var(--cream);
+  font-size: 10px;
+  font-weight: 700;
+}
+.deadman-stage__poster-plays svg { width: 9px; height: 9px; opacity: 0.92; }
+.deadman-stage__poster-title {
+  margin: 7px 1px 0;
+  font-family: var(--font-serif);
+  font-size: 13.5px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: #fff8ec;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.deadman-stage__poster-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  margin: 4px 1px 0;
+}
+.deadman-stage__poster-meta span {
+  color: var(--cream-faint);
+  font-size: 10.5px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.deadman-stage__poster-meta b {
+  color: var(--amber);
+  font-size: 11px;
+  font-weight: 800;
+  white-space: nowrap;
+}
 
 /* intervention-point dots (echo the player's progress markers) */
 .deadman-stage__idots { display: inline-flex; align-items: center; gap: 4px; }
@@ -290,7 +442,8 @@
   align-content: center;
   justify-items: center;
   gap: 6px;
-  height: calc(100dvh - 84px);
+  flex: 1 1 auto;
+  min-height: 0;
   padding: 0 40px 60px;
   text-align: center;
 }
@@ -329,6 +482,20 @@
   color: var(--cream-faint);
   font-family: var(--font-mono);
   font-size: 11px;
+}
+
+/* desktop: center the catalog as a phone frame (same metrics as the player) */
+@media (min-width: 760px) {
+  .deadman-stage-app { padding: 24px; }
+  .deadman-stage {
+    min-height: 0;
+    height: min(932px, calc(100dvh - 48px));
+    border: 1px solid rgba(255, 231, 197, 0.2);
+    border-radius: 32px;
+    box-shadow:
+      0 34px 90px rgba(0, 0, 0, 0.48),
+      inset 0 0 0 8px rgba(255, 247, 238, 0.035);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

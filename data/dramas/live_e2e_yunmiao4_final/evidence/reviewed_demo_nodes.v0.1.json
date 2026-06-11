@@ -1,0 +1,75 @@
+{
+  "schema_version": "deadman_reviewed_demo_nodes.v0.1",
+  "evidence_policy": "ingested ASR/LLM windows reviewed into demo candidates; raw media stays under ignored tmp/",
+  "demo_node_count": 2,
+  "demo_nodes": [
+    {
+      "moment_id": "live_e2e_yunmiao4_final_ep01_m001",
+      "candidate_id": "live_e2e_yunmiao4_final_ep01_m001_c001",
+      "review_status": "demo_candidate",
+      "corrected_trigger_type": "other",
+      "source_window": {
+        "start_ms": 29000,
+        "end_ms": 51000,
+        "transcript_refs": [
+          {
+            "id": "live_e2e_yunmiao4_final_ep01_m001_u001",
+            "episode_id": "live_e2e_yunmiao4_final_ep01",
+            "start_ms": 29000,
+            "end_ms": 51000,
+            "text": "对不起，云小姐，我也是关心则乱。 哎，你就看在我一片孝心的份上，一同和我见见我父亲吧。 这女孩年纪轻轻脾气怎么这么大？ 知道我们周家在江城的地位。 为了父亲低声下气一回又如何罢了，毕竟跟过我，也算有个善终。",
+            "source": "sanitized_asr_snippet"
+          }
+        ],
+        "keyframe_refs": [],
+        "provenance_status": "publish_safe_sanitized"
+      },
+      "companion_hook": "这一下我有点想替他说一句。",
+      "viewer_impulse": "要是我来，我想接一句。",
+      "default_options": [
+        "接住眼前这个人此刻的情绪",
+        "为眼前这件事说一句公道话",
+        "先把火气压一压，看眼前怎么落地"
+      ],
+      "evidence": {
+        "grade": "medium",
+        "notes": "对不起，云小姐，我也是关心则乱。 哎，你就看在我一片孝心的份上，一同和我见见我父亲吧。 这女孩年纪轻轻脾气怎么这么大？ 知道我们周家在江城的地位。 为了父亲低声下气一回又如何罢了，毕竟跟过我，也算有个善终。"
+      },
+      "evidence_vs_inference": "window is ingested+mined evidence; companion content pending CAB authoring"
+    },
+    {
+      "moment_id": "live_e2e_yunmiao4_final_ep01_m002",
+      "candidate_id": "live_e2e_yunmiao4_final_ep01_m002_c001",
+      "review_status": "demo_candidate",
+      "corrected_trigger_type": "other",
+      "source_window": {
+        "start_ms": 67000,
+        "end_ms": 89000,
+        "transcript_refs": [
+          {
+            "id": "live_e2e_yunmiao4_final_ep01_m002_u001",
+            "episode_id": "live_e2e_yunmiao4_final_ep01",
+            "start_ms": 67000,
+            "end_ms": 89000,
+            "text": "这姑娘身段倒是挺好，走起路来 仙缥缈的。她可真白呀！ 他那珍珠都白了。 大嫂，这就是那新上任的后人吧？ 都这么漂亮，难怪老爷子心心念念了七十多年。云小姐，请。",
+            "source": "sanitized_asr_snippet"
+          }
+        ],
+        "keyframe_refs": [],
+        "provenance_status": "publish_safe_sanitized"
+      },
+      "companion_hook": "这一下我有点想替他说一句。",
+      "viewer_impulse": "要是我来，我想接一句。",
+      "default_options": [
+        "接住眼前这个人此刻的情绪",
+        "为眼前这件事说一句公道话",
+        "先把火气压一压，看眼前怎么落地"
+      ],
+      "evidence": {
+        "grade": "medium",
+        "notes": "这姑娘身段倒是挺好，走起路来 仙缥缈的。她可真白呀！ 他那珍珠都白了。 大嫂，这就是那新上任的后人吧？ 都这么漂亮，难怪老爷子心心念念了七十多年。云小姐，请。"
+      },
+      "evidence_vs_inference": "window is ingested+mined evidence; companion content pending CAB authoring"
+    }
+  ]
+}

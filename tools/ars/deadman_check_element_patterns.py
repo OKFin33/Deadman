@@ -25,6 +25,15 @@ SHOW_WORDS = ("节奏", "这部", "演技", "剧情拉", "追剧", "这剧", "�
 Q_WORDS = ("该不该", "要不要", "是不是该")
 ECHO_MAX_CHARS = 40
 
+# SOFT patterns are advisory craft hints, NOT gate-failing defects. The gate scans ALL dramas
+# equally (the 3 curated packs are just pre-seeded uploads — no different from user uploads), but a
+# soft flag never reds the gate. `echo_formulaic_opening` (three echoes sharing an opening phrase) is
+# soft because it is a REVIEW-time craft signal (you see all three at once), NOT a viewer-UX defect:
+# the viewer only ever sees the ONE echo paired with the say they chose, so a shared opening across
+# the three is invisible to them. What actually matters for echoes is per-pair fit (does this echo
+# answer this say) — a semantic judgment that belongs to the LLM taste judge, not this mechanical gate.
+SOFT_PATTERNS = frozenset({"echo_formulaic_opening"})
+
 
 def _overlap(a: str, b: str) -> float:
     sa, sb = set(a), set(b)
@@ -45,7 +54,8 @@ def check_moment(moment: dict) -> list[dict]:
     flags: list[dict] = []
 
     def flag(loc, pattern, text):
-        flags.append({"moment_id": moment.get("moment_id"), "element": loc, "pattern": pattern, "text": text[:60]})
+        flags.append({"moment_id": moment.get("moment_id"), "element": loc, "pattern": pattern,
+                      "severity": "soft" if pattern in SOFT_PATTERNS else "hard", "text": text[:60]})
 
     if lead and (lead.rstrip().endswith(("吗", "呢")) or lead.rstrip().endswith("吗？") or any(q in lead for q in Q_WORDS)):
         flag("lead", "lead_question_shape", lead)
@@ -81,11 +91,18 @@ def check_moment(moment: dict) -> list[dict]:
 
 
 def check_all(data_root: Path) -> list[dict]:
+    """All flags (hard + soft) across EVERY drama under data_root — curated + uploaded alike."""
     flags: list[dict] = []
     for f in sorted(data_root.glob("*/moments.v0.1.json")):
-        for m in json.load(open(f)).get("moments", []):
-            flags.extend(check_moment(m))
+        with open(f, encoding="utf-8") as fh:
+            for m in json.load(fh).get("moments", []):
+                flags.extend(check_moment(m))
     return flags
+
+
+def hard_flags(flags: list[dict]) -> list[dict]:
+    """Only the gate-failing (gross) flags; soft craft hints are advisory and excluded."""
+    return [f for f in flags if f.get("severity", "hard") == "hard"]
 
 
 def main() -> int:
@@ -94,13 +111,18 @@ def main() -> int:
     ap.add_argument("--json", action="store_true")
     args = ap.parse_args()
     flags = check_all(Path(args.data_root))
+    hard = hard_flags(flags)
+    soft = [f for f in flags if f.get("severity") == "soft"]
     if args.json:
         print(json.dumps(flags, ensure_ascii=False, indent=2))
     else:
-        for fl in flags:
-            print(f"  ⚠ {fl['moment_id']:24} {fl['element']:14} {fl['pattern']:26} {fl['text']}")
-        print(f"\n{'PASS — no gross element-pattern flags' if not flags else f'FAIL — {len(flags)} flag(s)'}")
-    return 1 if flags else 0
+        for fl in hard:
+            print(f"  ⚠ HARD {fl['moment_id']:24} {fl['element']:14} {fl['pattern']:26} {fl['text']}")
+        for fl in soft:
+            print(f"  · soft {fl['moment_id']:24} {fl['element']:14} {fl['pattern']:26} {fl['text']}")
+        print(f"\n{'PASS — no gross element-pattern flags' if not hard else f'FAIL — {len(hard)} hard flag(s)'}"
+              f"{f' (+{len(soft)} soft craft hint(s))' if soft else ''}")
+    return 1 if hard else 0
 
 
 if __name__ == "__main__":

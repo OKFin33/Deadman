@@ -76,7 +76,15 @@ frontend/android/app/src/main/assets/public/
 /PUBLICATION_REVIEW.md
 /docs/
 /data/evals/
-/data/review/
+# /data/review/ stays local EXCEPT the load-bearing production-graph inputs below (P0-B). Git cannot
+# re-include a file once its parent DIR is excluded, so ignore the review CONTENTS (/*) rather than the
+# dir itself, then re-include the committed inputs the context-grounding loaders are fail-closed on.
+# See docs/context/agentic-production-graph-contract.md P0-B.
+/data/review/*
+!/data/review/context_memory/
+/data/review/context_memory/*
+!/data/review/context_memory/*.v0.1.json
+!/data/review/drama_synopses.v0.1.json
 
 # Studio console covers = drama keyframes (local demo only)
 /studio/assets/covers/
@@ -86,3 +94,7 @@ frontend/android/app/src/main/assets/public/
 
 # Producer local media-path sidecar (keeps machine paths out of the public registry; local only)
 /data/dramas/*/media_local.v0.1.json
+
+# auto-generated Studio upload dramas (drama_<random>) are throwaway local artifacts — never commit
+/data/dramas/drama_*/
+/data/review/context_memory/drama_*.v0.1.json

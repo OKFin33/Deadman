@@ -1,0 +1,27 @@
+{
+  "schema_version": "deadman_media_registry.v0.1",
+  "drama_id": "live_e2e_yunmiao4_final",
+  "title": "云渺E2E最终样片",
+  "generated_at": "2026-06-11T02:47:07.571042+00:00",
+  "media_policy": {
+    "raw_media_storage": "local_ignored_path_only",
+    "runtime_video_url": "deployment_slot_or_dev_operator_supplied_asset; raw MP4 is not committed",
+    "producer_media": "local path, checksum, and size are producer-only metadata"
+  },
+  "episode_count": 1,
+  "episodes": [
+    {
+      "episode_id": "live_e2e_yunmiao4_final_ep01",
+      "title": "第1集",
+      "runtime_video_url": "/api/deadman/media/live_e2e_yunmiao4_final/live_e2e_yunmiao4_final_ep01.mp4",
+      "duration_seconds": 103.957,
+      "width": 1080,
+      "height": 1920,
+      "video_codec": "h264",
+      "audio_codec": "aac",
+      "fps": "50/1",
+      "status": "registered"
+    }
+  ],
+  "registered_count": 1
+}

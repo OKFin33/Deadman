@@ -444,7 +444,7 @@ describe("Deadman standalone app", () => {
     render(<App />);
 
     expect(screen.getByRole("main", { name: "看剧搭子短剧目录" })).toBeInTheDocument();
-    await user.click(await screen.findByRole("button", { name: "进入" }));
+    await user.click(await screen.findByRole("button", { name: /进入/ }));
 
     expect(screen.getByRole("region", { name: "看剧搭子播放器" })).toBeInTheDocument();
     await waitFor(() => expect(fetchMock).toHaveBeenCalledWith("/api/deadman/dramas/huangnian/moments", expect.any(Object)));
@@ -577,7 +577,7 @@ describe("Deadman standalone app", () => {
     expect(await screen.findByLabelText("看剧搭子互动气泡")).toBeInTheDocument();
   });
 
-  it("does not reopen an expired highlight from the idle companion", async () => {
+  it("lets the idle companion reopen a missed (started-but-passed) highlight after its window", async () => {
     const user = userEvent.setup();
     stubMomentsFetch();
     window.history.replaceState({}, "", "/?branch3_player=1");
@@ -586,11 +586,51 @@ describe("Deadman standalone app", () => {
     const video = screen.getByLabelText("短剧 MP4 播放器") as HTMLVideoElement;
     await screen.findByRole("button", { name: /1:05 四蛋把兔子/ });
 
+    // The window started at 65 and ends at 85; at t=90 it has passed and the companion is idle.
+    // The viewer missed it, so the companion must stay tappable and reopen that window's interaction.
     moveVideoTo(video, 90);
+    expect(screen.getByRole("button", { name: "看剧搭子待机中" })).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "看剧搭子待机中" }));
 
-    expect(screen.queryByRole("button", { name: /四蛋该吃肉/ })).not.toBeInTheDocument();
+    expect(await screen.findByLabelText("看剧搭子互动气泡")).toBeInTheDocument();
+    expect(await screen.findByRole("button", { name: /四蛋该吃肉/ })).toBeInTheDocument();
+  });
+
+  it("auto-shows the exclaim notice when playback reaches a window, with no tap", async () => {
+    stubMomentsFetch();
+    window.history.replaceState({}, "", "/?branch3_player=1");
+    render(<App />);
+
+    const video = screen.getByLabelText("短剧 MP4 播放器") as HTMLVideoElement;
+    await screen.findByRole("button", { name: /1:05 四蛋把兔子/ });
+
+    // Idle before the window (notice_at = 65).
+    expect(screen.getByRole("button", { name: "看剧搭子待机中" })).toBeInTheDocument();
     expect(screen.queryByLabelText("看剧搭子互动气泡")).not.toBeInTheDocument();
+
+    // A plain timeupdate crossing the window auto-promotes idle → notice_exclaim (!), no tap.
+    moveVideoTo(video, 66);
+    expect(screen.getByRole("button", { name: "看剧搭子发现了一个高情绪介入点" })).toBeInTheDocument();
+    // The notice does not open the choices bubble on its own.
+    expect(screen.queryByLabelText("看剧搭子互动气泡")).not.toBeInTheDocument();
+  });
+
+  it("ignores an idle companion tap before any window has started", async () => {
+    const user = userEvent.setup();
+    stubMomentsFetch();
+    window.history.replaceState({}, "", "/?branch3_player=1");
+    render(<App />);
+
+    const video = screen.getByLabelText("短剧 MP4 播放器") as HTMLVideoElement;
+    await screen.findByRole("button", { name: /1:05 四蛋把兔子/ });
+
+    // At t=10, before the window starts at 65, the idle companion tap must be a no-op.
+    moveVideoTo(video, 10);
+    expect(screen.getByRole("button", { name: "看剧搭子待机中" })).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "看剧搭子待机中" }));
+
+    expect(screen.queryByLabelText("看剧搭子互动气泡")).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /四蛋该吃肉/ })).not.toBeInTheDocument();
   });
 
   it("keeps markers scoped to the active episode when the pack contains multiple episodes", async () => {
@@ -840,5 +880,115 @@ describe("Deadman standalone app", () => {
     expect(screen.queryByText(/^判断：/)).not.toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "重试" }));
     expect(await screen.findByText(/我接住你咯/)).toBeInTheDocument();
+  });
+});
+
+// Clean IA: server.py serves the SAME SPA index.html under /Stage, /stage, and /studio; App routes
+// ONLY by window.location.pathname (no ?studio_*=1 query gates, no /demo surface). These pin that
+// path routing: /studio→pipeline, /studio/pack-review→PackReview, /studio/dataset-review→StudioReview,
+// /Stage→viewer catalog, /Stage?branch3_player=1→player.
+describe("Deadman path-only IA routing", () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+    vi.unstubAllGlobals();
+    window.history.replaceState({}, "", "/");
+  });
+
+  it("/studio renders the React Studio pipeline (not the catalog)", async () => {
+    const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
+      const url = String(input);
+      if (url.endsWith("/api/deadman/dramas")) {
+        return jsonResponse([{ drama_id: "huangnian", title: "荒年剧" }]);
+      }
+      if (url.endsWith("/api/deadman/dramas/huangnian/moments")) {
+        return jsonResponse([makeMomentSummary()]);
+      }
+      throw new Error(`Unexpected request: ${url}`);
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    window.history.replaceState({}, "", "/studio/");
+
+    render(<App />);
+
+    expect(await screen.findByText("看剧搭子 Studio")).toBeInTheDocument();
+    expect(screen.queryByRole("main", { name: "看剧搭子短剧目录" })).not.toBeInTheDocument();
+  });
+
+  it("/studio/pack-review renders the PackReview standalone surface (not the pipeline)", async () => {
+    const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
+      const url = String(input);
+      if (url.endsWith("/api/deadman/dramas")) {
+        return jsonResponse([{ drama_id: "huangnian", title: "荒年剧" }]);
+      }
+      if (/\/api\/deadman\/dramas\/[^/]+\/moments$/.test(url)) {
+        return jsonResponse([makeMomentSummary()]);
+      }
+      if (url.includes("/api/studio/")) {
+        return jsonResponse({});
+      }
+      throw new Error(`Unexpected request: ${url}`);
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    window.history.replaceState({}, "", "/studio/pack-review/");
+
+    render(<App />);
+
+    expect(await screen.findByText("看剧搭子 · 已审包人审")).toBeInTheDocument();
+    expect(screen.queryByText("看剧搭子 Studio")).not.toBeInTheDocument();
+    expect(screen.queryByRole("main", { name: "看剧搭子短剧目录" })).not.toBeInTheDocument();
+  });
+
+  it("/studio/dataset-review renders the StudioReview dataset surface (not the pipeline)", async () => {
+    const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
+      const url = String(input);
+      if (/\/api\/deadman\/dramas\/[^/]+\/moments$/.test(url)) {
+        return jsonResponse([makeMomentSummary()]);
+      }
+      if (url.includes("/api/studio/review/labels")) {
+        return jsonResponse({});
+      }
+      throw new Error(`Unexpected request: ${url}`);
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    window.history.replaceState({}, "", "/studio/dataset-review");
+
+    render(<App />);
+
+    expect(await screen.findByText("看剧搭子 · 人审")).toBeInTheDocument();
+    expect(screen.queryByText("看剧搭子 Studio")).not.toBeInTheDocument();
+    expect(screen.queryByRole("main", { name: "看剧搭子短剧目录" })).not.toBeInTheDocument();
+  });
+
+  it("/Stage renders the viewer catalog by default", async () => {
+    const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
+      const url = String(input);
+      if (url.endsWith("/api/deadman/dramas")) {
+        return jsonResponse([{ drama_id: "huangnian", title: "荒年剧", moment_count: 5 }]);
+      }
+      if (url.endsWith("/api/deadman/dramas/huangnian/moments")) {
+        return jsonResponse([makeMomentSummary()]);
+      }
+      throw new Error(`Unexpected request: ${url}`);
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    window.history.replaceState({}, "", "/Stage/");
+
+    render(<App />);
+
+    expect(await screen.findByRole("main", { name: "看剧搭子短剧目录" })).toBeInTheDocument();
+    expect(screen.queryByText("看剧搭子 Studio")).not.toBeInTheDocument();
+  });
+
+  it("/Stage with ?branch3_player=1 deep-link opens the player directly (Studio publish target)", async () => {
+    const fetchMock = stubMomentsFetch();
+    window.history.replaceState({}, "", "/Stage/?branch3_player=1&seek=66");
+
+    render(<App />);
+
+    expect(screen.getByRole("region", { name: "看剧搭子播放器" })).toBeInTheDocument();
+    await waitFor(() =>
+      expect(fetchMock).toHaveBeenCalledWith("/api/deadman/dramas/huangnian/moments", expect.any(Object)),
+    );
+    expect(await screen.findByRole("button", { name: /1:05 四蛋把兔子/ })).toBeInTheDocument();
   });
 });

@@ -1,0 +1,586 @@
+{
+  "schema_version": "scene_context.v0.1",
+  "drama_id": "huangnian",
+  "scene_context": {
+    "huangnian_ep12_m001": {
+      "l0_canon": {
+        "premise": "程弯弯一觉醒来，竟穿越到古代大河村，成了三十三岁的农妇。四个儿子跪在床前唤娘，儿媳更是身怀六甲，母胎单身三十三年的她，直接升级成了奶奶。她不仅要费心管教四个儿子，还接连遭遇蝗灾、旱灾、雪灾等重重天灾。好在她意外拥有交易商城，凭借商城物资，她定下两个目标：一是带领全家平安度过荒年，二是在古代活出属于自己的精彩人生。",
+        "protagonist": {
+          "name": "程弯弯",
+          "role": "modern entrepreneur transmigrated into an ancient-famine widow raising four children",
+          "capabilities": [
+            {
+              "claim": "survival planning, household/resource decision-making, and gradual trust repair",
+              "evidence_ids": [
+                "DCP-EV-SUMMARY-001",
+                "DCP-EV-NODE-001",
+                "DCP-EV-NODE-002"
+              ],
+              "confidence": "medium"
+            },
+            {
+              "claim": "access to a survival system / hidden resource advantage",
+              "evidence_ids": [
+                "DCP-EV-SUMMARY-001",
+                "DCP-EV-NODE-003",
+                "DCP-EV-NODE-005"
+              ],
+              "confidence": "medium"
+            }
+          ],
+          "limits": [
+            {
+              "claim": "cannot publicly over-explain the system or create unlimited resources without suspicion",
+              "evidence_ids": [
+                "DCP-EV-NODE-003",
+                "DCP-EV-NODE-005",
+                "DCP-EV-INFERENCE-001"
+              ],
+              "confidence": "high"
+            },
+            {
+              "claim": "family and village trust changes must be gradual and scene-local in P0",
+              "evidence_ids": [
+                "DCP-EV-NODE-001",
+                "DCP-EV-NODE-004",
+                "DCP-EV-INFERENCE-001"
+              ],
+              "confidence": "medium"
+            }
+          ]
+        }
+      },
+      "l1": {
+        "whats_happening": "四蛋刚说出自己不敢奢望分到兔肉、只闻肉香就满足的话，紧接着主动表态自己会完整剥下兔皮，要给娘程弯弯做围脖，把抓到野兔的第一份心意先给到长辈",
+        "audience_already_knows": "观众此前已经知晓当下正处荒年粮食极度紧缺，四蛋意外抓到了一只野兔，全家已经整整一年没吃过肉，四蛋原本完全没觉得自己能分到哪怕一口兔肉，也清楚程弯弯不能随意暴露特殊资源免得引来全村人的猜忌和争抢",
+        "relationship_state": "四蛋对程弯弯仍带着过去长期缺爱留下的小心翼翼的不安，此刻正用自己能想到的最好的方式讨好娘，母子间的信任正在逐步累加，还未达到完全毫无隔阂的状态",
+        "grounding_note": "后续生成看剧搭子的陪伴话术时要贴合四蛋软萌懂事的状态，不能出现不符合当前剧情的揭秘类表述，也不要提前剧透后续程弯弯分配兔肉的相关操作"
+      },
+      "l3_series_spine": [
+        {
+          "episode": "huangnian_ep01",
+          "summary": "33岁未婚的职场精英陈安安意外遭遇事故穿越到古代大河村，醒来后发现自己成了四个儿子的母亲程弯弯。"
+        },
+        {
+          "episode": "huangnian_ep02",
+          "summary": "程弯弯穿越到荒年的大河村，顶替原身成为有四个儿子和孕媳的农妇，得知原身过往恶行后决心好好照料家人，面对家中仅剩的野菜口粮，意外发现了天然野蕨菜。"
+        },
+        {
+          "episode": "huangnian_ep03",
+          "summary": "程弯弯穿越后觉醒交易系统，刚被儿子们误会要把家里仅剩的野菜送去给曾打伤自己的白眼狼大舅，儿子们争执后决定上山再找食物，怀孕的儿媳慧娘还在背地里抱怨程弯弯。"
+        },
+        {
+          "episode": "huangnian_ep04",
+          "summary": "程弯弯确认自己拥有可通过售卖野菜换取铜钱采购物资的交易商城，随后撞见邻居赵大嫂子被村民诬陷偷稻子，她出面解围并反将质疑的村民一军。"
+        },
+        {
+          "episode": "huangnian_ep05",
+          "summary": "程弯弯撞见四个儿子打算瞒着自己上山挖野菜，直接拿出大米打消了家人的顾虑，此前泼辣的赵大嫂子上门借粮遭拒，村民们都对她突然示弱的举动感到诧异。"
+        },
+        {
+          "episode": "huangnian_ep06",
+          "summary": "程弯弯拿出白米向家人坦白自己此前被大舅砸破脑袋的遭遇，一改往日偏袒娘家的态度，强硬要求全家将珍贵的白米全部煮熟食用，彻底扭转了此前儿媳和儿子们对她的固有印象。"
+        },
+        {
+          "episode": "huangnian_ep07",
+          "summary": "程弯弯穿越后一改原主苛待怀孕儿媳的做派，制止了四个儿子冲动去程家讨要被大舅拿走的二十两抚恤银的计划，儿子们私下仍在暗自筹谋后续行动。"
+        },
+        {
+          "episode": "huangnian_ep08",
+          "summary": "程弯弯召集全家分配当日任务，带着四蛋和怀有身孕的慧娘上山挖野菜，靠系统识别出大量可售卖的野生菌，四蛋因得到程弯弯的夸赞满心欢喜，最后四蛋意外发现了野兔。"
+        },
+        {
+          "episode": "huangnian_ep09",
+          "summary": "程弯弯通过系统售卖黑牛肝菌凑够了买百斤大米的钱，却撞见自家四蛋和其他孩子因争抢猎物起冲突，对方还出言嘲讽程弯弯偏心外人，冲突即将升级时有人出声喝止。"
+        },
+        {
+          "episode": "huangnian_ep10",
+          "summary": "程弯弯撞见自家四儿子抓的兔子被偏心的亲戚抢夺，一改原身往日的软弱偏心作风，出手教训了对方并明确告诉孩子被欺负时可以还手，自己会做他的后盾。"
+        },
+        {
+          "episode": "huangnian_ep11",
+          "summary": "程弯弯一家抓到一只野兔，小儿子舍不得吃想将兔子当宠物养，程弯弯发现可将野兔在系统商城置换更大的家兔，同时她贴心提醒身怀六甲的儿媳行动慢些、别再上山，让儿媳倍感意外。"
+        }
+      ],
+      "l2_recent_events": [
+        {
+          "episode": "huangnian_ep10",
+          "events": [
+            "程弯弯撞见家中晚辈因争抢四蛋抓到的兔子发生争执，对方仗着原身往日的偏心蛮横耍赖，还直呼程弯弯的名字逼她帮忙收拾四蛋。",
+            "程弯弯没有偏袒闹事的晚辈，直接出手教训了对方。",
+            "程弯弯勒令闹事者放下属于四蛋的兔子。",
+            "程弯弯安抚受委屈的四蛋，告诉他以后被人欺负可以直接打回去，自己会做他坚实的后盾。"
+          ]
+        },
+        {
+          "episode": "huangnian_ep11",
+          "events": [
+            "小儿子四蛋因抓到的野兔要被宰杀而闷闷不乐，坦言自己想把可爱的兔子当朋友饲养，不愿吃掉它。",
+            "程弯弯触发系统提示，得知抓到的一斤八两野生粗毛兔可售卖换钱，对比发现用这只野兔能置换商城养殖场里一只八九斤的家兔。",
+            "程弯弯顾及四蛋正盯着兔肉出神，暂时没有选择将野兔置换。",
+            "程弯弯留意到身怀六甲的儿媳行动不稳，连忙出声提醒她小心慢行，叮嘱她之后不要再上山。",
+            "儿媳十分意外，感慨婆婆程弯弯真的彻底转了性子，居然会主动关心自己。"
+          ]
+        }
+      ],
+      "prior_window_asr": [
+        "啊！哦！",
+        "四蛋抓了只兔子，今天晚上咱吃兔肉。",
+        "啊，太好了！",
+        "咱们家一年都没有吃过肉了，虽然肯定没有我的份，不过只要能闻着兔肉香味，吃野菜糊糊那也是好的。"
+      ],
+      "knowledge_horizon": "You know the show ONLY up to huangnian_ep12 ~10s. Never reference, hint at, or 'reveal' anything that happens later."
+    },
+    "huangnian_ep07_m001": {
+      "l0_canon": {
+        "premise": "程弯弯一觉醒来，竟穿越到古代大河村，成了三十三岁的农妇。四个儿子跪在床前唤娘，儿媳更是身怀六甲，母胎单身三十三年的她，直接升级成了奶奶。她不仅要费心管教四个儿子，还接连遭遇蝗灾、旱灾、雪灾等重重天灾。好在她意外拥有交易商城，凭借商城物资，她定下两个目标：一是带领全家平安度过荒年，二是在古代活出属于自己的精彩人生。",
+        "protagonist": {
+          "name": "程弯弯",
+          "role": "modern entrepreneur transmigrated into an ancient-famine widow raising four children",
+          "capabilities": [
+            {
+              "claim": "survival planning, household/resource decision-making, and gradual trust repair",
+              "evidence_ids": [
+                "DCP-EV-SUMMARY-001",
+                "DCP-EV-NODE-001",
+                "DCP-EV-NODE-002"
+              ],
+              "confidence": "medium"
+            },
+            {
+              "claim": "access to a survival system / hidden resource advantage",
+              "evidence_ids": [
+                "DCP-EV-SUMMARY-001",
+                "DCP-EV-NODE-003",
+                "DCP-EV-NODE-005"
+              ],
+              "confidence": "medium"
+            }
+          ],
+          "limits": [
+            {
+              "claim": "cannot publicly over-explain the system or create unlimited resources without suspicion",
+              "evidence_ids": [
+                "DCP-EV-NODE-003",
+                "DCP-EV-NODE-005",
+                "DCP-EV-INFERENCE-001"
+              ],
+              "confidence": "high"
+            },
+            {
+              "claim": "family and village trust changes must be gradual and scene-local in P0",
+              "evidence_ids": [
+                "DCP-EV-NODE-001",
+                "DCP-EV-NODE-004",
+                "DCP-EV-INFERENCE-001"
+              ],
+              "confidence": "medium"
+            }
+          ]
+        }
+      },
+      "l1": {
+        "whats_happening": "刚魂穿过来的程弯弯吐槽完原主苛待同为女性的怀孕儿媳的恶行，立刻推翻了原主此前放出来的要儿媳下跪、不准上桌吃饭只能吃脏差食物的命令，一改恶婆婆的刻薄姿态，被吓懵的怀孕儿媳还没反应过来，战战兢兢连忙应声表示自己不敢违逆。",
+        "audience_already_knows": "观众已经知道程弯弯是现代穿越到古代荒年的，刚一睁眼就承接了原主的全部记忆，清楚原主此前是出了名的恶婆婆，前一刻还在对着怀孕儿媳放狠话百般刁难，也明确知晓程弯弯持有隐藏的交易系统，绝对不能随意外露富余物资，否则会引来村邻的猜忌和争抢。",
+        "relationship_state": "当前程弯弯和家中成员的信任基础几乎为零，怀孕儿媳对她充满本能的恐惧，完全摸不准这个素来刻薄的婆婆突然转变态度的意图，双方地位极度不对等，儿媳全程处于高度戒备的状态。",
+        "grounding_note": "后续生成看剧搭子的陪伴话术时，不能设定程弯弯已经快速获得全家信任，要贴合当下她刚穿来、家人仍对她满心惧怕的状态，不要提前剧透后续拿出富余物资的相关剧情。"
+      },
+      "l3_series_spine": [
+        {
+          "episode": "huangnian_ep01",
+          "summary": "33岁未婚的职场精英陈安安意外遭遇事故穿越到古代大河村，醒来后发现自己成了四个儿子的母亲程弯弯。"
+        },
+        {
+          "episode": "huangnian_ep02",
+          "summary": "程弯弯穿越到荒年的大河村，顶替原身成为有四个儿子和孕媳的农妇，得知原身过往恶行后决心好好照料家人，面对家中仅剩的野菜口粮，意外发现了天然野蕨菜。"
+        },
+        {
+          "episode": "huangnian_ep03",
+          "summary": "程弯弯穿越后觉醒交易系统，刚被儿子们误会要把家里仅剩的野菜送去给曾打伤自己的白眼狼大舅，儿子们争执后决定上山再找食物，怀孕的儿媳慧娘还在背地里抱怨程弯弯。"
+        },
+        {
+          "episode": "huangnian_ep04",
+          "summary": "程弯弯确认自己拥有可通过售卖野菜换取铜钱采购物资的交易商城，随后撞见邻居赵大嫂子被村民诬陷偷稻子，她出面解围并反将质疑的村民一军。"
+        },
+        {
+          "episode": "huangnian_ep05",
+          "summary": "程弯弯撞见四个儿子打算瞒着自己上山挖野菜，直接拿出大米打消了家人的顾虑，此前泼辣的赵大嫂子上门借粮遭拒，村民们都对她突然示弱的举动感到诧异。"
+        },
+        {
+          "episode": "huangnian_ep06",
+          "summary": "程弯弯拿出白米向家人坦白自己此前被大舅砸破脑袋的遭遇，一改往日偏袒娘家的态度，强硬要求全家将珍贵的白米全部煮熟食用，彻底扭转了此前儿媳和儿子们对她的固有印象。"
+        }
+      ],
+      "l2_recent_events": [
+        {
+          "episode": "huangnian_ep05",
+          "events": [
+            "村民们议论一向泼辣刻薄的赵大嫂子突然上门示弱借粮，纷纷表示荒年绝不肯借出粮食，直接将前来借粮的人骂走。",
+            "程弯弯的几个儿子私下商量，打算瞒着母亲上山挖野菜，还叮嘱同伴回家后谎称已经上山干活，不让程弯弯担心。",
+            "程弯弯提前返家，撞破儿子们的打算，当面质问他们挖回来的野菜去向。",
+            "儿子们试图用野菜坏了已经扔掉的说辞蒙混过关，被旁人当场戳穿是把野菜偷偷送了人。",
+            "程弯弯制止了家人的争执，直接拿出备好的大米，告诉孩子们自己已经准备好口粮，不用再赶在太阳下山前上山挖野菜。"
+          ]
+        },
+        {
+          "episode": "huangnian_ep06",
+          "events": [
+            "程弯弯的家人发现她拿出了荒年里极为罕见的白米，纷纷好奇白米的来源。",
+            "程弯弯向儿子儿媳诉说自己此前多年一直补贴娘家，走投无路去投奔大舅时反而被对方砸破脑袋的遭遇，彻底对娘家死心。",
+            "儿子儿媳舍不得直接吃掉白米，提出一斤白米可以换四五斤素米，换粮后全家能撑半个月不用挨饿。",
+            "程弯弯一改往日偏袒娘家的温和态度，用强硬的语气命令儿媳慧娘把所有白米全部煮熟，不许旁人质疑。",
+            "儿子儿媳纷纷猜测程弯弯是受了刺激，或是打算让全家吃饱后去程家讨债。",
+            "家中的晚辈提起程弯弯此前定下的规矩，称自己之前被要求不能上桌，只能吃最脏最难吃的东西。"
+          ]
+        }
+      ],
+      "prior_window_asr": [
+        "慢着！谁让你坐了？跪下！",
+        "别以为你现在怀孕了翅膀就硬了，我告诉你，在这个家。",
+        "你是地位最低，你根本就不配上桌吃饭，只能吃最难吃最脏的东西，不然就给我饿着。",
+        "儿子知道了。",
+        "原神真是造孽，同样是女人，何苦为难女人。"
+      ],
+      "knowledge_horizon": "You know the show ONLY up to huangnian_ep07 ~30s. Never reference, hint at, or 'reveal' anything that happens later."
+    },
+    "huangnian_ep03_m001": {
+      "l0_canon": {
+        "premise": "程弯弯一觉醒来，竟穿越到古代大河村，成了三十三岁的农妇。四个儿子跪在床前唤娘，儿媳更是身怀六甲，母胎单身三十三年的她，直接升级成了奶奶。她不仅要费心管教四个儿子，还接连遭遇蝗灾、旱灾、雪灾等重重天灾。好在她意外拥有交易商城，凭借商城物资，她定下两个目标：一是带领全家平安度过荒年，二是在古代活出属于自己的精彩人生。",
+        "protagonist": {
+          "name": "程弯弯",
+          "role": "modern entrepreneur transmigrated into an ancient-famine widow raising four children",
+          "capabilities": [
+            {
+              "claim": "survival planning, household/resource decision-making, and gradual trust repair",
+              "evidence_ids": [
+                "DCP-EV-SUMMARY-001",
+                "DCP-EV-NODE-001",
+                "DCP-EV-NODE-002"
+              ],
+              "confidence": "medium"
+            },
+            {
+              "claim": "access to a survival system / hidden resource advantage",
+              "evidence_ids": [
+                "DCP-EV-SUMMARY-001",
+                "DCP-EV-NODE-003",
+                "DCP-EV-NODE-005"
+              ],
+              "confidence": "medium"
+            }
+          ],
+          "limits": [
+            {
+              "claim": "cannot publicly over-explain the system or create unlimited resources without suspicion",
+              "evidence_ids": [
+                "DCP-EV-NODE-003",
+                "DCP-EV-NODE-005",
+                "DCP-EV-INFERENCE-001"
+              ],
+              "confidence": "high"
+            },
+            {
+              "claim": "family and village trust changes must be gradual and scene-local in P0",
+              "evidence_ids": [
+                "DCP-EV-NODE-001",
+                "DCP-EV-NODE-004",
+                "DCP-EV-INFERENCE-001"
+              ],
+              "confidence": "medium"
+            }
+          ]
+        }
+      },
+      "l1": {
+        "whats_happening": "刚确认自己绑定了交易系统的程弯弯，正打算把变质的野菜拿出门测试系统售卖功能，却被儿子当场拦住，儿子误以为她又要把家里仅剩的最后一点食物送去补贴偏心的程家，程弯弯慌忙辩解却根本得不到儿子的信任，双方正处在僵持对峙的状态。",
+        "audience_already_knows": "观众已经明确知道程弯弯刚穿越到荒年的大河村，意外激活了只有自己能看见的交易系统，眼下家里已经濒临断粮，原主此前长期偏心娘家、屡次把家里的救命粮送过去，在孩子们心里已经留下了根深蒂固的糟糕印象。",
+        "relationship_state": "程弯弯和自家孩子的信任值处于冰点，孩子们对她的所有说辞都本能抱有强烈的怀疑，当前场景还没有村邻外人介入，属于家庭内部积压已久的矛盾当场爆发的状态。",
+        "grounding_note": "后续生成看剧搭子互动内容时，要紧扣程弯弯空有系统却没法解释、越描越黑的尴尬处境，不能提前泄露后续系统变现的剧情，贴合当下母子互不信任的情绪点。"
+      },
+      "l3_series_spine": [
+        {
+          "episode": "huangnian_ep01",
+          "summary": "33岁未婚的职场精英陈安安意外遭遇事故穿越到古代大河村，醒来后发现自己成了四个儿子的母亲程弯弯。"
+        },
+        {
+          "episode": "huangnian_ep02",
+          "summary": "程弯弯穿越到荒年的大河村，顶替原身成为有四个儿子和孕媳的农妇，得知原身过往恶行后决心好好照料家人，面对家中仅剩的野菜口粮，意外发现了天然野蕨菜。"
+        }
+      ],
+      "l2_recent_events": [
+        {
+          "episode": "huangnian_ep01",
+          "events": [
+            "职场上众人簇拥着刚完成上市相关事宜的程总、沈总，记者接连向二人抛出提问。",
+            "33岁未婚的陈安安自述人生目标，正准备揭晓公司上市后要做的第一件事时突发意外。",
+            "陈安安在一片混乱的呼喊中失去意识，醒来后发现四个青年跪在床边唤她娘。",
+            "刚苏醒的程弯弯（原身）的儿子们得知母亲醒转，当即要冲去找欺负原身的程娟一行人报仇。",
+            "大儿子出面阻拦冲动的弟弟们，提醒他们原身往日极度偏袒娘家，贸然前去只会再遭原身责罚。",
+            "程弯弯喝止了准备出门报仇的几个儿子，终于反应过来自己已经穿越到了古代大河村，成了农妇程弯弯。"
+          ]
+        },
+        {
+          "episode": "huangnian_ep02",
+          "events": [
+            "程弯弯穿越后得知自己穿成了原本身为尖酸刻薄懒怠婆婆的三十三岁农妇，上有公婆下有四个孝顺儿子和身怀六甲的儿媳。",
+            "原身曾独吞丈夫的战死恤银贴补娘家，去程家讨粮时反被娘家翻脸赶出门，此前还动辄打骂亲儿子儿媳。",
+            "程弯弯下定决心既来之则安之，要替原身好好照顾家人、在荒年活下去。",
+            "儿媳把仅有的野菜糊糊端给程弯弯，却因原身此前的恶劣行径被吓得连连认错。",
+            "程弯弯没有动怒，让孩子们把野菜糊糊分着吃掉，一家人难得吃了顿饱饭。",
+            "程弯弯意识到大河村接连遭遇蝗灾、旱灾，全家仅剩的野菜根本不够六口人加未出世的孩子果腹。",
+            "程弯弯意外发现了天然无污染的野蕨菜。"
+          ]
+        }
+      ],
+      "prior_window_asr": [
+        "天然无污染野蕨菜一斤价值十文钱，是否售卖？呵，这是系统？",
+        "娘，您在灶台干什么？",
+        "这个面板只有我能看见，我得找个地方试验一下系统的功能。",
+        "啊，这野菜坏了，我拿出去扔了。娘！",
+        "你是不是又要去大舅家？",
+        "这些野菜是我跟弟弟们挖了一天才挖来的，这已经是家里最后一点吃的了，再把这些送走，我们我们真的会饿死的。",
+        "娘！",
+        "娘！",
+        "这程弯弯的人设，未免也太深入人心了。"
+      ],
+      "knowledge_horizon": "You know the show ONLY up to huangnian_ep03 ~37s. Never reference, hint at, or 'reveal' anything that happens later."
+    },
+    "huangnian_ep04_m001": {
+      "l0_canon": {
+        "premise": "程弯弯一觉醒来，竟穿越到古代大河村，成了三十三岁的农妇。四个儿子跪在床前唤娘，儿媳更是身怀六甲，母胎单身三十三年的她，直接升级成了奶奶。她不仅要费心管教四个儿子，还接连遭遇蝗灾、旱灾、雪灾等重重天灾。好在她意外拥有交易商城，凭借商城物资，她定下两个目标：一是带领全家平安度过荒年，二是在古代活出属于自己的精彩人生。",
+        "protagonist": {
+          "name": "程弯弯",
+          "role": "modern entrepreneur transmigrated into an ancient-famine widow raising four children",
+          "capabilities": [
+            {
+              "claim": "survival planning, household/resource decision-making, and gradual trust repair",
+              "evidence_ids": [
+                "DCP-EV-SUMMARY-001",
+                "DCP-EV-NODE-001",
+                "DCP-EV-NODE-002"
+              ],
+              "confidence": "medium"
+            },
+            {
+              "claim": "access to a survival system / hidden resource advantage",
+              "evidence_ids": [
+                "DCP-EV-SUMMARY-001",
+                "DCP-EV-NODE-003",
+                "DCP-EV-NODE-005"
+              ],
+              "confidence": "medium"
+            }
+          ],
+          "limits": [
+            {
+              "claim": "cannot publicly over-explain the system or create unlimited resources without suspicion",
+              "evidence_ids": [
+                "DCP-EV-NODE-003",
+                "DCP-EV-NODE-005",
+                "DCP-EV-INFERENCE-001"
+              ],
+              "confidence": "high"
+            },
+            {
+              "claim": "family and village trust changes must be gradual and scene-local in P0",
+              "evidence_ids": [
+                "DCP-EV-NODE-001",
+                "DCP-EV-NODE-004",
+                "DCP-EV-INFERENCE-001"
+              ],
+              "confidence": "medium"
+            }
+          ]
+        }
+      },
+      "l1": {
+        "whats_happening": "围观抓偷稻村民的村邻们越说越刻薄，当众恶意造谣守寡的赵大嫂子不守妇道哄笑成一团，站在一旁的程弯弯瞬间反应过来，原主的坏名声不止局限在自家，整个村子里所有人对原主的印象都极差",
+        "audience_already_knows": "观众此前已经明确知道程弯弯刚穿越到闹灾荒的大河村，刚激活了可将野菜兑换成铜钱、再用铜钱采购生存物资的交易系统，正盘算着靠挖野菜攒资源渡荒，刚撞见村邻当场抓偷稻子的赵大嫂子，此前只察觉到原主在家中口碑不好",
+        "relationship_state": "在场的村邻对有偷摸行为的寡妇群体充满偏见与恶意，毫无信任可言，刚占据原主身份的程弯弯还没和村里任何人建立正向联结，直接撞上了全村对原主的负面舆论高压",
+        "grounding_note": "本条陪伴内容要锚定程弯弯刚发现原主全村口碑彻底烂掉的错愕感，不能提前剧透后续她靠物资扭转村人印象的剧情，不要制造不存在的新揭秘效果"
+      },
+      "l3_series_spine": [
+        {
+          "episode": "huangnian_ep01",
+          "summary": "33岁未婚的职场精英陈安安意外遭遇事故穿越到古代大河村，醒来后发现自己成了四个儿子的母亲程弯弯。"
+        },
+        {
+          "episode": "huangnian_ep02",
+          "summary": "程弯弯穿越到荒年的大河村，顶替原身成为有四个儿子和孕媳的农妇，得知原身过往恶行后决心好好照料家人，面对家中仅剩的野菜口粮，意外发现了天然野蕨菜。"
+        },
+        {
+          "episode": "huangnian_ep03",
+          "summary": "程弯弯穿越后觉醒交易系统，刚被儿子们误会要把家里仅剩的野菜送去给曾打伤自己的白眼狼大舅，儿子们争执后决定上山再找食物，怀孕的儿媳慧娘还在背地里抱怨程弯弯。"
+        }
+      ],
+      "l2_recent_events": [
+        {
+          "episode": "huangnian_ep02",
+          "events": [
+            "程弯弯穿越后得知自己穿成了原本身为尖酸刻薄懒怠婆婆的三十三岁农妇，上有公婆下有四个孝顺儿子和身怀六甲的儿媳。",
+            "原身曾独吞丈夫的战死恤银贴补娘家，去程家讨粮时反被娘家翻脸赶出门，此前还动辄打骂亲儿子儿媳。",
+            "程弯弯下定决心既来之则安之，要替原身好好照顾家人、在荒年活下去。",
+            "儿媳把仅有的野菜糊糊端给程弯弯，却因原身此前的恶劣行径被吓得连连认错。",
+            "程弯弯没有动怒，让孩子们把野菜糊糊分着吃掉，一家人难得吃了顿饱饭。",
+            "程弯弯意识到大河村接连遭遇蝗灾、旱灾，全家仅剩的野菜根本不够六口人加未出世的孩子果腹。",
+            "程弯弯意外发现了天然无污染的野蕨菜。"
+          ]
+        },
+        {
+          "episode": "huangnian_ep03",
+          "events": [
+            "程弯弯刚确认自己觉醒了能售卖野蕨菜换钱的交易系统，打算找地方测试系统功能。",
+            "大儿子撞见程弯弯拿野菜，误以为她又要把家里最后一点存粮送去给曾打破她脑袋的大舅，带着几个弟弟跪地哀求阻拦。",
+            "程弯弯连忙解释自己不是要把野菜送去程家，心里感慨原身之前的伏等人设太过深入人心。",
+            "几个儿子根本不信程弯弯的解释，直言大舅是喂不熟的白眼狼，程弯弯还佯装发怒要揍他们顺坡下台阶。",
+            "几个儿子发现家里彻底断粮，大哥安排二弟三弟带篓子趁天没黑上山挖野菜，留四弟在家照看受伤未愈的程弯弯和怀孕的慧娘。",
+            "慧娘私下抱怨程弯弯被打破头还向着娘家、根本不把家里人当回事，还吐槽之前程弯弯给他们吃的野菜糊没安好心，被四弟厉声制止不许说娘的坏话。"
+          ]
+        }
+      ],
+      "prior_window_asr": [
+        "啊！",
+        "竟然是真的！",
+        "这是某宝商城？",
+        "啊！",
+        "哦，原来如此。",
+        "我挖野菜再换成铜钱，然后再用铜钱在这个商城里买东西。",
+        "太好了，有了这个系统，无论如何都不会饿死了。",
+        "嘿！",
+        "发现天然无污染苦苣菜。",
+        "这稻田里的野菜也可以卖？我得多挖点野菜换钱。",
+        "这哪个短阳寿的，敢偷老娘家的稻子！",
+        "呦，这不是我邻居赵大嫂子吗？",
+        "哎，大家快来看，这赵大嫂子偷我们家稻子！",
+        "呦，这是偷王家的粮食，补贴自己娘家呢。",
+        "赵大嫂子越来越浑不吝了，偷鸡摸狗的事都干，还有啥事干不出？"
+      ],
+      "knowledge_horizon": "You know the show ONLY up to huangnian_ep04 ~70s. Never reference, hint at, or 'reveal' anything that happens later."
+    },
+    "huangnian_ep06_m001": {
+      "l0_canon": {
+        "premise": "程弯弯一觉醒来，竟穿越到古代大河村，成了三十三岁的农妇。四个儿子跪在床前唤娘，儿媳更是身怀六甲，母胎单身三十三年的她，直接升级成了奶奶。她不仅要费心管教四个儿子，还接连遭遇蝗灾、旱灾、雪灾等重重天灾。好在她意外拥有交易商城，凭借商城物资，她定下两个目标：一是带领全家平安度过荒年，二是在古代活出属于自己的精彩人生。",
+        "protagonist": {
+          "name": "程弯弯",
+          "role": "modern entrepreneur transmigrated into an ancient-famine widow raising four children",
+          "capabilities": [
+            {
+              "claim": "survival planning, household/resource decision-making, and gradual trust repair",
+              "evidence_ids": [
+                "DCP-EV-SUMMARY-001",
+                "DCP-EV-NODE-001",
+                "DCP-EV-NODE-002"
+              ],
+              "confidence": "medium"
+            },
+            {
+              "claim": "access to a survival system / hidden resource advantage",
+              "evidence_ids": [
+                "DCP-EV-SUMMARY-001",
+                "DCP-EV-NODE-003",
+                "DCP-EV-NODE-005"
+              ],
+              "confidence": "medium"
+            }
+          ],
+          "limits": [
+            {
+              "claim": "cannot publicly over-explain the system or create unlimited resources without suspicion",
+              "evidence_ids": [
+                "DCP-EV-NODE-003",
+                "DCP-EV-NODE-005",
+                "DCP-EV-INFERENCE-001"
+              ],
+              "confidence": "high"
+            },
+            {
+              "claim": "family and village trust changes must be gradual and scene-local in P0",
+              "evidence_ids": [
+                "DCP-EV-NODE-001",
+                "DCP-EV-NODE-004",
+                "DCP-EV-INFERENCE-001"
+              ],
+              "confidence": "medium"
+            }
+          ]
+        }
+      },
+      "l1": {
+        "whats_happening": "程弯弯刚拿出此前谎称要孝敬姥姥的白米，吩咐怀有身孕的儿媳慧娘直接把米煮了，在场的两个儿子立刻提出反对，点明眼下全村每户一天只吃一顿，家里刚吃过野菜糊糊，这一斤白米拿去交换能换四五斤粗粮，直接煮来吃太浪费。",
+        "audience_already_knows": "观众此前已经知晓程弯弯穿越过来后过去一直偏帮娘家，多年来给娘家贴补了不少钱粮，此前走投无路去找大舅借粮反而被打破头，她已经彻底对娘家死心，也清楚不明来源的粮食容易引来猜忌，几个儿子对她突然拿出白米的行为本就存疑，也深知荒年里白米是绝对舍不得直接食用的硬通货。",
+        "relationship_state": "程弯弯和四个儿子之间刚因为她不再偏帮娘家的举动消解了部分旧有隔阂，但孩子们对她的信任还远未完全建立，全家当下是绑定在一起要熬过大荒年的利益共同体，所有家庭成员都把粮食安全放在最高优先级，还没摸透程弯弯当下的行事逻辑。",
+        "grounding_note": "后续生成看剧搭子互动内容时要贴合荒年民众舍不得浪费精粮的普遍心态，不要提前剧透系统设定，顺着儿子们的疑惑点做生活化吐槽即可。"
+      },
+      "l3_series_spine": [
+        {
+          "episode": "huangnian_ep01",
+          "summary": "33岁未婚的职场精英陈安安意外遭遇事故穿越到古代大河村，醒来后发现自己成了四个儿子的母亲程弯弯。"
+        },
+        {
+          "episode": "huangnian_ep02",
+          "summary": "程弯弯穿越到荒年的大河村，顶替原身成为有四个儿子和孕媳的农妇，得知原身过往恶行后决心好好照料家人，面对家中仅剩的野菜口粮，意外发现了天然野蕨菜。"
+        },
+        {
+          "episode": "huangnian_ep03",
+          "summary": "程弯弯穿越后觉醒交易系统，刚被儿子们误会要把家里仅剩的野菜送去给曾打伤自己的白眼狼大舅，儿子们争执后决定上山再找食物，怀孕的儿媳慧娘还在背地里抱怨程弯弯。"
+        },
+        {
+          "episode": "huangnian_ep04",
+          "summary": "程弯弯确认自己拥有可通过售卖野菜换取铜钱采购物资的交易商城，随后撞见邻居赵大嫂子被村民诬陷偷稻子，她出面解围并反将质疑的村民一军。"
+        },
+        {
+          "episode": "huangnian_ep05",
+          "summary": "程弯弯撞见四个儿子打算瞒着自己上山挖野菜，直接拿出大米打消了家人的顾虑，此前泼辣的赵大嫂子上门借粮遭拒，村民们都对她突然示弱的举动感到诧异。"
+        }
+      ],
+      "l2_recent_events": [
+        {
+          "episode": "huangnian_ep04",
+          "events": [
+            "程弯弯确认自己绑定了类似某宝的交易商城，弄清可通过挖野菜换铜钱、再用铜钱在商城买物资的规则，打消了自己在荒年饿死的顾虑。",
+            "程弯弯发现稻田里的野菜也能售卖，当即决定多挖野菜换钱。",
+            "有村民当场抓包正在稻田里的赵大嫂子，当众叫嚷她偷自家稻子，引来其他村民围观起哄，恶意嘲讽赵大嫂子是寡妇还偷东西补贴娘家。",
+            "程弯弯意识到原主在全村的口碑极差，随即开口为赵大嫂子作证，指出她挖的是喂畜禽的小鹅菜而非稻子。",
+            "诬陷赵大嫂子的村民不肯罢休，质疑家里早已没有鸡鸭的赵大嫂子挖大量小鹅菜的动机，咬定她就是想偷稻子。",
+            "赵大嫂子顺势示弱，称挖小鹅菜是为了给家里孩子加餐，反过来挤兑一众嘲讽她的村民既然瞧不上野菜，想必家里有余粮可以借出。"
+          ]
+        },
+        {
+          "episode": "huangnian_ep05",
+          "events": [
+            "村民们议论一向泼辣刻薄的赵大嫂子突然上门示弱借粮，纷纷表示荒年绝不肯借出粮食，直接将前来借粮的人骂走。",
+            "程弯弯的几个儿子私下商量，打算瞒着母亲上山挖野菜，还叮嘱同伴回家后谎称已经上山干活，不让程弯弯担心。",
+            "程弯弯提前返家，撞破儿子们的打算，当面质问他们挖回来的野菜去向。",
+            "儿子们试图用野菜坏了已经扔掉的说辞蒙混过关，被旁人当场戳穿是把野菜偷偷送了人。",
+            "程弯弯制止了家人的争执，直接拿出备好的大米，告诉孩子们自己已经准备好口粮，不用再赶在太阳下山前上山挖野菜。"
+          ]
+        }
+      ],
+      "prior_window_asr": [
+        "哎。",
+        "哦。",
+        "哦！",
+        "真是白米！",
+        "娘，这白米哪来的？",
+        "去年蝗灾，村子里就没有谁家里还能拿得出白米啊！",
+        "怀璧其罪。",
+        "虽然这些小子心底有我这个娘。",
+        "但不怕一万就怕万一啊，还是得瞒着。",
+        "啊，这粮食是我打算孝敬你们姥姥的。",
+        "之前只知道娘会把家里的好东西拿去给大舅，没想到居然是大米这样金贵的东西。",
+        "白米是什么味道呀？",
+        "好想尝尝。",
+        "不过今天的事情让我对他们彻底死心了。",
+        "哎，这么多年来。",
+        "我给程家补贴了多少粮食银子？",
+        "如今也是日子没法过了，我才去找他借的，谁能想到却被你们大舅砸破了脑袋。",
+        "娘不是一直向着程家吗？",
+        "她这是咋了？",
+        "对呀，从前娘也被大舅打过，我们想替她讨公道，还被娘揍了呢。",
+        "他不会又打什么主意吧？",
+        "家里面已经没有什么东西了。慧娘，把这米煮了吧。煮。"
+      ],
+      "knowledge_horizon": "You know the show ONLY up to huangnian_ep06 ~70s. Never reference, hint at, or 'reveal' anything that happens later."
+    }
+  }
+}

@@ -56,6 +56,54 @@ DEFAULT_OUTPUT_PATH = REPO_ROOT / "data/evals/studio_cab_real_provider_proof.v0.
 REPORT_SCHEMA_PATH = REPO_ROOT / "data/schemas/studio_cab_real_provider_proof.v0.1.json"
 SCHEMA_VERSION = "studio_cab_real_provider_proof.v0.1"
 PRODUCT = "看剧搭子"
+
+# v0.3 taste spec (do/don't patterns) — the SAME overlay the hero author consumes, now folded into the
+# graph's authoring core so the formal pipeline authors with taste (owner 6/10: integrate hero -> graph).
+_OVERLAY_V03_PATH = REPO_ROOT / "data/datasets/studio_guidance/studio_cab_taste_overlay.v0.3.json"
+
+
+def _require_overlay(path):
+    """Fail-CLOSED (P0-B): the graph authoring core must NOT silently author without the taste spec."""
+    if not path.exists():
+        raise FileNotFoundError(
+            f"v0.3 taste overlay missing at {path} — graph authoring core is fail-closed and will not "
+            "author without the taste spec (see docs/context/dataset-rebuild-v03-contract.md).")
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+_OVERLAY_V03 = _require_overlay(_OVERLAY_V03_PATH)
+
+
+def _taste_patterns(layer: str):
+    """-> (negative_patterns, positive_patterns) for a layer from the finalized v0.3 overlay."""
+    neg = [{"pattern": n.get("pattern"), "severity": n.get("severity"),
+            "illustrative_examples": n.get("illustrative_examples", [])}
+           for n in _OVERLAY_V03.get("named_negatives", []) if n.get("layer") == layer]
+    pos = [{"pattern": n.get("pattern"), "when": n.get("when"),
+            "illustrative_examples": n.get("illustrative_examples", [])}
+           for n in _OVERLAY_V03.get("named_positives", []) if n.get("layer") == layer]
+    return neg, pos
+
+
+def _scene_context_for_case(provider: Any, guidance: dict[str, Any], case: dict[str, Any]):
+    """Build the layered scene context for a case via the shared context node (hero core).
+    Bridges the guidance case -> (drama, episode, window) so the graph authors with the same
+    knowledge-horizon context as the hero flow. Graceful: returns None on any miss."""
+    import re
+    try:
+        item_id = str(case.get("item_id", ""))
+        we = find_window_example(guidance, item_id) or {}
+        epi = we.get("episode_id") or str(case.get("episode_id", ""))
+        if not epi:
+            return None
+        drama = epi.split("_")[0]
+        m = re.match(r"\s*(\d+):(\d+)\s*-\s*(\d+):(\d+)", str(we.get("time_range", "")))
+        s, e = ((int(m.group(1)) * 60 + int(m.group(2))) * 1000,
+                (int(m.group(3)) * 60 + int(m.group(4))) * 1000) if m else (0, 10000)
+        from tools.ars.deadman_author_drama_heroes import build_scene_context
+        return build_scene_context(provider, drama, epi, s, e, drama)
+    except Exception:
+        return None
 DECISIVE_PASS_BUCKETS = {
     "expected_rejection_pass",
     "context_boundary_pass",
@@ -290,6 +338,9 @@ def assemble_proof_report(
 def run_case_stage_a(provider: Any, guidance: dict[str, Any], case: dict[str, Any]) -> dict[str, Any]:
     """Stage A authoring for one case: window + lead + viewer entries (no echo)."""
     prompt = build_stage_a_prompt(guidance, case)
+    scene_context = _scene_context_for_case(provider, guidance, case)  # context node (graceful; None on miss)
+    if scene_context:
+        prompt["scene_context"] = scene_context
     prompt_hash = sha256_json(prompt)
     try:
         result = provider.complete_case(prompt, stage_a_output_schema())
@@ -301,6 +352,7 @@ def run_case_stage_a(provider: Any, guidance: dict[str, Any], case: dict[str, An
             "payload_a": payload if isinstance(payload, dict) else {},
             "meta": meta if isinstance(meta, dict) else {},
             "prompt_hash": prompt_hash,
+            "scene_context": scene_context,  # reused by Stage B so context is built once per case
         }
     except Exception as exc:  # noqa: BLE001 - sanitized error label only
         return {
@@ -318,6 +370,7 @@ def run_case_stage_b(provider: Any, guidance: dict[str, Any], stage_a: dict[str,
     written for sibling viewers and can avoid duplicate openings/content.
     """
     case = stage_a["case"]
+    scene_context = stage_a.get("scene_context")  # reuse the context built once in Stage A
     if not stage_a.get("ok"):
         return stage_a
     payload_a = stage_a.get("payload_a", {})
@@ -346,6 +399,8 @@ def run_case_stage_b(provider: Any, guidance: dict[str, Any], stage_a: dict[str,
                 sibling_display_texts=siblings,
                 prior_echoes=list(prior_echoes),
             )
+            if scene_context:
+                echo_prompt["scene_context"] = scene_context
             echo = ""
             try:
                 echo_result = provider.complete_case(echo_prompt, stage_b_output_schema())
@@ -467,6 +522,10 @@ def build_stage_a_prompt(guidance: dict[str, Any], case: dict[str, Any]) -> dict
         "reply_examples_for_item": reply_examples,
         "rejected_lead_examples_for_item": rejected_leads,
         "rejected_reply_examples_for_item": rejected_replies,
+        "negative_lead_patterns": _taste_patterns("companion_lead")[0],
+        "positive_lead_patterns": _taste_patterns("companion_lead")[1],
+        "negative_display_patterns": _taste_patterns("display_text")[0],
+        "positive_display_patterns": _taste_patterns("display_text")[1],
         "two_layer_semantics": TWO_LAYER_SEMANTICS,
         "global_rules": [
             "For owner_gold_exchange_authoring: recommend the window and draft one companion_lead plus exactly three viewer-speech reply_candidates.",
@@ -476,6 +535,8 @@ def build_stage_a_prompt(guidance: dict[str, Any], case: dict[str, Any]) -> dict
             "Each display_text is the viewer's own about-to-say line (Layer 1). Write what the viewer wants to say, not a label or evaluation of the scene. The three display_texts must take three genuinely different viewer postures into the same beat.",
             "For each reply candidate also write viewer_motivation: one short phrase naming the posture/feeling of the viewer who would pick this exact display_text — i.e. why they would say it and what they are hoping to hear back. This is internal modeling, written plainly, and will drive Stage B.",
             "Do not reuse any display_text string that appears in the dataset's owner-reviewed rejected examples. If a prior round failed, re-author the display_text rather than holding it over.",
+            "Avoid the v0.3 failure PATTERNS in negative_lead_patterns / negative_display_patterns — each names a failure SITUATION, not a verbatim string (severity hard = never; soft_preference = lean away). AIM FOR positive_lead_patterns / positive_display_patterns when the scene matches a pattern's situation.",
+            "If scene_context is present, GROUND in its layered memory (l0_canon + l3_series_spine = story so far + l2_recent_events + prior_window_asr + whats_happening) and respect the KNOWLEDGE HORIZON — never reference or 'reveal' anything later than this window (no 原来如此/真相大白 with no real reveal). Refer to people by role/relationship/pronoun, NOT proper names (ASR mis-recognizes names).",
             "Every provider draft remains draft_not_owner_reviewed until owner review.",
         ],
         "output_contract": {
@@ -549,12 +610,16 @@ def build_stage_b_echo_prompt(
             "runtime_reviewed_style_examples": runtime_echo_examples,
             "owner_reviewed_rejected_echo_examples": rejected_echo_examples,
         },
+        "negative_echo_patterns": _taste_patterns("echo")[0],
+        "positive_echo_patterns": _taste_patterns("echo")[1],
         "echo_rules": [
             "Write selected_echo as the host replying to THIS viewer (the one who said this_viewer.display_text), not as a second comment on the scene.",
             "selected_echo must do two things: (a) acknowledge the specific point this viewer just made — answer the person, give them the 'yes I caught that' beat their viewer_motivation is hoping for; (b) extend it one notch with a concrete reason, scene detail, or related feeling that this particular viewer would want to hear.",
             "Do not merely paraphrase or restate the display_text (that reads as echo复述). Do not change topic into an independent statement that ignores this viewer (that reads as echo脱节). Owner has rejected both extremes.",
             "Do not open with the same affirmation prefix (是啊 / 对啊 / 嗯 / 对 / 可不 / 没错 / 确实) as any echo in echoes_already_written_this_case. Vary the opening or skip the affirmation when natural.",
             "Keep it short and spoken, like a friend on the couch turning to answer just this one person. Aim for about 30 Chinese characters or fewer (owner-reviewed echoes run ~21-31 chars). One breath, one beat — long echoes overshadow the viewer and create frontend display pressure.",
+            "Avoid the v0.3 echo failure PATTERNS in negative_echo_patterns; AIM FOR positive_echo_patterns — catch the viewer then extend one notch the way the matching pattern's situation describes.",
+            "If scene_context is present, ground the echo in its layered memory and respect the KNOWLEDGE HORIZON — don't 'reveal' or act surprised by something already established, and use roles/pronouns not proper names.",
         ],
         "output_contract": {
             "case_id": case["case_id"],

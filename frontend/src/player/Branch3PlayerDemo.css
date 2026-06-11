@@ -208,9 +208,11 @@ body {
 
 .branch3-player__episode-trigger {
   flex: 0 0 auto;
+  /* Sits bottom-right of the device frame, below the progress bar, in the transport row. */
+  margin-left: auto;
   min-width: 58px;
-  min-height: 36px;
-  padding: 0 10px;
+  min-height: 38px;
+  padding: 0 12px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -233,9 +235,26 @@ body {
   opacity: 0.78;
 }
 
+/* The episode trigger now lives in the transport row; keep its PILL shape rather than
+   inheriting the round 34px transport-button styling (higher specificity wins). */
+.branch3-player__transport .branch3-player__episode-trigger {
+  width: auto;
+  height: 34px;
+  min-width: 0;
+  min-height: 34px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  border-radius: 999px;
+  font-size: 12px;
+}
+
 .branch3-player__episode-sheet {
   position: absolute;
-  top: calc(env(safe-area-inset-top) + 64px);
+  /* Opens UPWARD from the bottom-right trigger (which now lives in the transport row). */
+  bottom: calc(max(14px, env(safe-area-inset-bottom)) + 56px);
   right: 14px;
   z-index: 29;
   width: min(318px, calc(100vw - 28px));

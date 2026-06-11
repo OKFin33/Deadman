@@ -11,6 +11,7 @@ export default defineConfig({
     port: 5175,
     proxy: {
       "/api/deadman": deadmanApiProxyTarget,
+      "/api/studio": deadmanApiProxyTarget, // producer review/upload surface (in-player human review)
     },
     fs: {
       allow: [repoRootPath],

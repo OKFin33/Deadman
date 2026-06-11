@@ -26,6 +26,9 @@ FORBIDDEN_PUBLIC_PATTERNS = [
         r"分支剧情",
         r"后面剧集",
         r"未来分支",
+        r"往后[^。！？.!?]*(肯定|一定|必然|准|能|会|要)",
+        r"以后[^。！？.!?]*(肯定|一定|必然|准|能|会|要)",
+        r"后来[^。！？.!?]*(肯定|一定|必然|准|能|会|要)",
         r"当前场景",
         r"局部后果",
         r"later episode",
@@ -34,6 +37,9 @@ FORBIDDEN_PUBLIC_PATTERNS = [
 ]
 
 CUSTOM_FALLBACK_TEXT = "这句我懂，但这段先别替剧情往后编。"
+# Casual friend line for a TECHNICAL miss (runtime echo unavailable / not-ready / empty) — NOT a
+# content-policy template. The friend just didn't catch it; no "don't rewrite the plot" lecturing.
+CUSTOM_FRIEND_FALLBACK = "哎呀，我没get到你的意思…"
 
 LOW_SIGNAL_CUSTOM_TEXTS = {
     "哈",
@@ -55,10 +61,15 @@ UNSUPPORTED_CUSTOM_PATTERNS = [
         r"后面",
         r"后续",
         r"以后",
+        r"后来",
+        r"往后",
+        r"将来",
         r"结局",
         r"全剧",
         r"全部剧情",
         r"改写",
+        r"改剧情|改情节|改结局|改设定|改故事",
+        r"黑化",
         r"分支",
         r"复仇",
         r"杀光|弄死|杀了",
@@ -148,22 +159,17 @@ class FriendVoiceComposer:
     def _custom_bounded_text(self, judgment: JudgmentResponse, moment: dict[str, Any]) -> str:
         if judgment.action.source != "custom":
             return ""
-        if _custom_reply_policy(moment).get("allowed") is False:
-            return CUSTOM_FALLBACK_TEXT
-        custom_text = _normalize_custom_input(judgment.action.text)
-        if not _groundable_custom_input(custom_text):
-            return CUSTOM_FALLBACK_TEXT
-        if _is_unsupported_custom_input(custom_text):
-            concern = _unsupported_custom_concern(custom_text)
-            return _compact_result_text(
-                sanitize_viewer_copy(f"你这句我懂，{concern}；这段先别替剧情往后编。"),
-                "",
-            )
-        concern = _safe_custom_concern(custom_text)
-        return _compact_result_text(
-            sanitize_viewer_copy(f"你这句我懂，{concern}；先照着眼前这口气说。"),
-            "",
-        )
+        # The viewer typed their own line. NO content rejection — even a "what happens later?"
+        # question gets a friend response: the runtime echo re-runs Stage B for this window
+        # (prompt-bounded to speculate / admit uncertainty, never assert future plot as fact) and
+        # is context-bounded (only this window's L0–L3) so it cannot actually spoil. The ONLY
+        # fallback is a casual friend line on a technical miss — no content-policy template.
+        from .runtime_echo import runtime_custom_echo
+
+        echo = runtime_custom_echo(moment, judgment.action.text)
+        if echo:
+            return echo
+        return CUSTOM_FRIEND_FALLBACK
 
     def _compose_lead(
         self,

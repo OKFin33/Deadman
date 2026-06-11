@@ -1,0 +1,54 @@
+{
+  "schema_version": "drama_synopses.v0.1",
+  "note": "Official drama synopses (owner-provided 2026-06-10). Authoritative L0 premise + correct character identities for the context memory — used to correct ASR proper-name errors. Producer-local.",
+  "lihun": {
+    "title": "离婚",
+    "synopsis": "唐颖曾为丈夫当全职太太，怀孕五月却遭其与第三者欺辱赶出。离婚后，她嫁给了极具魅力的江辞云，江辞云助她成长，二人先婚后爱，联手报复前夫与第三者，终获事业爱情双丰收。"
+  },
+  "huangnian": {
+    "title": "荒年全村啃树皮，我有系统满仓肉",
+    "source_novel": "番茄小说《荒年全村啃树皮，我有系统满仓肉》，作者朝云紫",
+    "synopsis": "程弯弯一觉醒来，竟穿越到古代大河村，成了三十三岁的农妇。四个儿子跪在床前唤娘，儿媳更是身怀六甲，母胎单身三十三年的她，直接升级成了奶奶。她不仅要费心管教四个儿子，还接连遭遇蝗灾、旱灾、雪灾等重重天灾。好在她意外拥有交易商城，凭借商城物资，她定下两个目标：一是带领全家平安度过荒年，二是在古代活出属于自己的精彩人生。"
+  },
+  "yunmiao": {
+    "title": "云渺",
+    "source_novel": "番茄小说《我，修仙大佬强亿点怎么了》，作者白菜",
+    "synopsis": "江城顶级权贵周老爷子即将离世，临走前却有挂念之人，不肯咽气，周家人愁眉不展之时，一名绝美女子云渺敲响周家大门，周家人都认为她是周老爷子心上人的后人，然而随着云渺见到周老爷子，周老爷子却奇迹般起身，道出了一个惊人真相。"
+  },
+  "huangnian01": {
+    "title": "荒年测试",
+    "synopsis": ""
+  },
+  "live_e2e_yunmiao4": {
+    "title": "云渺E2E样片",
+    "synopsis": ""
+  },
+  "live_e2e_yunmiao4_final": {
+    "title": "云渺E2E最终样片",
+    "synopsis": ""
+  },
+  "drama_smoke_1781148657": {
+    "title": "云渺新素材测试",
+    "synopsis": ""
+  },
+  "live_e2e_yunmiao4_clean": {
+    "title": "云渺",
+    "synopsis": ""
+  },
+  "drama_mq8z0z42": {
+    "title": "荒年",
+    "synopsis": ""
+  },
+  "drama_mq908zwu": {
+    "title": "荒年",
+    "synopsis": ""
+  },
+  "demo_yunmiao_ep4": {
+    "title": "云渺",
+    "synopsis": ""
+  },
+  "drama_mq9h86nv": {
+    "title": "荒年",
+    "synopsis": ""
+  }
+}

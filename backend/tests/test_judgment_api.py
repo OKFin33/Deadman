@@ -1,12 +1,15 @@
 from __future__ import annotations
 
+import json
+import shutil
 import unittest
+from pathlib import Path
 from typing import Any
 from unittest.mock import patch
 
 from fastapi.testclient import TestClient
 
-from Deadman.backend.api import LOCAL_MEDIA_ROOT, create_app, _safe_local_media_path
+from Deadman.backend.api import LOCAL_MEDIA_ROOT, REPO_ROOT, create_app, _media_readiness, _safe_local_media_path
 from Deadman.backend.judgment import CabRuntimeJudgmentService
 from Deadman.backend.pack_store import DeadmanPackStore
 from Deadman.backend.runtime_client import CabRuntimeResult, RuntimeClientError
@@ -103,6 +106,40 @@ class DeadmanJudgmentApiTests(unittest.TestCase):
         assert media_path is not None
         self.assertTrue(media_path.is_relative_to(LOCAL_MEDIA_ROOT))
         self.assertEqual(media_path.name, "第12集.mp4")
+
+    def test_media_readiness_counts_gitignored_media_sidecar(self) -> None:
+        root = LOCAL_MEDIA_ROOT / "test_media_readiness_sidecar"
+        drama_root = root / "drama"
+        clip = root / "clip.mp4"
+
+        class Store:
+            def list_drama_ids(self) -> list[str]:
+                return ["sidecar_drama"]
+
+            def get_drama(self, _drama_id: str) -> Any:
+                return type("Pack", (), {
+                    "root": drama_root,
+                    "media_registry": {"episodes": [{"episode_id": "sidecar_drama_ep01"}]},
+                })()
+
+        shutil.rmtree(root, ignore_errors=True)
+        try:
+            drama_root.mkdir(parents=True, exist_ok=True)
+            clip.write_bytes(b"fake mp4")
+            (drama_root / "media_local.v0.1.json").write_text(
+                json.dumps({
+                    "schema_version": "deadman_media_local_sidecar.v0.1",
+                    "drama_id": "sidecar_drama",
+                    "episodes": {"sidecar_drama_ep01": str(clip.relative_to(REPO_ROOT))},
+                }),
+                "utf-8",
+            )
+            readiness = _media_readiness(Store())  # type: ignore[arg-type]
+            self.assertEqual(readiness["total_registered_episodes"], 1)
+            self.assertEqual(readiness["local_available_episodes"], 1)
+            self.assertTrue(readiness["deployment_ready"])
+        finally:
+            shutil.rmtree(root, ignore_errors=True)
 
     def test_moment_lookup_returns_summaries_and_full_pack(self) -> None:
         moments = self.client.get("/api/deadman/dramas/huangnian/moments")

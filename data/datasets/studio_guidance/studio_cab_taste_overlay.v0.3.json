@@ -1,0 +1,1243 @@
+{
+  "schema_version": "studio_cab_taste_overlay.v0.3",
+  "status": "owner_finalized",
+  "method": "方案①: LLM re-clustered the FULL owner-rejection history into one self-consistent taxonomy; OWNER edits before this is finalized. Method-professional + self-consistent; N small/medium; NOT a data-volume claim.",
+  "base_frozen": "studio_cab_guidance_dataset.v0.1.json (owner_reviewed_v1_frozen — do NOT mutate)",
+  "supersedes": "studio_cab_taste_overlay.v0.2.json",
+  "owner_rulings_applied": {
+    "gold": "true gold = owner-confirmed only",
+    "rejected_v1_gold": "owner-flipped lines fed as named-negative material",
+    "dedup_key": "(layer, text)"
+  },
+  "build_meta": {
+    "copy_reject_instances_clustered": 100,
+    "copy_reject_by_layer": {
+      "echo": 38,
+      "companion_lead": 10,
+      "display_text": 47,
+      "moment": 5
+    },
+    "window_negatives_carried": 53,
+    "owner_gold_kept": 65,
+    "provisional_gold_excluded": 62,
+    "named_negatives_count": 21,
+    "named_positives_count": 14,
+    "gold_exemplars_distilled_and_dropped": 65
+  },
+  "reflow_mechanism": "Each round, owner taste from review is captured here as TYPED deltas: *_rules_addendum (rules), named_negatives (each = a generalizable FAILURE PATTERN/situation, not a verbatim string; illustrative_examples only illustrate; severity = hard | soft_preference), gold_examples (approved drafts; carry viewer_motivation = L3 ground truth). tools/ars/deadman_author_drama_heroes.py feeds the PATTERNS to the model on top of frozen v1 few-shot (stage A: lead+display+reply_set; stage B: echo), so it generalizes. Promote to a full v2 dataset later via the reflow tooling.",
+  "lead_rules_addendum": [
+    "The companion_lead is a PURE in-the-moment reaction with NO topic-naming / preface ('说到X', '聊到X', 'X的这段', '看到X'). You are watching together, so the referent is already shared on screen — just emit the reaction. (owner, rounds 3+5)",
+    "The companion_lead OPENS and INVITES — surfaces the beat's feeling, makes the viewer want to chime in, but does NOT deliver the conclusion/punchline the viewer themselves would say. Leave that take to the display_text. (owner, round-4)"
+  ],
+  "echo_rules_addendum": [
+    "The affirmation 'catch' (是啊 / 确实 / 也是 / 可不是 / 太对了 …) is the 接住感, BUT do NOT put it on all three echoes — that reads as a template/overuse. Aim ~2 of 3 with a catch and ~1 softer / without (有∶无 ≈ 2∶1), and vary which catch. (owner, rounds 1+6)",
+    "The catch MUST match the viewer's speech-act. '太对了/确实' RATIFIES a claim/opinion — use it only when the display is a claim/judgment. A WORRY/ALARM ('太危险了') needs a shared-alarm beat ('是啊，真替她捏把汗' / '可不，看得揪心'), NOT 'correct'. A WISH/PLEA ('千万别…') needs shared hope, softly — never a cocky guarantee. Agreeing-as-fact with a worry or wish is a category error. (owner, round-6)",
+    "Keep the echo's register fitting the moment — no jarring net-slang ('必须的!') or cocky certainty on a serious/worried beat — and NEVER predict what happens next ('下一秒…就…'). (owner, round-6)",
+    "The echo must ADD a distinct angle or detail — never just paraphrase the display_text (复读机). Stay grounded and natural (not theatrical/夸张/尬) and simple (trim over-specific framing). (owner, round-6)"
+  ],
+  "display_text_rules_addendum": [
+    "The display_text is a line the viewer CHOOSES to say about the SCENE — not a reply to the lead. Restrained, plausibly-shared; not a presumptuous reaction or claimed personal experience. (owner, round-2)",
+    "Keep display_texts SIMPLE and fairly general/abstract — a broad posture many viewers could own — NOT hyper-specific or finely nuanced (which only fits a few). Simpler = wider coverage. (owner, round-5)",
+    "In short-drama the viewer usually ALREADY KNOWS what is happening (no withheld info). Do NOT write reveal / suspense-payoff reactions ('这下终于找到真相了', '真相大白', '原来如此') unless the plot genuinely withheld it from the viewer. Respect the viewer's knowledge state. (owner, round-6)"
+  ],
+  "reply_set_rules_addendum": [
+    "Compose the three reply_candidates for COVERAGE: #1 and #2 hit the CORE (要害) from two distinct directions; #3 is a catch-all FALLBACK (兜底). Keep each simple and broad. (owner, round-5)"
+  ],
+  "named_negatives": [
+    {
+      "negative_type": "echo_rpg_action_menu_breach",
+      "severity": "hard",
+      "when": "The echo outputs explicit action-guiding, plot-modifying, or tactical decision phrasing that violates the core thesis of only reacting to the viewer's stated scene feeling, not proposing what to do next in the drama",
+      "pattern": "Echo slips into forbidden RPG/action-menu phrasing that tells the viewer what plot step to take (e.g. 先护住她/证据先上桌/先保住这一顿) instead of only responding to their existing spoken feeling",
+      "why_bad": "Breaks the non-intrusive watching-companion boundary, turns the casual reaction into a game strategy guide that overrides the viewer's natural in-the-moment sentiment",
+      "corrected_direction": "Drop all action-proposing wording, only share the viewer's current feeling about the scene they just voiced",
+      "illustrative_examples": [
+        "对，先别让她一个人被晾在那，后面的账再慢慢算",
+        "对，火气可以有，但证据先上桌，她就没那么容易倒打一耙"
+      ],
+      "source_provenance": [
+        "inplayer:huangnian_ep07_m001:echo2",
+        "inplayer:huangnian_ep03_m001:echo3",
+        "inplayer:huangnian_ep04_m001:echo2",
+        "inplayer:huangnian_ep04_m001:echo3"
+      ],
+      "merges_from": [
+        "echo_rpg_or_action_menu"
+      ],
+      "layer": "echo"
+    },
+    {
+      "negative_type": "echo_formulaic_template_overuse",
+      "severity": "soft_preference",
+      "when": "Multiple echoes in the same reply set all use identical catch prefixes, or the echo uses unnatural meta-phrasing that explicitly references the viewer's line itself",
+      "pattern": "Echo relies on repetitive, rigid template openings: all 3 echoes in a set start with the exact same catch word (e.g. 是啊), or uses awkward meta lines like 这句接住了/就是这句/这句也对 that break the natural conversational flow",
+      "why_bad": "Feels pre-scripted and robotic, loses the casual, spontaneous friend chatting vibe of a real watch companion",
+      "corrected_direction": "Vary catch usage to hit the 2:1 catch-to-no-catch ratio, remove all meta references to the viewer's line as a 'line'",
+      "illustrative_examples": [
+        "这句接住了，她受的不是一碗饭的委屈，得有人替她立住底线",
+        "就是这句，帽子不能她想扣就扣，证据得让大家看见",
+        "连婆婆都怕她把东西补贴娘家"
+      ],
+      "source_provenance": [
+        "v1:taste_gold_proposed_huangnian_ep14_0048:selected_echo_direction.rejected_examples",
+        "v1:taste_gold_proposed_huangnian_ep17_0048:selected_echo_direction.rejected_examples",
+        "inplayer:huangnian_ep07_m001:echo3",
+        "inplayer:huangnian_ep04_m001:echo1"
+      ],
+      "merges_from": [
+        "echo_formulaic_prefix_repetition",
+        "echo_paraphrases_display_text_and_formulaic_prefix",
+        "echo_catch_overused_template"
+      ],
+      "layer": "echo"
+    },
+    {
+      "negative_type": "echo_overwrought_exaggerated",
+      "severity": "soft_preference",
+      "when": "The echo uses overly theatrical, melodramatic, or unnecessarily grand wording that amplifies the scene's emotion far beyond the natural casual tone of a shared watch reaction",
+      "pattern": "Echo overstates stakes with over-the-top phrasing (e.g. 攥着全家最后一点活命的指望/冷得刺骨的眼神) that feels forced and fake instead of grounded",
+      "why_bad": "Overshadows the viewer's own line, breaks immersion by calling too much attention to itself instead of matching the low-key shared feeling",
+      "corrected_direction": "Trim dramatic flourishes, keep the reaction plain, natural, and aligned to the exact level of emotion the viewer already expressed",
+      "illustrative_examples": [
+        "心疼，孩子不是闹脾气，是已经怕到要确认最后一口吃的还在不在",
+        "这哪是攥着野菜啊，是攥着全家最后一点活命的指望，之前被抢太多次才抖成这样"
+      ],
+      "source_provenance": [
+        "inplayer:huangnian_ep03_m001:echo2",
+        "v1:taste_gold_owner_huangnian_ep03_0033:selected_echo_direction.rejected_examples",
+        "v1:taste_gold_owner_huangnian_ep03_0033:selected_echo_direction.rejected_examples",
+        "v1:taste_gold_owner_huangnian_ep03_0033:selected_echo_direction.rejected_examples"
+      ],
+      "merges_from": [
+        "echo_exaggeration",
+        "echo_overwrought_or_overspecific"
+      ],
+      "layer": "echo"
+    },
+    {
+      "negative_type": "echo_weak_responsiveness",
+      "severity": "soft_preference",
+      "when": "The echo fails to directly connect to the exact sentiment the viewer just voiced, instead drifting to unrelated background details, overlong tangents, or disconnected plot context",
+      "pattern": "Echo does not 'catch' the viewer's line at all: it rambles on about extended backstory, runs far over the natural short length for a companion reaction, or references unshared unclear details the viewer cannot immediately place",
+      "why_bad": "Feels like the companion is not actually listening to what the viewer just said, reads as unresponsive and distant instead of like a real person reacting in the moment",
+      "corrected_direction": "Anchor every echo directly to the core feeling of the viewer's line, keep it short, and only reference details that are immediately visible on the current screen",
+      "illustrative_examples": [
+        "连婆婆都要特意把粮递到孙媳妇手上反复敲警钟，这名声在整个赵家都没半点转圜余地了",
+        "换谁摊上之前把丈夫抚恤银全往娘家搬的前科，手里攥着给亲孙子的救命粮都不敢直接递她手里啊，太能共情老太太这股谨慎劲了"
+      ],
+      "source_provenance": [
+        "v1:taste_gold_owner_huangnian_ep03_0033:selected_echo_direction.rejected_examples",
+        "v1:taste_gold_proposed_huangnian_ep14_0048:selected_echo_direction.rejected_examples",
+        "v1:taste_gold_proposed_huangnian_ep14_0048:selected_echo_direction.rejected_examples",
+        "v1:taste_gold_proposed_huangnian_ep10_0027:selected_echo_direction.rejected_examples"
+      ],
+      "merges_from": [
+        "echo_weak_responsiveness",
+        "echo_too_long",
+        "echo_unclear_reference"
+      ],
+      "layer": "echo"
+    },
+    {
+      "negative_type": "echo_unnatural_illogical_factual_error",
+      "severity": "soft_preference",
+      "when": "The echo uses awkward, grammatically odd phrasing, makes a factually wrong statement about the show's established world, or expresses a surprise that contradicts the viewer's existing knowledge of the plot",
+      "pattern": "Echo contains clunky unidiomatic wording, misstates show canon (e.g. calling a rare, precious item a trivial snack), or acts shocked about a reveal the viewer already saw unfold earlier in the drama",
+      "why_bad": "Pulls the viewer out of the shared viewing experience, makes the companion feel unpolished or like they are not actually watching the show alongside them",
+      "corrected_direction": "Proofread for natural conversational phrasing, cross-check against established show world rules, and never express surprise for plot beats the viewer already witnessed",
+      "illustrative_examples": [
+        "连鸡蛋这种小孩都盼的小吃食，她之前都攥得死死半口不给娃留",
+        "太对了，那些小疑点这下全对上了"
+      ],
+      "source_provenance": [
+        "v1:taste_gold_proposed_huangnian_ep17_0048:selected_echo_direction.rejected_examples",
+        "v1:taste_gold_proposed_huangnian_ep10_0027:selected_echo_direction.rejected_examples",
+        "inplayer:lihun_ep12_m001:echo2",
+        "inplayer:lihun_ep12_m001:echo3"
+      ],
+      "merges_from": [
+        "echo_awkward_phrasing",
+        "echo_factual_error",
+        "echo_unnatural_illogical"
+      ],
+      "layer": "echo"
+    },
+    {
+      "negative_type": "echo_meta_show_commentary",
+      "severity": "hard",
+      "when": "The echo stops reacting to the scene content and the viewer's feeling, and instead comments directly on the drama itself as a produced media product",
+      "pattern": "Echo slips into meta commentary praising the show's production, pacing, or writing (e.g. 节奏卡得丝滑/这波反打马上就落地) instead of staying in the shared in-universe viewing experience",
+      "why_bad": "Breaks the immersive fourth wall of watching the drama together, turns the companion into a show promotion narrator instead of a fellow audience member",
+      "corrected_direction": "Remove all meta references to the show as a work of media, only ever react to the in-scene events and the viewer's personal feeling about them",
+      "illustrative_examples": [
+        "节奏卡得丝滑，半分多余铺垫都没有，这波反打马上就落地",
+        "就等这波精准踩点的爽感落地，半分多余的铺垫都不带拖泥带水的"
+      ],
+      "source_provenance": [
+        "v1:taste_gold_proposed_huangnian_ep10_0027:selected_echo_direction.rejected_examples",
+        "v1:taste_gold_proposed_huangnian_ep10_0027:selected_echo_direction.rejected_examples",
+        "v1:taste_gold_proposed_huangnian_ep10_0027:selected_echo_direction.rejected_examples"
+      ],
+      "merges_from": [
+        "echo_promotes_show",
+        "echo_overshadows",
+        "echo_disconnected_from_display_text"
+      ],
+      "layer": "echo"
+    },
+    {
+      "negative_type": "lead_uses_explicit_questionnaire_or_ui_label",
+      "severity": "hard",
+      "pattern": "The lead is framed as a prompt for the viewer to answer, a UI element label, or a generic instruction rather than a natural in-the-moment reaction from a co-watching companion.",
+      "why_bad": "Breaks the immersive casual watching dynamic; reads like a product interface instead of a friend watching alongside you.",
+      "corrected_direction": "Rewrite to a natural, unforced shared reaction that does not reference the interaction flow or UI at all.",
+      "illustrative_examples": [
+        "刚才那一下，你是不是想说：",
+        "三句我想说的话"
+      ],
+      "source_provenance": [
+        "v1:taste_gold_proposed_huangnian_ep02_0125:lead_authoring.rejected_examples",
+        "v1:taste_gold_proposed_huangnian_ep02_0125:lead_authoring.rejected_examples"
+      ],
+      "merges_from": [
+        "questionnaire_template",
+        "ui_label_as_lead"
+      ],
+      "layer": "companion_lead"
+    },
+    {
+      "negative_type": "lead_makes_third_layer_meta_commentary",
+      "severity": "hard",
+      "pattern": "The lead comments on the production quality, narrative writing choices, or formal attributes of the drama itself rather than reacting to the in-scene events the viewer is currently watching.",
+      "why_bad": "Pulls the viewer out of the shared immersive watching moment; the companion should stay grounded in the scene, not critique the show as a separate media object.",
+      "corrected_direction": "Reframe the reaction to focus on the immediate emotional beat of the on-screen characters and events, not the creator's choices.",
+      "illustrative_examples": [
+        "有点暖，但别太煽"
+      ],
+      "source_provenance": [
+        "v1:taste_gold_proposed_huangnian_ep08_0148:lead_authoring.rejected_examples"
+      ],
+      "merges_from": [
+        "third_layer_meta_lead"
+      ],
+      "layer": "companion_lead"
+    },
+    {
+      "negative_type": "lead_overcloses_full_judgment",
+      "severity": "soft_preference",
+      "pattern": "The lead delivers a complete, closed final judgment on the scene that leaves no room for the viewer to add their own take, or states a pure flat declarative fact with zero emotional resonance.",
+      "why_bad": "Collapses the required dynamic where the lead opens the moment for the viewer's line; the viewer has nothing left to contribute.",
+      "corrected_direction": "Tone the lead to surface the shared feeling of the beat, stop short of the final full judgment that belongs to the viewer's chosen line.",
+      "illustrative_examples": [
+        "以前家里鸡蛋都被原主吃了？这也太离谱",
+        "以前家里的鸡蛋全是原主自己吃的"
+      ],
+      "source_provenance": [
+        "v1:taste_gold_proposed_huangnian_ep17_0048:lead_authoring.rejected_examples",
+        "v1:taste_gold_proposed_huangnian_ep17_0048:lead_authoring.rejected_examples"
+      ],
+      "merges_from": [
+        "overclosed_lead_tail",
+        "lead_too_flat_declarative"
+      ],
+      "layer": "companion_lead"
+    },
+    {
+      "negative_type": "lead_uses_question_form_as_opener",
+      "severity": "soft_preference",
+      "pattern": "The lead is structured as an interrogative question rather than a natural declarative shared reaction from a co-watching friend.",
+      "why_bad": "Feels like the companion is quizzing the viewer instead of reacting alongside them, breaking the casual vibe.",
+      "corrected_direction": "Rewrite the question to a declarative reaction that surfaces the same shared observation without the interrogative framing.",
+      "illustrative_examples": [
+        "以前家里鸡蛋都被原主吃了？"
+      ],
+      "source_provenance": [
+        "v1:taste_gold_proposed_huangnian_ep17_0048:lead_authoring.repair"
+      ],
+      "merges_from": [
+        "question_shaped_lead_seed"
+      ],
+      "layer": "companion_lead"
+    },
+    {
+      "negative_type": "lead_frames_scene_with_single_incomplete_axis",
+      "severity": "soft_preference",
+      "pattern": "The lead only highlights one narrow partial detail of the scene, omitting critical contextual layers that make the beat land for short-drama viewers, leading to a misaligned or underpowered reaction.",
+      "why_bad": "Fails to capture the full shared context of the moment that all viewers are picking up on, making the lead feel unmoored from the actual scene.",
+      "corrected_direction": "Anchor the lead to the full combined contextual beats of the scene, not just one isolated observable detail.",
+      "illustrative_examples": [
+        "他们都饿成这样了，还先把吃的端给娘",
+        "这摆明了是故意害她"
+      ],
+      "source_provenance": [
+        "v1:taste_gold_proposed_huangnian_ep02_0125:lead_authoring.rejected_examples",
+        "inplayer:lihun_ep12_m001:lead"
+      ],
+      "merges_from": [
+        "single_axis_hunger_framing"
+      ],
+      "layer": "companion_lead"
+    },
+    {
+      "negative_type": "rpg_action_menu_rewrite_plot",
+      "severity": "hard",
+      "pattern": "Frames the line as a direct action instruction, task assignment, or plot intervention for characters instead of a natural viewer reaction to the on-screen scene, violating the core thesis of a line the viewer spontaneously wants to say.",
+      "why_bad": "Breaks the non-RPG, non-plot-modification hard constraint, turning a casual watch companion line into a gameplay action menu prompt.",
+      "illustrative_examples": [
+        "护住孩子面子",
+        "先护住她",
+        "证据先上桌"
+      ],
+      "source_provenance": [
+        "v1:taste_gold_proposed_huangnian_ep09_0044:reply_authoring.rejected_examples",
+        "inplayer:huangnian_ep07_m001:say2",
+        "inplayer:huangnian_ep04_m001:say2"
+      ],
+      "merges_from": [
+        "character_action_task",
+        "policy_like_action_task",
+        "display_rpg_or_action_menu"
+      ],
+      "layer": "display_text",
+      "when": "The line tells a character what to do or proposes a plot tactic (先护住她 / 证据先上桌) instead of voicing the viewer's own reaction.",
+      "corrected_direction": "Rewrite as the viewer's spontaneous feeling about the scene (吐槽/心疼/期待) — never an instruction or plan for the characters."
+    },
+    {
+      "negative_type": "producer_meta_analysis_not_viewer_speech",
+      "severity": "hard",
+      "pattern": "Contains production-side commentary, plot function labeling, or behind-the-scenes evaluation of the drama's writing rather than a line a regular viewer would say to their watch companion.",
+      "why_bad": "Speaks from a creator/analyst perspective instead of the ordinary viewer's casual in-the-moment reaction, breaking the shared watch companion framing.",
+      "illustrative_examples": [
+        "有点暖，但别太煽",
+        "点出原主偏心后果",
+        "这是生产者对话术功能的描述"
+      ],
+      "source_provenance": [
+        "v1:taste_gold_proposed_huangnian_ep08_0148:reply_authoring.rejected_examples",
+        "v1:taste_gold_proposed_huangnian_ep09_0044:reply_authoring.rejected_examples",
+        "v1:taste_gold_proposed_huangnian_ep08_0148:reply_authoring.rejected_examples"
+      ],
+      "merges_from": [
+        "third_layer_meta",
+        "producer_delivery_label",
+        "producer_meta_analysis"
+      ],
+      "layer": "display_text",
+      "when": "The line evaluates the show's writing/pacing or labels a plot function (点出原主偏心后果 / 别太煽) — a creator/analyst voice.",
+      "corrected_direction": "Drop the production framing; react to the characters in-the-moment the way an ordinary viewer would."
+    },
+    {
+      "negative_type": "emotional_axis_label_no_viewer_voice",
+      "severity": "hard",
+      "pattern": "Outputs a dry, abstract emotion/stance tag (e.g. '吐槽人设', '轻轻心疼孩子') instead of a complete, natural spoken line that a viewer would actually choose to send.",
+      "why_bad": "Fails to deliver a usable, conversational line the viewer can select, only exposing internal authoring metadata to the end user.",
+      "illustrative_examples": [
+        "吐槽原主吃独食",
+        "骂赖账太欠",
+        "夸她会说"
+      ],
+      "source_provenance": [
+        "v1:taste_gold_proposed_huangnian_ep17_0048:reply_authoring.rejected_examples",
+        "v1:taste_gold_proposed_huangnian_ep10_0027:reply_authoring.rejected_examples",
+        "v1:taste_gold_owner_huangnian_ep04_0149:reply_authoring.repair"
+      ],
+      "merges_from": [
+        "axis_label_no_viewer_voice",
+        "axis_label_no_emotion",
+        "plot_action_axis"
+      ],
+      "layer": "display_text",
+      "when": "The output is a bare stance/emotion tag (吐槽原主吃独食 / 骂赖账太欠) — authoring metadata, not a spoken line.",
+      "corrected_direction": "Expand the tag into a complete, casual line the viewer would actually choose to send."
+    },
+    {
+      "negative_type": "duplicate_or_paraphrase_of_lead_or_other_candidates",
+      "severity": "soft_preference",
+      "pattern": "The proposed display text is a near-verbatim paraphrase of the companion lead, or repeats the exact same viewer stance as another pre-existing reply candidate in the same beat's set.",
+      "why_bad": "Wastes reply slot coverage, fails to offer distinct, alternative perspectives for the viewer to choose from.",
+      "illustrative_examples": [
+        "这话也太损了",
+        "这原主人设也太离谱了"
+      ],
+      "source_provenance": [
+        "v1:taste_gold_proposed_huangnian_ep09_0044:reply_authoring.rejected_examples",
+        "v1:taste_gold_owner_huangnian_ep03_0033:reply_authoring.rejected_examples"
+      ],
+      "merges_from": [
+        "duplicate_axis",
+        "lead_candidate_duplicate",
+        "display_text_paraphrases_lead"
+      ],
+      "layer": "display_text",
+      "when": "The display text restates the companion lead, or repeats a stance another candidate in the same set already covers.",
+      "corrected_direction": "Give this slot a distinct viewer angle (different emotion/target) so the three candidates stay non-overlapping."
+    },
+    {
+      "negative_type": "flat_low_emotion_unnatural_wording",
+      "severity": "soft_preference",
+      "pattern": "The line uses stiff, abstract, or overly flat wording that does not sound like a natural, casual comment a viewer would spontaneously say to a friend while watching the drama, with little to no visible personal stance or emotion.",
+      "why_bad": "Fails to feel like a genuine, relatable line the viewer would want to select, reads like a forced, unemotional summary of the scene.",
+      "illustrative_examples": [
+        "孩子太容易满足",
+        "孩子都急成这样了",
+        "他这反应有点戳人"
+      ],
+      "source_provenance": [
+        "v1:taste_gold_proposed_huangnian_ep08_0148:reply_authoring.rejected_examples",
+        "v1:taste_gold_owner_huangnian_ep03_0033:reply_authoring.rejected_examples",
+        "v1:taste_gold_proposed_huangnian_ep08_0148:reply_authoring.rejected_examples"
+      ],
+      "merges_from": [
+        "right_direction_flat_wording",
+        "awkward_viewer_abstraction",
+        "unnatural_viewer_wording",
+        "display_text_low_emotion",
+        "underfinished_viewer_line"
+      ],
+      "layer": "display_text",
+      "when": "The line reads as a flat, abstract summary (孩子太容易满足 / 他这反应有点戳人) with little spoken feel or stance.",
+      "corrected_direction": "Re-voice it as a warm, casual line with visible feeling, the way one mutters it to a friend."
+    },
+    {
+      "negative_type": "exaggerated_or_misaligned_tone",
+      "severity": "soft_preference",
+      "pattern": "The line carries an overly dramatic, overstated tone that does not match the intended restrained, casual stance for the beat, or adds unnecessary redundant commentary at the end of the line.",
+      "why_bad": "Breaks the natural, grounded watch companion vibe, making the line feel forced or overly theatrical instead of authentic.",
+      "illustrative_examples": [
+        "这次说啥也不能把野菜给大舅家了啊",
+        "看得人心里直发毛",
+        "孩子都吓成这样了太让人心软了"
+      ],
+      "source_provenance": [
+        "v1:taste_gold_owner_huangnian_ep03_0033:reply_authoring.rejected_examples",
+        "inplayer:lihun_ep06_m001:say3",
+        "v1:taste_gold_owner_huangnian_ep03_0033:reply_authoring.rejected_examples"
+      ],
+      "merges_from": [
+        "display_text_exaggeration",
+        "display_text_tone_mismatch_with_role",
+        "display_text_excess_commentary_tail"
+      ],
+      "layer": "display_text",
+      "when": "The line is overdramatic for the beat or tacks on a redundant commentary tail (…太让人心软了).",
+      "corrected_direction": "Dial the tone back to the restrained level the beat calls for; cut the trailing commentary."
+    },
+    {
+      "negative_type": "ambiguous_or_factual_error_subject",
+      "severity": "soft_preference",
+      "pattern": "The line has an unclear referent, misidentifies the on-screen subject, or contains a small factual mismatch with the scene that makes the line feel unmoored from the current shared viewing context.",
+      "why_bad": "Creates confusion for the viewer, as the line does not clearly map to the exact moment they are both watching.",
+      "illustrative_examples": [
+        "原主以前太缺夸",
+        "嘴上骂得凶，转头还是把粮塞给怀孕的大山媳妇了"
+      ],
+      "source_provenance": [
+        "v1:taste_gold_proposed_huangnian_ep08_0148:reply_authoring.rejected_examples",
+        "v1:taste_gold_owner_huangnian_ep03_0033:reply_authoring.rejected_examples"
+      ],
+      "merges_from": [
+        "wrong_subject",
+        "display_text_ambiguous_subject"
+      ],
+      "layer": "display_text",
+      "when": "The line's referent is unclear or misnames the on-screen subject/item versus the current scene.",
+      "corrected_direction": "Pin the line to the exact on-screen subject so it maps cleanly to what they're watching."
+    },
+    {
+      "negative_type": "echo_verbatim_paraphrase",
+      "severity": "soft_preference",
+      "when": "生成的echo内容完全或几乎完全复述display_text，未新增任何独立角度或细节",
+      "pattern": "复读机式echo，仅对用户选的台词做字面重述无延伸",
+      "why_bad": "违反echo需补充 distinct 角度的规则，失去接住感的互动价值",
+      "corrected_direction": "基于display_text的核心情绪补充一个贴合场景的新细节或共感角度",
+      "illustrative_examples": [
+        "坐等看戏。",
+        "合着以前家里的鸡蛋全是原主一个人吃的啊"
+      ],
+      "source_provenance": [
+        "v2_tray:real_provider_gold:taste_gold_proposed_huangnian_ep10_0027:moment",
+        "v2_tray:real_provider_repair:phase2_repair_1c2bf754f1ed:moment"
+      ],
+      "merges_from": [],
+      "layer": "echo"
+    },
+    {
+      "negative_type": "lead_explicit_scene_topic_naming",
+      "severity": "soft_preference",
+      "when": "companion_lead额外添加了指向当前屏幕内容的前置话题命名前缀，默认观众未共享当前画面语境",
+      "pattern": "lead出现\"说到X\"\"聊到X\"\"X的这段\"这类冗余指代前缀",
+      "why_bad": "破坏同看场景下的沉浸式共感，违反lead无多余前置的核心要求",
+      "corrected_direction": "直接输出贴合当前画面情绪的反应，完全省略所有显式话题指代前缀",
+      "illustrative_examples": [],
+      "source_provenance": [
+        "inplayer:huangnian_ep06_m001:direction"
+      ],
+      "merges_from": [],
+      "layer": "companion_lead"
+    },
+    {
+      "negative_type": "display_text_break_audience_knowledge_state",
+      "severity": "soft_preference",
+      "when": "生成的display_text使用了仅在剧情刚揭晓时才适配的真相类反应，但观众此前已经提前知晓相关信息",
+      "pattern": "在无信息 withheld 的场景下使用\"这下终于找到真相了\"\"原来如此\"这类揭示感台词",
+      "why_bad": "不符合短剧观众普遍提前掌握剧情信息的认知状态，反应脱离实际",
+      "corrected_direction": "替换为符合观众已知信息状态的通用共感表态，避免刻意制造揭晓感",
+      "illustrative_examples": [],
+      "source_provenance": [
+        "inplayer:yunmiao_ep17_m001:direction"
+      ],
+      "merges_from": [],
+      "layer": "display_text"
+    }
+  ],
+  "gold_examples": [
+    {
+      "drama_id": "yunmiao",
+      "moment_id": "yunmiao_ep17_m001",
+      "episode_id": "yunmiao_ep17",
+      "provenance": "owner_confirmed",
+      "review_status": "owner_reviewed",
+      "companion_lead": "听完心里怪不是滋味的",
+      "reply_candidates": [
+        {
+          "display_text": "长辈的惦记永远是最戳人的",
+          "viewer_motivation": "想要抒发对长辈纯粹牵挂的触动感",
+          "selected_echo": "太对了，哪有什么执念，全是长辈放心不下小辈的软牵挂。",
+          "coverage": "core_direction_a"
+        },
+        {
+          "display_text": "接连遇上糟心事真的太耗人了",
+          "viewer_motivation": "想要吐槽连续遭遇变故的疲惫感",
+          "selected_echo": "可不是，攒了一堆糟心事连觉都睡不踏实啊",
+          "coverage": "core_direction_b"
+        },
+        {
+          "display_text": "这种感觉真的太复杂了",
+          "viewer_motivation": "没有明确的单一情绪，只想笼统表达当下的复杂感受",
+          "selected_echo": "确实，暖得发烫又酸得发堵，全是长辈藏在心底的软牵挂",
+          "coverage": "fallback"
+        }
+      ],
+      "taste_note": "owner-approved exemplar (round-5): pure-reaction lead, simple/broad displays, 2-direction+fallback, echo catches. NOTE: this gold predates the round-6 catch-ratio (有∶无≈2∶1) rule — its 3 echoes all carry a catch; acceptable as approved, but new authoring should vary.",
+      "window_status": "contested",
+      "window_status_note": "owner 2026-06-10: copy（lead+候选+回声）背书为 gold；但窗口/理解方向（『老人挂念很感人』）有问题，不背书窗口。见 window_negatives 同 moment_id。"
+    },
+    {
+      "drama_id": "yunmiao",
+      "moment_id": "yunmiao_ep18_m001",
+      "episode_id": "yunmiao_ep18",
+      "provenance": "owner_confirmed",
+      "review_status": "owner_reviewed",
+      "companion_lead": "这眼神谁看了不发怵啊",
+      "reply_candidates": [
+        {
+          "display_text": "孙家这下要踢到铁板了",
+          "viewer_motivation": "期待嚣张的孙家当场吃瘪",
+          "selected_echo": "可不是，刚还放话的孙家这下要栽了",
+          "coverage": "core_direction_a"
+        },
+        {
+          "display_text": "她藏的实力果然深不可测",
+          "viewer_motivation": "嗑主角扮猪吃虎的碾压人设",
+          "selected_echo": "那身气场，哪是普通小辈能压得住的",
+          "coverage": "core_direction_b"
+        },
+        {
+          "display_text": "这气场也太唬人了",
+          "viewer_motivation": "单纯被主角的强大气场震到",
+          "selected_echo": "确实，站她跟前的人连大气都不敢喘",
+          "coverage": "fallback"
+        }
+      ],
+      "taste_note": "owner-approved + light polish (round-6 2026-06-09): 2-direction+fallback, catch~2:1, speech-act-matched echoes.",
+      "window_status": "contested",
+      "window_status_note": "owner 2026-06-10: copy 背书为 gold；窗口时机有问题（owner 标：换到 00:40 开始），不背书窗口。见 window_negatives。"
+    }
+  ],
+  "window_negatives": [
+    {
+      "text": "taste_negative_huangnian_ep12_skip_context",
+      "pattern": "context_insufficient",
+      "note": "不为每集覆盖率硬发搭子点；EP12 先作为 skip/negative 校准。",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：前一段 ASR 不足。\",",
+      "source": "v1",
+      "item_id": "taste_negative_huangnian_ep12_skip_context"
+    },
+    {
+      "text": "taste_negative_huangnian_ep03_nearmiss_0040",
+      "pattern": "rejected_window",
+      "note": "同集已有更强 best window，后续解释不应再抢一个搭子点。",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：啊，这野菜坏了，我拿出去扔",
+      "source": "v1",
+      "item_id": "taste_negative_huangnian_ep03_nearmiss_0040"
+    },
+    {
+      "text": "taste_negative_huangnian_ep07_nearmiss_0040",
+      "pattern": "rejected_window",
+      "note": "同集最多一个 best window，不能把后续反应也切成搭子点。",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：你是地位最低，你根本就不配",
+      "source": "v1",
+      "item_id": "taste_negative_huangnian_ep07_nearmiss_0040"
+    },
+    {
+      "text": "taste_negative_legacy_huangnian_ep16_c001",
+      "pattern": "rejected_window",
+      "note": "High legacy score came from resource_crisis, but the candidate still needs a concrete viewer line rather than mechanism coverage.",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：阿奶。 哎，四达，你咋来了",
+      "source": "v1",
+      "item_id": "taste_negative_legacy_huangnian_ep16_c001"
+    },
+    {
+      "text": "taste_negative_legacy_huangnian_ep14_c001",
+      "pattern": "rejected_framing",
+      "note": "Legacy miner phrased this as `小鹅菜要不要现在分给大山？` under resource_crisis; the source beat may be useful, but this framing teaches the rejected action-menu/RPG surface.",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：前一段 ASR 不足。\",",
+      "source": "v1",
+      "item_id": "taste_negative_legacy_huangnian_ep14_c001"
+    },
+    {
+      "text": "taste_negative_legacy_huangnian_ep12_c001",
+      "pattern": "rejected_window",
+      "note": "High legacy score came from resource_crisis, but the candidate still needs a concrete viewer line rather than mechanism coverage.",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：前一段 ASR 不足。\",",
+      "source": "v1",
+      "item_id": "taste_negative_legacy_huangnian_ep12_c001"
+    },
+    {
+      "text": "taste_negative_legacy_huangnian_ep03_c001",
+      "pattern": "rejected_framing",
+      "note": "Legacy miner phrased this as `野菜要不要现在分给娘？` under resource_crisis; the source beat may be useful, but this framing teaches the rejected action-menu/RPG surface.",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：天然无污染野蕨菜一斤价值十",
+      "source": "v1",
+      "item_id": "taste_negative_legacy_huangnian_ep03_c001"
+    },
+    {
+      "text": "taste_negative_legacy_huangnian_ep07_c001",
+      "pattern": "rejected_framing",
+      "note": "Legacy miner phrased this as `饭要不要现在分给儿子？` under resource_crisis; the source beat may be useful, but this framing teaches the rejected action-menu/RPG surface.",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：慢着！谁让你坐了？跪下！ ",
+      "source": "v1",
+      "item_id": "taste_negative_legacy_huangnian_ep07_c001"
+    },
+    {
+      "text": "taste_negative_legacy_huangnian_ep02_c001",
+      "pattern": "rejected_framing",
+      "note": "Legacy miner phrased this as `这点口粮要不要现在分出去？` under resource_crisis; the source beat may be useful, but this framing teaches the rejected action-menu/RPG surface.",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：啊！啊！啊！ 哎呀，好妹妹",
+      "source": "v1",
+      "item_id": "taste_negative_legacy_huangnian_ep02_c001"
+    },
+    {
+      "text": "taste_negative_legacy_huangnian_ep17_c001",
+      "pattern": "rejected_framing",
+      "note": "Legacy miner phrased this as `粟米要不要现在分给阿奶？` under resource_crisis; the source beat may be useful, but this framing teaches the rejected action-menu/RPG surface.",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：前一段 ASR 不足。\",",
+      "source": "v1",
+      "item_id": "taste_negative_legacy_huangnian_ep17_c001"
+    },
+    {
+      "text": "taste_negative_legacy_huangnian_ep15_c003",
+      "pattern": "rejected_window",
+      "note": "High legacy score came from resource_crisis, but the candidate still needs a concrete viewer line rather than mechanism coverage.",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：兔兔还是死了。 你这是怎么",
+      "source": "v1",
+      "item_id": "taste_negative_legacy_huangnian_ep15_c003"
+    },
+    {
+      "text": "taste_negative_legacy_huangnian_ep06_c001",
+      "pattern": "rejected_framing",
+      "note": "Legacy miner phrased this as `白米要不要现在分给娘？` under resource_crisis; the source beat may be useful, but this framing teaches the rejected action-menu/RPG surface.",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：前一段 ASR 不足。\",",
+      "source": "v1",
+      "item_id": "taste_negative_legacy_huangnian_ep06_c001"
+    },
+    {
+      "text": "taste_negative_legacy_huangnian_ep08_c002",
+      "pattern": "rejected_framing",
+      "note": "Legacy miner phrased this as `白米要不要现在分给大山？` under resource_crisis; the source beat may be useful, but this framing teaches the rejected action-menu/RPG surface.",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：立正！向右看齐！ 报名。\"",
+      "source": "v1",
+      "item_id": "taste_negative_legacy_huangnian_ep08_c002"
+    },
+    {
+      "text": "taste_negative_legacy_huangnian_ep12_c003",
+      "pattern": "rejected_window",
+      "note": "High legacy score came from resource_crisis, but the candidate still needs a concrete viewer line rather than mechanism coverage.",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：啊！哦！ 四蛋抓了只兔子，",
+      "source": "v1",
+      "item_id": "taste_negative_legacy_huangnian_ep12_c003"
+    },
+    {
+      "text": "taste_negative_legacy_huangnian_ep16_c003",
+      "pattern": "rejected_window",
+      "note": "High legacy score came from resource_crisis, but the candidate still needs a concrete viewer line rather than mechanism coverage.",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：思丹，跟娘出来一下。 既然",
+      "source": "v1",
+      "item_id": "taste_negative_legacy_huangnian_ep16_c003"
+    },
+    {
+      "text": "taste_negative_legacy_huangnian_ep03_c003",
+      "pattern": "rejected_framing",
+      "note": "Legacy miner phrased this as `价值要不要马上用？` under system_rule; the source beat may be useful, but this framing teaches the rejected action-menu/RPG surface.",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：前一段 ASR 不足。\",",
+      "source": "v1",
+      "item_id": "taste_negative_legacy_huangnian_ep03_c003"
+    },
+    {
+      "text": "taste_negative_legacy_huangnian_ep04_c003",
+      "pattern": "rejected_framing",
+      "note": "Legacy miner phrased this as `小鹅菜要不要现在分给孩子？` under resource_crisis; the source beat may be useful, but this framing teaches the rejected action-menu/RPG surface.",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：怎么？ 稻子都不认识啊？ ",
+      "source": "v1",
+      "item_id": "taste_negative_legacy_huangnian_ep04_c003"
+    },
+    {
+      "text": "taste_negative_legacy_huangnian_ep04_c005",
+      "pattern": "rejected_framing",
+      "note": "Legacy miner phrased this as `商城要不要马上用？` under system_rule; the source beat may be useful, but this framing teaches the rejected action-menu/RPG surface.",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：啊！ 竟然是真的！\", \"",
+      "source": "v1",
+      "item_id": "taste_negative_legacy_huangnian_ep04_c005"
+    },
+    {
+      "text": "taste_negative_legacy_huangnian_ep17_c003",
+      "pattern": "rejected_framing",
+      "note": "Legacy miner phrased this as `鸡蛋要不要现在分给娘？` under resource_crisis; the source beat may be useful, but this framing teaches the rejected action-menu/RPG surface.",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：行了，先去去去去，看着都碍",
+      "source": "v1",
+      "item_id": "taste_negative_legacy_huangnian_ep17_c003"
+    },
+    {
+      "text": "taste_negative_legacy_huangnian_ep02_c003",
+      "pattern": "rejected_framing",
+      "note": "Legacy miner phrased this as `饭要不要现在分给娘？` under resource_crisis; the source beat may be useful, but this framing teaches the rejected action-menu/RPG surface.",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：娘。 这四个儿子都对原身孝",
+      "source": "v1",
+      "item_id": "taste_negative_legacy_huangnian_ep02_c003"
+    },
+    {
+      "text": "taste_negative_legacy_huangnian_ep15_c001",
+      "pattern": "rejected_window",
+      "note": "High legacy score came from resource_crisis, but the candidate still needs a concrete viewer line rather than mechanism coverage.",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：阿奶，是我没用，又让娘把粮",
+      "source": "v1",
+      "item_id": "taste_negative_legacy_huangnian_ep15_c001"
+    },
+    {
+      "text": "taste_negative_legacy_huangnian_ep04_c001",
+      "pattern": "rejected_framing",
+      "note": "Legacy miner phrased this as `稻子要不要现在摊开算？` under evidence_or_trap; the source beat may be useful, but this framing teaches the rejected action-menu/RPG surface.",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：嘿！ 发现天然无污染苦苣菜",
+      "source": "v1",
+      "item_id": "taste_negative_legacy_huangnian_ep04_c001"
+    },
+    {
+      "text": "taste_negative_legacy_huangnian_ep06_c002",
+      "pattern": "rejected_framing",
+      "note": "Legacy miner phrased this as `白米来源要不要现在解释？` under exposure_risk; the source beat may be useful, but this framing teaches the rejected action-menu/RPG surface.",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：前一段 ASR 不足。\",",
+      "source": "v1",
+      "item_id": "taste_negative_legacy_huangnian_ep06_c002"
+    },
+    {
+      "text": "taste_negative_legacy_huangnian_ep17_c005",
+      "pattern": "rejected_framing",
+      "note": "Legacy miner phrased this as `鸡蛋要不要现在分给四蛋？` under resource_crisis; the source beat may be useful, but this framing teaches the rejected action-menu/RPG surface.",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：嗯。\", \"scene_f",
+      "source": "v1",
+      "item_id": "taste_negative_legacy_huangnian_ep17_c005"
+    },
+    {
+      "text": "taste_negative_legacy_huangnian_ep15_c005",
+      "pattern": "rejected_window",
+      "note": "High legacy score came from resource_crisis, but the candidate still needs a concrete viewer line rather than mechanism coverage.",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：娘说的话肯定都是骗人的。 ",
+      "source": "v1",
+      "item_id": "taste_negative_legacy_huangnian_ep15_c005"
+    },
+    {
+      "text": "taste_negative_legacy_huangnian_ep05_c001",
+      "pattern": "rejected_window",
+      "note": "High legacy score came from resource_crisis, but the candidate still needs a concrete viewer line rather than mechanism coverage.",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：娘回来就说我们上山干活了，",
+      "source": "v1",
+      "item_id": "taste_negative_legacy_huangnian_ep05_c001"
+    },
+    {
+      "text": "taste_negative_legacy_huangnian_ep15_c002",
+      "pattern": "rejected_window",
+      "note": "High legacy score came from survival_tradeoff, but the candidate still needs a concrete viewer line rather than mechanism coverage.",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：阿奶，是我没用，又让娘把粮",
+      "source": "v1",
+      "item_id": "taste_negative_legacy_huangnian_ep15_c002"
+    },
+    {
+      "text": "taste_negative_legacy_huangnian_ep14_c002",
+      "pattern": "rejected_framing",
+      "note": "Legacy miner phrased this as `大山这边要不要先护住？` under family_pressure; the source beat may be useful, but this framing teaches the rejected action-menu/RPG surface.",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：前一段 ASR 不足。\",",
+      "source": "v1",
+      "item_id": "taste_negative_legacy_huangnian_ep14_c002"
+    },
+    {
+      "text": "taste_negative_legacy_huangnian_ep01_c001",
+      "pattern": "rejected_window",
+      "note": "High legacy score came from family_pressure, but the candidate still needs a concrete viewer line rather than mechanism coverage.",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：开什么玩笑，我都还没结婚呢",
+      "source": "v1",
+      "item_id": "taste_negative_legacy_huangnian_ep01_c001"
+    },
+    {
+      "text": "taste_negative_legacy_huangnian_ep09_c003",
+      "pattern": "rejected_framing",
+      "note": "Legacy miner phrased this as `娘这边要不要先护住？` under family_pressure; the source beat may be useful, but this framing teaches the rejected action-menu/RPG surface.",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：现在一共有二百一十一文钱，",
+      "source": "v1",
+      "item_id": "taste_negative_legacy_huangnian_ep09_c003"
+    },
+    {
+      "text": "taste_negative_legacy_huangnian_ep20_c003",
+      "pattern": "rejected_window",
+      "note": "High legacy score came from evidence_or_trap, but the candidate still needs a concrete viewer line rather than mechanism coverage.",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：前一段 ASR 不足。\",",
+      "source": "v1",
+      "item_id": "taste_negative_legacy_huangnian_ep20_c003"
+    },
+    {
+      "text": "taste_negative_legacy_huangnian_ep04_c007",
+      "pattern": "rejected_framing",
+      "note": "Legacy miner phrased this as `稻子要不要现在摊开算？` under evidence_or_trap; the source beat may be useful, but this framing teaches the rejected action-menu/RPG surface.",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：哎，大家快来看，这赵大嫂子",
+      "source": "v1",
+      "item_id": "taste_negative_legacy_huangnian_ep04_c007"
+    },
+    {
+      "text": "taste_negative_legacy_huangnian_ep08_c003",
+      "pattern": "rejected_framing",
+      "note": "Legacy miner phrased this as `二狗这边要不要先护住？` under family_pressure; the source beat may be useful, but this framing teaches the rejected action-menu/RPG surface.",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：大山到！二狗到！三牛到！四",
+      "source": "v1",
+      "item_id": "taste_negative_legacy_huangnian_ep08_c003"
+    },
+    {
+      "text": "taste_negative_legacy_huangnian_ep16_c005",
+      "pattern": "rejected_window",
+      "note": "High legacy score came from family_pressure, but the candidate still needs a concrete viewer line rather than mechanism coverage.",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：前一段 ASR 不足。\",",
+      "source": "v1",
+      "item_id": "taste_negative_legacy_huangnian_ep16_c005"
+    },
+    {
+      "text": "taste_negative_legacy_huangnian_ep20_c001",
+      "pattern": "rejected_window",
+      "note": "High legacy score came from family_pressure, but the candidate still needs a concrete viewer line rather than mechanism coverage.",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：昨天把原身打得头破血流，今",
+      "source": "v1",
+      "item_id": "taste_negative_legacy_huangnian_ep20_c001"
+    },
+    {
+      "text": "taste_negative_legacy_huangnian_ep09_c001",
+      "pattern": "rejected_framing",
+      "note": "Legacy miner phrased this as `大米要不要现在分给四蛋？` under resource_crisis; the source beat may be useful, but this framing teaches the rejected action-menu/RPG surface.",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：叮，天然野生黑牛肝菌三斤五",
+      "source": "v1",
+      "item_id": "taste_negative_legacy_huangnian_ep09_c001"
+    },
+    {
+      "text": "taste_negative_legacy_huangnian_ep11_c001",
+      "pattern": "rejected_window",
+      "note": "High legacy score came from evidence_or_trap, but the candidate still needs a concrete viewer line rather than mechanism coverage.",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：前一段 ASR 不足。\",",
+      "source": "v1",
+      "item_id": "taste_negative_legacy_huangnian_ep11_c001"
+    },
+    {
+      "text": "taste_negative_legacy_huangnian_ep19_c003",
+      "pattern": "rejected_window",
+      "note": "High legacy score came from evidence_or_trap, but the candidate still needs a concrete viewer line rather than mechanism coverage.",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：前一段 ASR 不足。\",",
+      "source": "v1",
+      "item_id": "taste_negative_legacy_huangnian_ep19_c003"
+    },
+    {
+      "text": "taste_negative_legacy_huangnian_ep08_c001",
+      "pattern": "rejected_framing",
+      "note": "Legacy miner phrased this as `大山这边要不要先护住？` under family_pressure; the source beat may be useful, but this framing teaches the rejected action-menu/RPG surface.",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：立正！向右看齐！ 报名。\"",
+      "source": "v1",
+      "item_id": "taste_negative_legacy_huangnian_ep08_c001"
+    },
+    {
+      "text": "taste_negative_legacy_huangnian_ep02_c007",
+      "pattern": "rejected_framing",
+      "note": "Legacy miner phrased this as `娘这边要不要先护住？` under family_pressure; the source beat may be useful, but this framing teaches the rejected action-menu/RPG surface.",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：前一段 ASR 不足。\",",
+      "source": "v1",
+      "item_id": "taste_negative_legacy_huangnian_ep02_c007"
+    },
+    {
+      "text": "taste_negative_legacy_huangnian_ep08_c005",
+      "pattern": "rejected_framing",
+      "note": "Legacy miner phrased this as `娘这边要不要先护住？` under family_pressure; the source beat may be useful, but this framing teaches the rejected action-menu/RPG surface.",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：是大河村常见的鸡菌菇，没毒",
+      "source": "v1",
+      "item_id": "taste_negative_legacy_huangnian_ep08_c005"
+    },
+    {
+      "text": "taste_negative_legacy_huangnian_ep01_c003",
+      "pattern": "rejected_window",
+      "note": "High legacy score came from family_pressure, but the candidate still needs a concrete viewer line rather than mechanism coverage.",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：自然是。 啊！哈！嗯！ 啊",
+      "source": "v1",
+      "item_id": "taste_negative_legacy_huangnian_ep01_c003"
+    },
+    {
+      "text": "taste_negative_legacy_huangnian_ep16_c002",
+      "pattern": "rejected_window",
+      "note": "High legacy score came from family_pressure, but the candidate still needs a concrete viewer line rather than mechanism coverage.",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：阿奶。 哎，四达，你咋来了",
+      "source": "v1",
+      "item_id": "taste_negative_legacy_huangnian_ep16_c002"
+    },
+    {
+      "text": "taste_negative_legacy_huangnian_ep19_c001",
+      "pattern": "rejected_window",
+      "note": "High legacy score came from family_pressure, but the candidate still needs a concrete viewer line rather than mechanism coverage.",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：二两银子？好！很好，大山，",
+      "source": "v1",
+      "item_id": "taste_negative_legacy_huangnian_ep19_c001"
+    },
+    {
+      "text": "taste_negative_legacy_huangnian_ep04_c002",
+      "pattern": "rejected_framing",
+      "note": "Legacy miner phrased this as `当着大家快来看要不要把话说死？` under village_pressure; the source beat may be useful, but this framing teaches the rejected action-menu/RPG surface.",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：嘿！ 发现天然无污染苦苣菜",
+      "source": "v1",
+      "item_id": "taste_negative_legacy_huangnian_ep04_c002"
+    },
+    {
+      "text": "taste_negative_legacy_huangnian_ep14_c003",
+      "pattern": "rejected_framing",
+      "note": "Legacy miner phrased this as `娘这边要不要先护住？` under family_pressure; the source beat may be useful, but this framing teaches the rejected action-menu/RPG surface.",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：搞得好像我们老赵家亏待你一",
+      "source": "v1",
+      "item_id": "taste_negative_legacy_huangnian_ep14_c003"
+    },
+    {
+      "text": "taste_negative_legacy_huangnian_ep06_c003",
+      "pattern": "rejected_framing",
+      "note": "Legacy miner phrased this as `娘这边要不要先护住？` under family_pressure; the source beat may be useful, but this framing teaches the rejected action-menu/RPG surface.",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：我给程家补贴了多少粮食银子",
+      "source": "v1",
+      "item_id": "taste_negative_legacy_huangnian_ep06_c003"
+    },
+    {
+      "text": "taste_negative_legacy_huangnian_ep15_c004",
+      "pattern": "rejected_window",
+      "note": "High legacy score came from family_pressure, but the candidate still needs a concrete viewer line rather than mechanism coverage.",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：兔兔还是死了。 你这是怎么",
+      "source": "v1",
+      "item_id": "taste_negative_legacy_huangnian_ep15_c004"
+    },
+    {
+      "text": "taste_negative_legacy_huangnian_ep01_c004",
+      "pattern": "rejected_window",
+      "note": "High legacy score came from family_pressure, but the candidate still needs a concrete viewer line rather than mechanism coverage.",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：吵死了！ 这是哪？ 我不是",
+      "source": "v1",
+      "item_id": "taste_negative_legacy_huangnian_ep01_c004"
+    },
+    {
+      "text": "taste_negative_legacy_huangnian_ep02_c009",
+      "pattern": "rejected_framing",
+      "note": "Legacy miner phrased this as `娘这边要不要先护住？` under family_pressure; the source beat may be useful, but this framing teaches the rejected action-menu/RPG surface.",
+      "scene": "{\"episode_context\": \"现代企业家程弯弯穿到荒年恶婆婆身上。原主长期偏向娘家、亏待儿子儿媳，所以家人和村里人会把她的新行为先按旧人设理解。 这个候选来自旧 miner 或 near-miss，需要用上下文判断它是否只是机制命中。前一段：当初是我求着你给的吗？滚回",
+      "source": "v1",
+      "item_id": "taste_negative_legacy_huangnian_ep02_c009"
+    },
+    {
+      "text": "huangnian_ep12_m001",
+      "pattern": "",
+      "note": "",
+      "scene": "啊！哦！",
+      "source": "inplayer",
+      "item_id": "huangnian_ep12_m001"
+    },
+    {
+      "text": "不完全确定，但我猜测剧情上下文不应该是这个“老人挂念很感人”的理解方向",
+      "pattern": "",
+      "note": "不完全确定，但我猜测剧情上下文不应该是这个“老人挂念很感人”的理解方向",
+      "scene": "沈先生，您说是不是？当然。听到了吧？咱妈和你们家老爷子那不一样，咱妈生前不肯走，那不是因为有什么执念，而是因为舍不得我们这些小辈。是不是？",
+      "source": "inplayer",
+      "item_id": "yunmiao_ep17_m001"
+    },
+    {
+      "text": "换到00:40开始",
+      "pattern": "",
+      "note": "换到00:40开始",
+      "scene": "你真的觉得你母亲生前幸福吗？于小姐，我们孙家和你有什么关系？啊？就算我母亲生前有什么，那也轮不到你一个小朋友来这智慧。是吗？这这眼神好冷，哪像是活人的眼神？",
+      "source": "inplayer",
+      "item_id": "yunmiao_ep18_m001"
+    }
+  ],
+  "cleanup_log": {
+    "merged": [
+      "echo_catch_overused_template -> echo_formulaic_template_overuse"
+    ],
+    "relabeled": [
+      "echo_verbatim_paraphrase -> echo",
+      "lead_explicit_scene_topic_naming -> companion_lead",
+      "display_text_break_audience_knowledge_state -> display_text"
+    ],
+    "filled_when_fix": [
+      "rpg_action_menu_rewrite_plot",
+      "producer_meta_analysis_not_viewer_speech",
+      "emotional_axis_label_no_viewer_voice",
+      "duplicate_or_paraphrase_of_lead_or_other_candidates",
+      "flat_low_emotion_unnatural_wording",
+      "exaggerated_or_misaligned_tone",
+      "ambiguous_or_factual_error_subject"
+    ],
+    "note": "mechanical only (non-taste). Owner does the taste pass next; see merge_candidates_for_owner."
+  },
+  "merge_candidates_for_owner": [
+    {
+      "layer": "companion_lead",
+      "consider": [
+        "lead_uses_question_form_as_opener (soft)",
+        "lead_uses_explicit_questionnaire_or_ui_label (hard)"
+      ],
+      "note": "都在拒『问句/答题式』lead——一条还是两条由你定（severity 也不同 soft vs hard）"
+    },
+    {
+      "layer": "companion_lead",
+      "consider": [
+        "lead_misaligned_to_short_drama_viewer_rhythm (soft)"
+      ],
+      "note": "pattern 偏虚、单例低信号——看是否删，或并入别的 lead 模式"
+    },
+    {
+      "layer": "companion_lead",
+      "consider": [
+        "lead_uses_overly_harsh_high_risk_language (soft)"
+      ],
+      "note": "更像内容安全约束而非口味失败——看是否留在 taste 集"
+    }
+  ],
+  "taste_deltas": [
+    {
+      "by": "owner",
+      "date": "2026-06-10",
+      "change": "yunmiao_ep17_m001: 留整段 gold（copy 好），加 window_status=contested（窗口有问题、copy 不受影响）。window_negative 保留。"
+    },
+    {
+      "by": "owner_precedent",
+      "date": "2026-06-10",
+      "change": "yunmiao_ep18_m001: 同 ep17 处理 —— 留整段 gold，window_status=contested（窗口时机 换到00:40，copy 不受影响）。"
+    },
+    {
+      "by": "owner",
+      "date": "2026-06-10",
+      "change": "移除 lihun_ep06_m001 + lihun_ep12_m001 整段 gold（in-player 否了核心 copy：lead/say/echo），好句已在/补入 gold_exemplars。authority inplayer>v2。"
+    },
+    {
+      "by": "owner",
+      "date": "2026-06-10",
+      "change": "删 lead_misaligned_to_short_drama_viewer_rhythm（虚/低信号单例）"
+    },
+    {
+      "by": "owner",
+      "date": "2026-06-10",
+      "change": "lead_overly_harsh_high_risk_language 移出 taste 集 → content_safety_notes（属内容安全，非口味失败）"
+    },
+    {
+      "by": "owner",
+      "date": "2026-06-10",
+      "change": "降 soft：lead_overcloses_full_judgment / lead_explicit_scene_topic_naming / display_text_break_audience_knowledge_state（强偏好，非一票毙）"
+    },
+    {
+      "by": "owner",
+      "date": "2026-06-10",
+      "change": "question_form 与 questionnaire 保留两条（失败类型+severity 不同，不合并）"
+    },
+    {
+      "by": "owner",
+      "date": "2026-06-10",
+      "change": "修正：['lead_uses_overly_harsh_high_risk_language'] 移出 taste 集 → content_safety_notes"
+    },
+    {
+      "by": "owner",
+      "date": "2026-06-10",
+      "change": "正例聚类：65 条 gold_exemplars 蒸馏成 14 条 named_positives（对称负例）；删原始死句。"
+    },
+    {
+      "by": "owner",
+      "date": "2026-06-10",
+      "change": "全收 14 named_positives → v0.3 owner_finalized（21 named_negatives + 14 named_positives + 2 gold_examples + 1 content_safety + 53 window_negatives）"
+    }
+  ],
+  "content_safety_notes": [
+    {
+      "layer": "companion_lead",
+      "negative_type": "lead_uses_overly_harsh_high_risk_language",
+      "pattern": "The lead uses overly harsh, morally charged phrasing that may trigger content policy risks or feel unnecessarily extreme for the casual co-watching tone.",
+      "why_bad": "Exposes the product to unnecessary content moderation risk and breaks the approachable vibe of the watching companion.",
+      "corrected_direction": "Replace the overly harsh phrasing with milder, more natural shared reaction language that still captures the same feeling.",
+      "illustrative_examples": [
+        "这原主之前造的孽，给孩子都吓出条件反射了"
+      ]
+    }
+  ],
+  "named_positives": [
+    {
+      "positive_type": "shared_immediate_factual_surprise",
+      "when": "A sudden, unanticipated on-screen plot beat unfolds that directly contradicts the viewer’s default expectation for the scene",
+      "pattern": "Deliver a plain, un-prefixed declarative observation of the unexpected event that stops just short of spelling out the full personal judgment the viewer is itching to voice",
+      "why_good": "No unnecessary framing breaks the shared viewing immersion, the unforced reaction aligns perfectly with the 我想说一句 thesis by naming the exact surprising detail the viewer already noticed and wants to comment on",
+      "illustrative_examples": [
+        "他们居然还先把吃的端给娘。",
+        "他们居然敢打这种恶毒主意"
+      ],
+      "layer": "companion_lead"
+    },
+    {
+      "positive_type": "pre_showdown_anticipation_tease",
+      "when": "The scene has built up clear tension that is obviously leading to an imminent, satisfying payoff or confrontation",
+      "pattern": "State a casual, laid-back anticipatory remark that calls out the incoming drama without spoiling or over-explaining the expected outcome",
+      "why_good": "It surfaces the collective giddy excitement of waiting for the on-screen conflict to play out, leaving the viewer free to chime in with their own hot take on how the payoff will land",
+      "illustrative_examples": [
+        "坐等看戏。",
+        "这小屁孩赖账还拿长辈压人，坐等看好戏"
+      ],
+      "layer": "companion_lead"
+    },
+    {
+      "positive_type": "contextualized_unspoken_observation",
+      "when": "Multiple prior scattered scene details click together to reveal a hidden, unfair or absurd backstory context that the show has not explicitly stated out loud",
+      "pattern": "Call out that newly connected full contextual reveal as a matter-of-fact reaction, rather than only pointing to a single isolated visual detail",
+      "why_good": "It validates the viewer’s own active deduction of the hidden context, triggering the exact urge to say the full snarky or indignant line they already have in mind",
+      "illustrative_examples": [
+        "合着以前家里的鸡蛋全是原主自己吃的",
+        "连婆婆都怕她把东西补贴娘家"
+      ],
+      "layer": "companion_lead"
+    },
+    {
+      "positive_type": "rising_emotion_anchor",
+      "when": "The on-screen events have stacked up just enough to stoke a clear shared feeling (fury, disbelief, exasperation) that the viewer is already actively feeling",
+      "pattern": "Name that rising, tangible shared emotion directly without adding extra commentary that would steal the viewer’s chance to voice their own specific grievance",
+      "why_good": "It perfectly mirrors the viewer’s current unspoken mood, making them immediately want to blurt out the exact targeted complaint they were already forming",
+      "illustrative_examples": [
+        "这桌饭看得人火气上来了。"
+      ],
+      "layer": "companion_lead"
+    },
+    {
+      "positive_type": "mild_playful_roast_of_established_trait",
+      "when": "A recurring character flaw or absurd setup that has already been established across prior beats is being highlighted again in the current scene",
+      "pattern": "Deliver a light, playful jab at that well-known trait that stops short of the full over-the-top roast the viewer is eager to deliver themselves",
+      "why_good": "It leans into the shared running joke the viewer has already built up with the show, directly prompting them to say their own personalized funny take on the familiar absurdity",
+      "illustrative_examples": [
+        "原主这离谱人设，可别再把最后一口吃的送走了啊"
+      ],
+      "layer": "companion_lead"
+    },
+    {
+      "positive_type": "shared_mild_judgment_on_character_behavior",
+      "when": "A character on screen just took a distinct, recognizable action that aligns with or deviates from common social norms, and most viewers already have full context of their past traits",
+      "pattern": "The line states a plain, widely relatable casual judgment of that exact on-screen behavior, no extra plot speculation",
+      "why_good": "Matches the viewer's spontaneous urge to mutter a shared norm-based thought to a friend right after the action plays, no overreach",
+      "illustrative_examples": [
+        "是呀，也太孝顺了",
+        "这人也太恶毒了"
+      ],
+      "layer": "display_text"
+    },
+    {
+      "positive_type": "preemptive_familiar_plot_beat_recognition",
+      "when": "The scene clearly sets up a well-known short-drama plot trope that regular viewers can spot immediately before it fully unfolds",
+      "pattern": "The line calls out the familiar trope setup in casual, conversational language that regular viewers would use",
+      "why_good": "Validates the viewer's existing familiarity with short-drama conventions, perfectly matches the 'I want to say this' urge of recognizing a predictable beat",
+      "illustrative_examples": [
+        "经典打脸剧情",
+        "经典打脸前置我太熟了"
+      ],
+      "layer": "display_text"
+    },
+    {
+      "positive_type": "contextual_cause_echo_for_established_trait",
+      "when": "A side character just reacted to the protagonist with suspicion or specific treatment, and the viewer already knows the full backstory of the original host's bad reputation",
+      "pattern": "The line explicitly connects the current on-screen reaction to the pre-established known backstory reason, no new reveal content",
+      "why_good": "Taps into the viewer's shared full context to voice the obvious causal link they are already thinking of, no forced suspense",
+      "illustrative_examples": [
+        "原主那个人设，也难怪婆婆防备",
+        "原主那堆糊涂事，也难怪婆婆防着"
+      ],
+      "layer": "display_text"
+    },
+    {
+      "positive_type": "soft_contrast_note_for_contradictory_character_action",
+      "when": "A character who was just shown to have a harsh, unkind verbal demeanor immediately follows up with a kind, practical action that contradicts their earlier words",
+      "pattern": "The line points out the clear contrast between the character's tough words and their actual kind action in plain casual speech",
+      "why_good": "Captures the exact small, noticeable detail the viewer wants to point out to their watching companion right at that beat",
+      "illustrative_examples": [
+        "婆婆嘴硬归嘴硬，粮是真给了",
+        "老太太嘴硬心软，嘴上骂粮还是给了"
+      ],
+      "layer": "display_text"
+    },
+    {
+      "positive_type": "immediate_fairness_protest_for_unjust_treatment",
+      "when": "A vulnerable character (child, wronged protagonist) is just subjected to unfair, unprovoked mistreatment on screen",
+      "pattern": "The line voices a short, spontaneous shared protest against the unfair treatment, no over-the-top drama",
+      "why_good": "Directly matches the viewer's instinctive urge to speak up for the wronged party the second the unfair scene plays out",
+      "illustrative_examples": [
+        "凭什么啊",
+        "凭什么扣帽子"
+      ],
+      "layer": "display_text"
+    },
+    {
+      "positive_type": "catch_ratifies_viewers_judgment_then_supports_with_scene_visible_fact",
+      "when": "The viewer just voiced a clear moral judgment or factual claim about an ongoing in-scene event",
+      "pattern": "Use a matching natural catch (such as 可不是 / 就是啊) to fully validate the viewer’s stated opinion, then add one immediately visible on-screen detail that reinforces their point without restating their original line",
+      "why_good": "Delivers solid 接住感 that aligns exactly with the viewer’s speech act, avoids redundant paraphrasing, and stays strictly tied to the current scene to meet the 我想说一句 thesis",
+      "illustrative_examples": [
+        "就是啊，这不是讲规矩，是把人按在桌边羞辱。",
+        "可不是，连孕妇肚里的小生命都下得去手"
+      ],
+      "layer": "echo"
+    },
+    {
+      "positive_type": "shared_emotion_no_catch_then_adds_empathy_angle",
+      "when": "The viewer just voiced a soft, empathetic feeling about vulnerable characters in the scene",
+      "pattern": "Skip the explicit catch to keep the tone gentle, directly mirror the viewer’s tender or sad shared feeling, then add a subtle relatable empathy angle that deepens their existing sentiment",
+      "why_good": "Hits the required ~2:1 catch-to-no-catch ratio, avoids overusing formulaic affirmations, and makes the companion feel like a genuine fellow viewer sharing the same quiet feeling",
+      "illustrative_examples": [
+        "饿了好几天还怕仅有的野菜被送走，看得人心里发酸"
+      ],
+      "layer": "echo"
+    },
+    {
+      "positive_type": "catch_amplifies_viewers_frustration_then_supports_with_prior_plot_context",
+      "when": "The viewer just voiced frustration at a character’s unfair or unreasonable action that has clear established backstory in the show world",
+      "pattern": "Use a casual, conversational catch to affirm the viewer’s frustration, then add a previously established show-world detail that explains why the current action is even more infuriating or justified than it first appears",
+      "why_good": "Stays fully consistent with the show’s internal rules, never references the show as a media product, and extends the viewer’s original line with a context they already recognize to make the shared frustration feel fully seen",
+      "illustrative_examples": [
+        "之前把亡夫抚恤金全塞娘家，换谁攥着救命粮都得留个心眼啊"
+      ],
+      "layer": "echo"
+    },
+    {
+      "positive_type": "catch_aligns_viewers_anticipation_then_confirms_setup_payoff",
+      "when": "The viewer just voiced excited anticipation for an upcoming satisfying plot beat (such as a long-awaited爽点)",
+      "pattern": "Use a light, playful catch to match the viewer’s eager tone, then add a small observed detail that confirms the setup for the anticipated payoff is already fully in place, with zero prediction of future events",
+      "why_good": "Matches the viewer’s excited speech act without making unproven plot guarantees, stays grounded in what the viewer has already witnessed, and amplifies their existing eagerness naturally",
+      "illustrative_examples": [
+        "这小崽子把欠揍值直接拉满，就等爽点稳稳触发了"
+      ],
+      "layer": "echo"
+    }
+  ],
+  "named_positives_review": "owner_approved_all_14 (2026-06-10)"
+}

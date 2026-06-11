@@ -237,11 +237,23 @@ export function Branch3PlayerDemo({
   const markers = useMemo(() => selectEpisodeMarkers(allMarkers, selectedEpisodeId), [allMarkers, selectedEpisodeId]);
   const episodeOptions = useMemo(() => buildEpisodeOptions(allMarkers), [allMarkers]);
   const activeMarker = markers.find((marker) => marker.id === activeMarkerId) ?? markers[0] ?? allMarkers[0] ?? initialMarkers[0];
-  const currentWindowMarker = findMarkerInWindow(markers, currentTime);
-  const currentActionableMarker =
-    currentWindowMarker && !completedMarkerIds.has(currentWindowMarker.id) ? currentWindowMarker : null;
+  // The window the idle companion is tappable for: the most-recent uncompleted window whose START
+  // we have reached — DURING (within the window) OR AFTER (viewer missed it, companion idle again).
+  // Before any window starts (currentTime < every startSeconds) this is null → tapping is a no-op.
+  const tappableMarker = useMemo(() => {
+    let candidate: HighlightMarker | undefined;
+    for (const marker of markers) {
+      if (currentTime >= marker.startSeconds && !completedMarkerIds.has(marker.id)) {
+        if (!candidate || marker.startSeconds > candidate.startSeconds) {
+          candidate = marker;
+        }
+      }
+    }
+    return candidate ?? null;
+  }, [markers, currentTime, completedMarkerIds]);
   const nextEligibleMarker = markers.find((marker) => marker.noticeAtSeconds >= currentTime - 0.3);
-  const visibleHook = companionState === "idle" ? currentActionableMarker ?? nextEligibleMarker ?? activeMarker : activeMarker;
+  const visibleHook =
+    companionState === "idle" ? tappableMarker ?? nextEligibleMarker ?? activeMarker : activeMarker;
   const showBubble =
     companionState === "stand_bubble" ||
     companionState === "thinking" ||
@@ -310,6 +322,8 @@ export function Branch3PlayerDemo({
   }, [allMarkers, initialVideoUrl, selectedEpisodeId, sendCompanionEvent]);
 
   // One-time seek to the highlight the Stage list handed us (optional; 0 = normal start).
+  // Catalog entry passes startSeconds=0 → no seek (the autoplay effect below starts from 0);
+  // the Studio 发布 deep-link (?seek=N, App.tsx) passes startSeconds=N → one-time jump to N.
   const didInitialSeekRef = useRef(false);
   useEffect(() => {
     if (didInitialSeekRef.current || !startSeconds || startSeconds <= 0) return;
@@ -327,6 +341,26 @@ export function Branch3PlayerDemo({
     if (video.readyState >= 1) seek();
     else video.addEventListener("loadedmetadata", seek, { once: true });
   }, [startSeconds]);
+
+  // Best-effort autoplay on entry (the catalog tap / deep-link nav is the user gesture).
+  // One-shot per mount so the selection-reset effect's pause()/isPlaying(false) does not fight it,
+  // and so the viewer's own pause is respected thereafter. Silently no-ops if the browser blocks
+  // autoplay (muted/policy) — the viewer can still tap ▶.
+  const didAutoplayRef = useRef(false);
+  useEffect(() => {
+    if (didAutoplayRef.current || !videoUrl || hasVideoError) return;
+    const video = videoRef.current;
+    if (!video || typeof video.play !== "function") return;
+    didAutoplayRef.current = true;
+    try {
+      const playResult = video.play();
+      if (playResult && typeof playResult.catch === "function") {
+        playResult.catch(() => setIsPlaying(false));
+      }
+    } catch {
+      setIsPlaying(false);
+    }
+  }, [videoUrl, hasVideoError]);
 
   useEffect(() => {
     void sendRuntimeEvent({
@@ -476,13 +510,15 @@ export function Branch3PlayerDemo({
 
   function handleCompanionTap(state: TomatoCompanionState) {
     if (state === "idle") {
-      if (!currentActionableMarker) {
+      // Tappable from the nearest started window onward (during OR after a missed window).
+      // No-op before any window has started.
+      if (!tappableMarker) {
         return;
       }
-      setActiveMarkerId(currentActionableMarker.id);
+      setActiveMarkerId(tappableMarker.id);
       setCustomOpen(false);
       setCustomAction("");
-      void sendCompanionTap(currentActionableMarker);
+      void sendCompanionTap(tappableMarker);
       pauseForCompanionChoice();
       sendCompanionEvent({ type: "TAP" });
       return;
@@ -705,16 +741,6 @@ export function Branch3PlayerDemo({
               <strong>{activeMarker.episodeTitle || DRAMA_TITLE}</strong>
             </div>
           </div>
-          <button
-            aria-controls="branch3-episode-picker"
-            aria-expanded={episodePickerOpen}
-            className="branch3-player__episode-trigger"
-            onClick={() => setEpisodePickerOpen((open) => !open)}
-            type="button"
-          >
-            <span>{formatEpisodeLabel(selectedEpisodeId)}</span>
-            <i aria-hidden="true">⌄</i>
-          </button>
         </header>
 
         {episodePickerOpen ? (
@@ -886,6 +912,16 @@ export function Branch3PlayerDemo({
             <span>
               {formatTime(currentTime)} / {formatTime(durationSeconds)}
             </span>
+            <button
+              aria-controls="branch3-episode-picker"
+              aria-expanded={episodePickerOpen}
+              className="branch3-player__episode-trigger"
+              onClick={() => setEpisodePickerOpen((open) => !open)}
+              type="button"
+            >
+              <span>{formatEpisodeLabel(selectedEpisodeId)}</span>
+              <i aria-hidden="true">⌄</i>
+            </button>
           </div>
         </section>
       </section>
@@ -1019,7 +1055,13 @@ function mapMomentSummariesToMarkers(summaries: DeadmanMomentSummary[]): Highlig
       const hasMouthpieceCandidates =
         Array.isArray(summary.mouthpiece_candidates) && summary.mouthpiece_candidates.length > 0;
       const hasLegacyOptions = Array.isArray(summary.default_options) && summary.default_options.length > 0;
-      return summary.moment_id && (hasExchangeCandidates || hasMouthpieceCandidates || hasLegacyOptions);
+      // A pre-promote SCAFFOLD moment (empty companion_exchange) still carries a valid interaction
+      // window + runtime_video_url, so keep it so the VIDEO is playable — e.g. the in-graph review
+      // gate previewing the window of an un-promoted upload. Curated viewer dramas always have
+      // candidates, so they're unaffected; this only rescues otherwise-dropped scaffold moments.
+      const iw = summary.interaction_window;
+      const hasWindow = !!iw && (iw.start_seconds != null || iw.notice_at_seconds != null);
+      return Boolean(summary.moment_id) && (hasExchangeCandidates || hasMouthpieceCandidates || hasLegacyOptions || hasWindow);
     })
     .map((summary, index) => {
       const fallback = STATIC_HIGHLIGHT_MARKERS[index % STATIC_HIGHLIGHT_MARKERS.length];
@@ -1041,7 +1083,9 @@ function mapMomentSummariesToMarkers(summaries: DeadmanMomentSummary[]): Highlig
         marker: summary.companion_exchange?.notice_marker === "?" || summary.notice_marker === "?" ? "?" : "!",
         hook: summary.companion_exchange?.scene_signal || summary.hook || viewerTemplate?.hook || fallback.hook,
         companionLead: summary.companion_exchange?.companion_lead || summary.companion_lead || undefined,
-        options: options && options.length > 0 ? options : viewerTemplate?.options || fallback.options,
+        // authored options when present, else the matching viewer template — but NEVER leak a
+        // different drama's fallback options onto a candidate-less scaffold (the review-gate preview).
+        options: options && options.length > 0 ? options : viewerTemplate?.options ?? [],
         resultMedia: summary.result_media,
       };
     });

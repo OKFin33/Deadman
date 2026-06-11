@@ -197,6 +197,13 @@ app = create_app()
 def _public_moment(moment: dict[str, Any], drama_id: str) -> dict[str, Any]:
     next_moment = copy.deepcopy(moment)
     next_moment.pop("producer_refs", None)
+    # scene_context is heavy backstage authoring context (L0–L3) used only by the server-side
+    # runtime echo. pack_store.get_moment injects it for the runtime fetch; strip it here so the
+    # public moment payload (and the list/summary path, which routes through here) never ships the
+    # blob to the frontend.
+    exchange = next_moment.get("companion_exchange")
+    if isinstance(exchange, dict):
+        exchange.pop("scene_context", None)
     source_drama = next_moment.get("source_drama")
     if isinstance(source_drama, dict):
         episode_id = str(source_drama.get("episode_id") or "")
@@ -284,7 +291,9 @@ def _media_readiness(store: DeadmanPackStore) -> dict[str, Any]:
             producer_media = episode.get("producer_media", {})
             if not isinstance(producer_media, dict):
                 producer_media = {}
-            media_path = _safe_local_media_path(str(producer_media.get("local_media_path") or ""))
+            episode_id = str(episode.get("episode_id") or "")
+            local_media_path = _sidecar_media_path(pack, episode_id) or str(producer_media.get("local_media_path") or "")
+            media_path = _safe_local_media_path(local_media_path)
             if media_path is not None and media_path.exists():
                 local_available += 1
     return {

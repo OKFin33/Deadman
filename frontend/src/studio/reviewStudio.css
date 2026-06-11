@@ -1,0 +1,192 @@
+/* Studio in-player review — design tokens + components copied from studio/styles.css so this
+   surface is style-unified with the Studio console + Stage (warm dark / cream / coral / serif).
+   All scoped under .studio-review to avoid touching the Stage App.css globals. */
+.studio-review {
+  --ink-0: #0c0a09; --ink-1: #141110; --ink-2: #1c1815; --ink-3: #251f1b;
+  --cream: #fff2df; --cream-dim: #c8b6a3; --cream-faint: #8d7c6e;
+  --tomato: #e7472b; --coral: #ff6f4d; --amber: #ffb259;
+  --line: rgba(255, 224, 190, 0.12); --line-strong: rgba(255, 224, 190, 0.22);
+  --glass: rgba(28, 21, 18, 0.74);
+  --pass: #5fb98a; --hard: #ff6f4d; --soft: #ffb259;
+  --font-sans: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  --font-serif: "Noto Serif SC", "Songti SC", "STSong", serif;
+  --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", monospace;
+
+  height: 100vh; overflow: hidden; box-sizing: border-box; padding: 16px 20px;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(118, 40, 31, 0.30), transparent 36%),
+    linear-gradient(180deg, #171312 0%, #090807 100%);
+  color: var(--cream); font-family: var(--font-sans);
+  display: grid; grid-template-columns: 210px 1fr; gap: 18px;
+}
+.studio-review aside { display: flex; flex-direction: column; min-height: 0; }
+.studio-review main { min-height: 0; overflow: hidden; }
+.studio-review *, .studio-review *::before { box-sizing: border-box; }
+.studio-review .center { color: var(--cream-faint); padding: 60px 0; text-align: center; }
+
+/* brand + rail */
+.sr-brand { display: flex; align-items: baseline; gap: 8px; margin: 0 0 10px; }
+.sr-brand__name { font-family: var(--font-serif); font-size: 17px; font-weight: 800; color: #fff8ec; }
+.sr-brand__sub { color: var(--cream-faint); font-size: 11px; }
+.sr-rail { display: flex; flex-direction: column; gap: 2px; flex: 1; min-height: 0; overflow-y: auto; margin: 0 -6px; padding: 0 6px; }
+.sr-moment {
+  width: 100%; display: grid; grid-template-columns: 22px 1fr; gap: 9px; align-items: center;
+  padding: 9px 10px; border: 1px solid transparent; border-radius: 10px;
+  background: transparent; color: var(--cream); font: inherit; text-align: left; cursor: pointer;
+  transition: background 140ms ease, border-color 140ms ease;
+}
+.sr-moment:hover { background: rgba(255, 242, 223, 0.04); }
+.sr-moment.is-active { background: rgba(255, 111, 77, 0.1); border-color: rgba(255, 111, 77, 0.4); }
+.sr-moment__mark { width: 22px; height: 22px; display: grid; place-items: center; border-radius: 6px;
+  background: var(--ink-3); color: var(--coral); font-weight: 900; font-size: 12px; }
+.sr-moment__id { font-family: var(--font-mono); font-size: 11px; color: var(--cream-dim);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sr-moment.is-done .sr-moment__mark { background: rgba(95, 185, 138, 0.18); color: var(--pass); }
+
+/* main: player + eval, like .rev-grid */
+.sr-main { display: grid; grid-template-columns: 372px 1fr; gap: 20px; height: 100%; min-height: 0; }
+.sr-stage { min-height: 0; }
+.sr-eval { min-height: 0; overflow-y: auto; max-height: 100%; padding-right: 6px; padding-bottom: 48px; }
+@media (max-width: 1080px) {
+  .studio-review main { overflow-y: auto; }
+  .sr-main { grid-template-columns: 1fr; height: auto; }
+  .sr-eval { overflow: visible; max-height: none; }
+}
+.sr-stage__head { color: var(--cream-faint); font-size: 11px; margin: 0 0 6px; }
+.sr-stage__head .sr-title { color: var(--cream); font-weight: 700; }
+.sr-stage__head .sr-saved { color: var(--pass); margin-left: 8px; }
+.sr-frame {
+  width: 372px; height: min(664px, calc(100vh - 96px)); border: 1px solid var(--line); border-radius: 18px;
+  background: #000; overflow: hidden; box-shadow: 0 24px 60px -28px rgba(0,0,0,0.8); display: block;
+}
+.sr-hint { margin-top: 8px; color: var(--cream-faint); font-size: 11.5px; line-height: 1.5; }
+
+/* eval panel — gold-card / exch flavored */
+.sr-panel { display: grid; gap: 12px; }
+.sr-q { color: var(--amber); font-size: 10.5px; font-weight: 900; letter-spacing: 0.6px; }
+.sr-win { display: flex; gap: 8px; flex-wrap: wrap; }
+.sr-win button {
+  flex: 1; min-width: 72px; min-height: 38px; padding: 0 8px;
+  border: 1px solid var(--line-strong); border-radius: 11px; background: var(--glass);
+  color: var(--cream); font: inherit; font-size: 13px; font-weight: 700; cursor: pointer;
+  transition: background 140ms ease, border-color 140ms ease;
+}
+.sr-win button:hover { border-color: rgba(255, 111, 77, 0.5); }
+.sr-win button.on { border-color: transparent; background: linear-gradient(180deg, var(--coral), var(--tomato)); color: #fff; }
+.sr-dir button.ok.on { border-color: transparent; background: linear-gradient(180deg, #6fc89a, #4ba277); color: #06281b; }
+.sr-dir button.no.on { border-color: rgba(255,111,77,0.55); background: rgba(255,111,77,0.16); color: var(--coral); }
+.sr-gate {
+  border: 1px dashed rgba(255, 178, 89, 0.45); background: rgba(255, 178, 89, 0.07);
+  color: var(--amber); border-radius: 10px; padding: 9px 12px; font-size: 12.5px; line-height: 1.5;
+}
+.sr-allok {
+  justify-self: start; min-height: 34px; padding: 0 14px; border-radius: 10px;
+  border: 1px dashed rgba(95, 185, 138, 0.5); background: rgba(95, 185, 138, 0.08);
+  color: var(--pass); font: inherit; font-size: 12.5px; font-weight: 700; cursor: pointer;
+}
+.sr-el { border: 1px solid var(--line); border-radius: 14px; background: var(--ink-1); padding: 11px 13px; }
+.sr-el.lead { background: rgba(255, 178, 89, 0.06); border-color: var(--line-strong); }
+.sr-el.echo { background: var(--ink-2); }
+.sr-el.is-bad { border-color: rgba(255, 111, 77, 0.55); background: rgba(255, 111, 77, 0.07); }
+.sr-el__row { display: flex; align-items: baseline; gap: 8px; }
+.sr-k { font-size: 9.5px; font-weight: 900; letter-spacing: 1px; white-space: nowrap; padding-top: 3px; }
+.sr-el.lead .sr-k { color: var(--amber); }
+.sr-el.say .sr-k { color: var(--cream-faint); }
+.sr-el.echo .sr-k { color: var(--pass); }
+.sr-t { color: var(--cream); font-size: 14.5px; line-height: 1.5; overflow-wrap: anywhere; }
+.sr-note { width: 100%; margin-top: 7px; background: var(--ink-0); border: 1px solid var(--line);
+  color: var(--cream); border-radius: 9px; padding: 6px 10px; font: inherit; font-size: 12.5px; }
+.sr-note::placeholder { color: var(--cream-faint); }
+.sr-el.lead .sr-t { font-family: var(--font-serif); font-size: 17px; font-weight: 700; color: #fff8ec; }
+.sr-el.echo .sr-t { color: #ffe9c9; }
+.sr-vrow { display: flex; gap: 7px; margin-top: 8px; }
+.sr-v {
+  min-height: 32px; padding: 0 16px; border-radius: 9px; border: 1px solid var(--line-strong);
+  background: var(--glass); color: var(--cream); font: inherit; font-size: 12.5px; font-weight: 700; cursor: pointer;
+}
+.sr-v.ok.on { border-color: transparent; background: linear-gradient(180deg, #6fc89a, #4ba277); color: #06281b; }
+.sr-v.bad.on { border-color: transparent; background: rgba(255, 111, 77, 0.16); color: var(--coral); border: 1px solid rgba(255,111,77,0.5); }
+.sr-v.skip.on { background: var(--ink-3); color: var(--cream-dim); border-color: var(--line-strong); }
+.sr-tagrow { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+.sr-tagrow select, .sr-tagrow input {
+  background: var(--ink-0); border: 1px solid var(--line-strong); color: var(--cream);
+  border-radius: 9px; padding: 7px 10px; font: inherit; font-size: 12.5px;
+}
+.sr-tagrow input { flex: 1; min-width: 130px; }
+.sr-tagrow input::placeholder { color: var(--cream-faint); }
+
+/* ---- Pack review (?studio_pack_review=1) — additive, reuses the warm-serif tokens above ----
+   Same .studio-review shell / rail / .sr-frame / .sr-el three-state; .pr-* only adds the
+   immutable scene-signal banner + the simplified verdict pill row + a reason textarea. */
+.pr-panel { padding-bottom: 24px; }
+.pr-signal {
+  display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+  border: 1px dashed var(--line-strong); background: rgba(255, 178, 89, 0.06);
+  border-radius: 12px; padding: 9px 13px;
+}
+.pr-signal__k { font-size: 9.5px; font-weight: 900; letter-spacing: 1px; color: var(--amber); white-space: nowrap; }
+.pr-signal__t { font-family: var(--font-serif); font-size: 15px; color: #fff8ec; overflow-wrap: anywhere; }
+
+.pr-verdict button { font-weight: 800; }
+.pr-verdict .pr-approved.on { border-color: transparent; background: linear-gradient(180deg, #6fc89a, #4ba277); color: #06281b; }
+.pr-verdict .pr-needs_rework.on { border-color: rgba(255, 178, 89, 0.55); background: rgba(255, 178, 89, 0.16); color: var(--amber); }
+.pr-verdict .pr-rejected.on { border-color: rgba(255, 111, 77, 0.55); background: rgba(255, 111, 77, 0.16); color: var(--coral); }
+
+textarea.pr-reason { min-height: 56px; resize: vertical; line-height: 1.5; }
+
+.pr-mark.is-approved { background: rgba(95, 185, 138, 0.18); color: var(--pass); }
+.pr-mark.is-rework { background: rgba(255, 178, 89, 0.18); color: var(--amber); }
+.pr-mark.is-rejected { background: rgba(255, 111, 77, 0.18); color: var(--coral); }
+
+.pr-foot { color: var(--cream-faint); font-family: var(--font-mono); font-size: 10.5px; margin-top: 4px; }
+
+/* === Track C: graph review gate === */
+/* The in-graph review GATE (ReviewGate.tsx) reuses the .studio-review shell + .sr-* idiom; .rg-*
+   adds only the episode-grouped pack nav, the per-pack progress + verdict pills, and the SUBMIT. */
+.rg-root .rg-progress {
+  margin: 0 0 8px; color: var(--cream-dim); font-family: var(--font-mono); font-size: 11px;
+  border: 1px solid var(--line); border-radius: 9px; padding: 6px 9px; background: var(--ink-1);
+}
+.rg-rail { gap: 6px; }
+.rg-group { display: flex; flex-direction: column; gap: 2px; }
+.rg-group__name {
+  color: var(--amber); font-size: 9.5px; font-weight: 900; letter-spacing: 0.8px;
+  margin: 8px 4px 2px; text-transform: uppercase;
+}
+.rg-pack.is-visited { background: rgba(255, 242, 223, 0.03); }
+.rg-mark { font-size: 11px; }
+.rg-mark.is-approve { background: rgba(95, 185, 138, 0.18); color: var(--pass); }
+.rg-mark.is-reject { background: rgba(255, 111, 77, 0.18); color: var(--coral); }
+
+.rg-eval { display: grid; gap: 12px; }
+.rg-nav {
+  display: grid; grid-template-columns: auto 1fr auto; gap: 8px; align-items: center;
+  position: sticky; top: 0; z-index: 2; padding: 4px 0;
+  background: linear-gradient(180deg, var(--ink-1) 70%, transparent);
+}
+.rg-step {
+  min-height: 34px; padding: 0 12px; border-radius: 10px; border: 1px solid var(--line-strong);
+  background: var(--glass); color: var(--cream); font: inherit; font-size: 12.5px; font-weight: 700; cursor: pointer;
+}
+.rg-step:disabled { opacity: 0.4; cursor: default; }
+.rg-verdict-pill { display: flex; gap: 7px; justify-content: center; }
+.rg-verdict-pill button {
+  min-height: 34px; padding: 0 14px; border-radius: 10px; border: 1px solid var(--line-strong);
+  background: var(--glass); color: var(--cream); font: inherit; font-size: 12.5px; font-weight: 800; cursor: pointer;
+}
+.rg-verdict-pill .pr-approved.on { border-color: transparent; background: linear-gradient(180deg, #6fc89a, #4ba277); color: #06281b; }
+.rg-verdict-pill .pr-rejected.on { border-color: rgba(255, 111, 77, 0.55); background: rgba(255, 111, 77, 0.16); color: var(--coral); }
+.rg-override-note {
+  color: var(--amber); font-size: 11px; border: 1px dashed rgba(255, 178, 89, 0.45);
+  background: rgba(255, 178, 89, 0.06); border-radius: 9px; padding: 5px 10px;
+}
+
+.rg-submit-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 6px; padding-top: 10px; border-top: 1px solid var(--line); }
+.rg-submit {
+  min-height: 44px; padding: 0 22px; border-radius: 12px; border: 1px solid transparent;
+  background: linear-gradient(180deg, var(--coral), var(--tomato)); color: #fff;
+  font: inherit; font-size: 14px; font-weight: 800; cursor: pointer;
+}
+.rg-submit:disabled { opacity: 0.45; cursor: default; background: var(--ink-3); color: var(--cream-faint); border-color: var(--line-strong); }
+.rg-submit-hint { color: var(--cream-faint); font-size: 11.5px; }
+.rg-submit-err { color: var(--coral); font-size: 11.5px; }

@@ -1,0 +1,22 @@
+{
+  "schema_version": "drama_context_pack.v0.1",
+  "drama_id": "live_e2e_yunmiao4_final",
+  "title": "云渺E2E最终样片",
+  "cover_image_url": "/assets/covers/deadman-demo.png",
+  "global_constraints": {
+    "hard_constraints": [
+      "answer only current scene or immediate aftermath",
+      "do not claim continuous branch rewrite"
+    ]
+  },
+  "evidence_map": [
+    {
+      "moment_id": "live_e2e_yunmiao4_final_ep01_m001",
+      "reviewed_demo_node": "data/dramas/live_e2e_yunmiao4_final/evidence/reviewed_demo_nodes.v0.1.json#live_e2e_yunmiao4_final_ep01_m001"
+    },
+    {
+      "moment_id": "live_e2e_yunmiao4_final_ep01_m002",
+      "reviewed_demo_node": "data/dramas/live_e2e_yunmiao4_final/evidence/reviewed_demo_nodes.v0.1.json#live_e2e_yunmiao4_final_ep01_m002"
+    }
+  ]
+}

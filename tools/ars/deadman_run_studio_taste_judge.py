@@ -16,6 +16,7 @@ import os
 import shutil
 import subprocess
 import sys
+import tempfile
 import time
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
@@ -52,6 +53,33 @@ DEFAULT_OUTPUT_PATH = REPO_ROOT / "data/evals/studio_cab_taste_judge.v0.1.json"
 SCHEMA_VERSION = "studio_cab_taste_judge.v0.1"
 PRODUCT = "看剧搭子"
 
+# v0.3 taste spec (the SAME finalized overlay the author consumes) wired into the judge so author + judge
+# share ONE rubric = closed-loop taste. Fail-CLOSED (P0-B): missing overlay raises, not a silent hand rubric.
+_OVERLAY_V03_PATH = REPO_ROOT / "data/datasets/studio_guidance/studio_cab_taste_overlay.v0.3.json"
+
+
+def _require_overlay(path):
+    if not path.exists():
+        raise FileNotFoundError(
+            f"v0.3 taste overlay missing at {path} — taste judge is fail-closed (P0-B): it scores against "
+            "the v0.3 spec and will not silently fall back to a hand-written rubric.")
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+_OVERLAY_V03 = _require_overlay(_OVERLAY_V03_PATH)
+
+
+def _judge_taste_patterns(layer: str):
+    """-> (negative, positive) patterns for a layer (mirrors the author's _taste_patterns)."""
+    neg = [{"pattern": n.get("pattern"), "severity": n.get("severity"),
+            "illustrative_examples": n.get("illustrative_examples", [])}
+           for n in _OVERLAY_V03.get("named_negatives", []) if n.get("layer") == layer]
+    pos = [{"pattern": n.get("pattern"), "when": n.get("when"),
+            "illustrative_examples": n.get("illustrative_examples", [])}
+           for n in _OVERLAY_V03.get("named_positives", []) if n.get("layer") == layer]
+    return neg, pos
+
+
 TASTE_LEVELS = {"excellent", "acceptable", "needs_repair"}
 OVERALL_VERDICTS = {"accept", "accept_with_minor_tweak", "reject"}
 ELIGIBLE_CASE_TYPES = {"owner_gold_exchange_authoring", "phase2_repair_regression"}
@@ -87,28 +115,42 @@ class BailianTasteJudgeProvider:
             ],
             ensure_ascii=False,
         )
-        cmd = [
-            self.bl_path,
-            "text",
-            "chat",
-            "--model",
-            self.model,
-            "--messages-file",
-            "-",
-            "--output",
-            "json",
-            "--quiet",
-        ]
-        started = time.perf_counter()
-        result = subprocess.run(
-            cmd,
-            input=messages,
-            capture_output=True,
-            text=True,
-            timeout=self.timeout_seconds,
-            check=False,
+        # The bl CLI reads --messages-file from a path more reliably than from a
+        # stdin pipe: large messages (full v0.3 taste prompts ~14KB) make `bl`
+        # exit 1 with "EAGAIN: resource temporarily unavailable, read" when fed
+        # via `-`. Write to a temp file and pass its path instead.
+        tmp = tempfile.NamedTemporaryFile(
+            "w", suffix=".messages.json", delete=False, encoding="utf-8"
         )
-        latency_ms = int((time.perf_counter() - started) * 1000)
+        try:
+            tmp.write(messages)
+            tmp.close()
+            cmd = [
+                self.bl_path,
+                "text",
+                "chat",
+                "--model",
+                self.model,
+                "--messages-file",
+                tmp.name,
+                "--output",
+                "json",
+                "--quiet",
+            ]
+            started = time.perf_counter()
+            result = subprocess.run(
+                cmd,
+                capture_output=True,
+                text=True,
+                timeout=self.timeout_seconds,
+                check=False,
+            )
+            latency_ms = int((time.perf_counter() - started) * 1000)
+        finally:
+            try:
+                os.unlink(tmp.name)
+            except OSError:
+                pass
         if result.returncode != 0:
             raise RuntimeError(
                 f"bl text chat exited with code {result.returncode}; stderr length={len(result.stderr or '')}"
@@ -282,8 +324,14 @@ def build_judge_prompt(case: dict[str, Any]) -> dict[str, Any]:
             "display_text is the viewer's own about-to-say line (Layer 1) — what the viewer wants to blurt out, not a comment about the scene.",
             "selected_echo is the host replying to the specific viewer who picked that display_text (Layer 2). viewer_motivation states who that viewer is and what they want to hear back. Judge echo against that motivation, not just against the scene.",
         ],
+        "v03_taste_patterns": {
+            "companion_lead": {"negative": _judge_taste_patterns("companion_lead")[0], "positive": _judge_taste_patterns("companion_lead")[1]},
+            "display_text": {"negative": _judge_taste_patterns("display_text")[0], "positive": _judge_taste_patterns("display_text")[1]},
+            "echo": {"negative": _judge_taste_patterns("echo")[0], "positive": _judge_taste_patterns("echo")[1]},
+        },
         "instructions": [
             "Score four dimensions and one overall verdict for this draft.",
+            "Score against v03_taste_patterns — the owner's FINALIZED taste spec, the SAME one the author writes against: companion_lead->lead_taste, display_text->reply_voice_taste, echo->echo_taste. Mark a dimension needs_repair if its line matches any negative pattern of severity 'hard'; lower it for 'soft_preference' matches; reward matches to that layer's positive patterns. Do not invent criteria beyond these patterns plus the dimension definitions below.",
             "lead_taste: is companion_lead a short friend-style line a viewer would actually say? Avoid: question shape, UI prompt, axis label, plot prediction.",
             "reply_voice_taste: do all three reply display_texts sound like actual viewer reactions, not action menus, not abstract semantic_role labels?",
             "reply_axis_diversity: do the three replies cover genuinely distinct emotional/semantic angles, or do they repeat the same angle?",

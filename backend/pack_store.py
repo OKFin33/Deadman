@@ -81,7 +81,45 @@ class DeadmanPackStore:
                 f"Moment '{moment_id}' is not available for drama '{drama_id}'.",
                 status_code=404,
             )
-        return moment
+        # RUNTIME single-moment fetch: re-attach the per-drama scene_context sidecar card (the heavy
+        # L0–L3 authoring context) to companion_exchange.scene_context, in memory only. This is what
+        # runtime_echo reads to ground a viewer's typed line. The sidecar keeps moments.v0.1.json
+        # byte-stable and out of the public list/summary payload; the public moment route strips the
+        # blob before serving (api._public_moment). Fail-safe: a missing/corrupt sidecar simply
+        # yields no scene_context (runtime_echo degrades to template/None).
+        card = self._scene_context_card(pack, moment_id)
+        if card is None:
+            return moment
+        exchange = moment.get("companion_exchange")
+        if not isinstance(exchange, dict):
+            return moment
+        # Shallow-copy so the cached pack moment (shared with the list path) is never mutated; only
+        # the returned copy carries the injected scene_context.
+        merged_exchange = dict(exchange)
+        merged_exchange["scene_context"] = card
+        merged_moment = dict(moment)
+        merged_moment["companion_exchange"] = merged_exchange
+        return merged_moment
+
+    def _scene_context_card(self, pack: DramaPack, moment_id: str) -> dict[str, Any] | None:
+        """Load the per-drama scene_context sidecar and return this moment's card, or None.
+
+        Fail-safe: a missing file, parse error, wrong shape, or absent moment id all return None so
+        the runtime degrades to no scene_context rather than raising into the request path."""
+        sidecar_path = pack.root / "scene_context.v0.1.json"
+        if not sidecar_path.exists():
+            return None
+        try:
+            data = json.loads(sidecar_path.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError):
+            return None
+        if not isinstance(data, dict):
+            return None
+        cards = data.get("scene_context")
+        if not isinstance(cards, dict):
+            return None
+        card = cards.get(moment_id)
+        return card if isinstance(card, dict) and card else None
 
     def _load_all(self) -> dict[str, DramaPack]:
         if not self.data_root.exists():

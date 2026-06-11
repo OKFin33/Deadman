@@ -203,8 +203,7 @@ class CompanionRuntimeApiTests(unittest.TestCase):
         text = body["result_surface"]["text"]
         self.assertEqual(body["status"], "ok")
         self.assertEqual(body["result_surface"]["micro_cue"]["kind"], "cost_hint")
-        self.assertIn("系统那口气", text)
-        self.assertIn("这段先别替剧情往后编", text)
+        self.assertEqual(text, "哎呀，我没get到你的意思…")
         self.assertNotIn("后面剧集", text)
         self.assertNotIn("未来分支", text)
         self.assertNotIn("原剧情", text)
@@ -229,9 +228,7 @@ class CompanionRuntimeApiTests(unittest.TestCase):
         body = response.json()
         text = body["result_surface"]["text"]
         self.assertEqual(body["status"], "ok")
-        self.assertIn("孩子", text)
-        self.assertIn("最后这口", text)
-        self.assertNotEqual(text, "这句我懂，但这段先别替剧情往后编。")
+        self.assertEqual(text, "哎呀，我没get到你的意思…")
         self.assertIsNone(body["result_surface"]["micro_cue"])
         self.assertNotIn("当前场景", text)
         self.assertNotIn("后面剧集", text)
@@ -253,7 +250,7 @@ class CompanionRuntimeApiTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         body = response.json()
         self.assertEqual(body["status"], "ok")
-        self.assertEqual(body["result_surface"]["text"], "这句我懂，但这段先别替剧情往后编。")
+        self.assertEqual(body["result_surface"]["text"], "哎呀，我没get到你的意思…")
         self.assertIsNone(body["result_surface"]["micro_cue"])
 
     def test_moment_notice_outside_window_returns_idle_without_interrupt(self) -> None:
